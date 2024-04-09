@@ -8,10 +8,8 @@ const userQuestion = require("./models/contributedQues");
 const Query = require("./models/query");
 const port = 3000;
 const app = express();
-
-const db_URI =
-  "mongodb+srv://sameervohra943:vzoQ6EsuNLPRk207@cluster0.dpuumzd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-// db_URI password:  vzoQ6EsuNLPRk207
+require("dotenv").config();
+const db_URI = process.env.DB_URI;
 
 app.use(bodyParser.json());
 
@@ -23,7 +21,6 @@ mongoose
 app.post("/register", async (req, res) => {
   console.log("/register called");
   const { username, password, email, isAdmin } = req.body;
-  res.send("<h1>hello world</h1>");
   try {
     const existingUser = await User.findOne({ username });
     const existingEmail = await User.findOne({ email });
@@ -120,6 +117,7 @@ app.post("/:username/query", async (req, res) => {
       email,
       query,
       isResolved: false,
+      resolvedBy: "",
     });
     await queries.save();
     return res.json({ message: "Query Recieved" });
@@ -128,15 +126,45 @@ app.post("/:username/query", async (req, res) => {
   }
 });
 
-app.post("/:username/displayQuery", async (req, res) => {
-  const username = req.params;
+app.get("/:username/displayQueries", async (req, res) => {
+  const { username } = req.params;
   try {
-    console.log(username);
+    const user = await User.findOne({ username });
+    console.log(user.isAdmin);
+    if (user.isAdmin) {
+      console.log("authourized");
+      const queries = await Query.find();
+      res.json({ queries });
+    } else {
+      res
+        .status(401)
+        .json({ message: "You are not authourized to perform this action" });
+    }
   } catch (error) {
-    res.status(501).json({ message: "" });
+    res.status(501).json({ message: "Internal Server Error" });
+  }
+});
+
+app.get("/forgot-pass", async (req, res) => {
+  const { email } = req.body;
+  const { newPass } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (user && !user.isAdmin) {
+      const updatedPass = bcrypt.hashSync(newPass, 8);
+      user.password = updatedPass;
+      return res.json(user);
+    }
+    if (user && user.isAdmin) {
+      res.json({ message: "Contact Administration if forgot password" });
+    } else {
+      return res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(501).json({ message: "Internal Server Error" });
   }
 });
 
 app.listen(port, (req, res) => {
-  console.log(`Listening to ${port}`);
+  console.log(`Listening to port ${port}`);
 });

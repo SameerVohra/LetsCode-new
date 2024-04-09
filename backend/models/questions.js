@@ -5,6 +5,7 @@ const questions = new mongoose.Schema({
   difficulty: String,
   description: String,
   constraints: [String],
+  approvedBy: String,
 });
 
 const Ques = mongoose.model("Ques", questions);
