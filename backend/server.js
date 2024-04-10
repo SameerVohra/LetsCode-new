@@ -26,6 +26,9 @@ app.post("/register", async (req, res) => {
     const existingEmail = await User.findOne({ email });
     if (existingUser || existingEmail) {
       return res.status(400).json({ message: "Username/Email already exists" });
+    }
+    if (password.length < 8) {
+      return res.json({ message: "Password length should be atleast 8" });
     } else {
       const hashedPassword = bcrypt.hashSync(password, 8);
       const newUser = new User({
@@ -145,18 +148,30 @@ app.get("/:username/displayQueries", async (req, res) => {
   }
 });
 
-app.get("/forgot-pass", async (req, res) => {
+app.post("/forgot-pass", async (req, res) => {
   const { email } = req.body;
   const { newPass } = req.body;
   try {
     const user = await User.findOne({ email });
+    if (newPass.length < 8) {
+      return res.status(400).json({ message: "Minimum password length is 8" });
+    }
     if (user && !user.isAdmin) {
       const updatedPass = bcrypt.hashSync(newPass, 8);
-      user.password = updatedPass;
-      return res.json(user);
+      if (bcrypt.compareSync(newPass, user.password)) {
+        return res.json({ message: "New and old password can not be same" });
+      } else {
+        user.password = updatedPass;
+        await user.save();
+        return res
+          .status(201)
+          .json({ message: "Password updated successfully" });
+      }
     }
     if (user && user.isAdmin) {
-      res.json({ message: "Contact Administration if forgot password" });
+      res
+        .status(401)
+        .json({ message: "Contact Administration if forgot password" });
     } else {
       return res.status(404).json({ message: "User not found" });
     }
