@@ -3,6 +3,7 @@ const User = require("./models/userSchema");
 const { mongoose } = require("mongoose");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const Ques = require("./models/questions");
 const userQuestion = require("./models/contributedQues");
 const Query = require("./models/query");
@@ -10,6 +11,8 @@ const port = 3000;
 const app = express();
 require("dotenv").config();
 const db_URI = process.env.DB_URI;
+const cors = require("cors");
+app.use(cors());
 
 app.use(bodyParser.json());
 
@@ -17,6 +20,19 @@ mongoose
   .connect(db_URI)
   .then(() => console.log("Conncection successful"))
   .catch((error) => console.log(`Error Connection to Database ${error}`));
+
+function verifytoken(req, res, next) {
+  const token = req.headers["authorization"];
+  if (!token) {
+    return res.status(403).send("authentication required for this action");
+  }
+  try {
+    req.user = jwt.verify(token.split(" ")[1], "SECRET_KEY");
+    next();
+  } catch (error) {
+    res.status(501).send("internal server error");
+  }
+}
 
 app.post("/register", async (req, res) => {
   console.log("/register called");
@@ -39,14 +55,14 @@ app.post("/register", async (req, res) => {
       });
       await newUser.save();
       console.log(newUser);
-      return res.json({ message: "User created successfully" });
+      return res.status(201).json({ message: "User created successfully" });
     }
   } catch (error) {
     res.status(501).json({ message: "Internal Server Error" });
   }
 });
 
-app.get("/login", async (req, res) => {
+app.post("/login", async (req, res) => {
   const { username, password, email } = req.body;
   try {
     const findUser = await User.findOne({ username });
@@ -61,7 +77,9 @@ app.get("/login", async (req, res) => {
       ) {
         res.status(501).json({ message: "Invalid Username/Password/Email" });
       } else {
-        res.status(201).json({ message: findUser });
+        res.status(201);
+        const token = jwt.sign({ username: findUser.username }, "SECRET_KEY");
+        res.json({ token });
       }
     }
   } catch (error) {
@@ -69,7 +87,7 @@ app.get("/login", async (req, res) => {
   }
 });
 
-app.post("/:username/addQues", async (req, res) => {
+app.post("/:username/addQues", verifytoken, async (req, res) => {
   const { quesName, difficulty, description, constraints } = req.body;
   const { username } = req.params;
   try {
@@ -93,7 +111,7 @@ app.post("/:username/addQues", async (req, res) => {
   }
 });
 
-app.post("/:username/contribute", async (req, res) => {
+app.post("/:username/contribute", verifytoken, async (req, res) => {
   const { username } = req.params;
   const { quesName, description, isApproved } = req.body;
   try {
@@ -110,7 +128,7 @@ app.post("/:username/contribute", async (req, res) => {
   }
 });
 
-app.post("/:username/query", async (req, res) => {
+app.post("/:username/query", verifytoken, async (req, res) => {
   const { username } = req.params;
   const { email, query } = req.body;
 
@@ -129,7 +147,7 @@ app.post("/:username/query", async (req, res) => {
   }
 });
 
-app.get("/:username/displayQueries", async (req, res) => {
+app.get("/:username/displayQueries", verifytoken, async (req, res) => {
   const { username } = req.params;
   try {
     const user = await User.findOne({ username });
@@ -148,7 +166,7 @@ app.get("/:username/displayQueries", async (req, res) => {
   }
 });
 
-app.post("/forgot-pass", async (req, res) => {
+app.post("/forgot-pass", verifytoken, async (req, res) => {
   const { email } = req.body;
   const { newPass } = req.body;
   try {
@@ -180,6 +198,6 @@ app.post("/forgot-pass", async (req, res) => {
   }
 });
 
-app.listen(port, (req, res) => {
+app.listen(port, () => {
   console.log(`Listening to port ${port}`);
 });

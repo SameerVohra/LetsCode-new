@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import LinkBtn from "./Header/LinkBtn";
 
-function Login() {
+function Register() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,21 +20,16 @@ function Login() {
         return;
       } else {
         setErr("");
-        const response = await axios.post("http://localhost:3000/login", {
+        const response = await axios.post("http://localhost:3000/register", {
           username: name,
           email: email,
           password: pass,
         });
-        console.log(response.data.token);
-        console.log(response);
-        console.log(response.username);
         if (response.status == 201) {
-          localStorage.setItem("jwtToken", response.data.token);
-          localStorage.setItem("username", name);
-          navigate("/");
+          navigate("/login");
         }
-        if (response.status == 501) {
-          setErr("User not found");
+        if (response.status == 400) {
+          setErr("User Already Exists");
           return;
         }
       }
@@ -47,7 +42,7 @@ function Login() {
       <div className="flex justify-center items-center h-screen">
         {err}
         <div className="bg-black h-fit w-fit px-10 py-5 flex flex-wrap justify-center items-center flex-col gap-2">
-          <h2 className="text-white">LOGIN</h2>
+          <h2 className="text-white">Register</h2>
           <p className="text-white text-xl">USERNAME</p>
           <Input
             placeholder="Username"
@@ -71,15 +66,15 @@ function Login() {
             value={pass}
           />
           <p className="text-sm text-white">
-            New User?{" "}
+            Existing User?{" "}
             <LinkBtn
-              to="/register"
-              text="Register"
+              to="/login"
+              text="Login"
               className="text-sm text-white underline"
             />
           </p>
           <Button
-            children="Login"
+            children="Register"
             className="text-white border-2 border-white"
             onClick={handleInput}
           />
@@ -89,4 +84,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
