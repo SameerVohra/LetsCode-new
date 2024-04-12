@@ -26,8 +26,15 @@ function verifytoken(req, res, next) {
   if (!token) {
     return res.status(403).send("authentication required for this action");
   }
+
   try {
-    req.user = jwt.verify(token.split(" ")[1], "SECRET_KEY");
+    const decoded = jwt.verify(token.split(" ")[1], "SECRET_KEY");
+
+    const exp_date = Math.floor(Date.now() / 1000); // we did /1000 to convert ms to sec.
+    if (exp_date > decoded.exp) {
+      return res.status(401).send("Token Expired!!");
+    }
+    req.user = decoded;
     next();
   } catch (error) {
     res.status(501).send("internal server error");
@@ -122,7 +129,7 @@ app.post("/:username/contribute", verifytoken, async (req, res) => {
       isApproved: isApproved || false,
     });
     await userQues.save();
-    return res.json({ message: "Thank you for your contribution" });
+    return res.status(201).json({ message: "Thank you for your contribution" });
   } catch (error) {
     res.status(501).json({ message: "Internal Server Error" });
   }
@@ -134,11 +141,10 @@ app.post("/:username/query", verifytoken, async (req, res) => {
 
   try {
     const queries = new Query({
-      username,
+      username: username,
       email,
       query,
       isResolved: false,
-      resolvedBy: "",
     });
     await queries.save();
     return res.json({ message: "Query Recieved" });

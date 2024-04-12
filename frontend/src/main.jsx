@@ -12,12 +12,17 @@ import DisplayQueries from "./components/DisplayQueries.jsx";
 import ForgotPass from "./components/ForgotPass.jsx";
 import Solve from "./components/Solve.jsx";
 import Questions from "./components/Questions.jsx";
+import Home from "./components/Home.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
       {
         path: "/login",
         element: <Login />,
