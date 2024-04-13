@@ -30,6 +30,7 @@ function Login() {
         console.log(response.username);
         if (response.status == 201) {
           localStorage.setItem("jwtToken", response.data.token);
+          localStorage.setItem("isAdmin", response.data.isAdmin);
           localStorage.setItem("username", name);
           navigate("/");
         }

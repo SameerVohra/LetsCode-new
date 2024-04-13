@@ -7,37 +7,42 @@ const jwt = require("jsonwebtoken");
 const Ques = require("./models/questions");
 const userQuestion = require("./models/contributedQues");
 const Query = require("./models/query");
+const questions = require("./models/questions");
 const port = 3000;
 const app = express();
 require("dotenv").config();
 const db_URI = process.env.DB_URI;
 const cors = require("cors");
 app.use(cors());
-
 app.use(bodyParser.json());
 
 mongoose
   .connect(db_URI)
-  .then(() => console.log("Conncection successful"))
-  .catch((error) => console.log(`Error Connection to Database ${error}`));
+  .then(() => console.log("Connection successful"))
+  .catch((error) => console.log(`Error Connecting to Database ${error}`));
 
 function verifytoken(req, res, next) {
   const token = req.headers["authorization"];
   if (!token) {
-    return res.status(403).send("authentication required for this action");
+    return res.status(403).send("Authentication required for this action");
   }
 
   try {
-    const decoded = jwt.verify(token.split(" ")[1], "SECRET_KEY");
+    const tokenParts = token.split(" ");
+    const decoded = jwt.verify(tokenParts[1], "SECRET_KEY");
+    const currentTime = Math.floor(Date.now() / 1000);
+    const lastActivity = decoded.lastActivity;
+    const inactivePeriod = 5 * 60 * 60;
 
-    const exp_date = Math.floor(Date.now() / 1000); // we did /1000 to convert ms to sec.
-    if (exp_date > decoded.exp) {
-      return res.status(401).send("Token Expired!!");
+    if (currentTime - lastActivity > inactivePeriod) {
+      return res.status(401).send("Token Expired due to inactivity");
     }
+    decoded.lastActivity = currentTime;
+
     req.user = decoded;
     next();
   } catch (error) {
-    res.status(501).send("internal server error");
+    res.status(500).send("Internal server error");
   }
 }
 
@@ -82,15 +87,19 @@ app.post("/login", async (req, res) => {
         findUser.username !== username ||
         findUser.email !== email
       ) {
-        res.status(501).json({ message: "Invalid Username/Password/Email" });
+        res.status(401).json({ message: "Invalid Username/Password/Email" });
       } else {
-        res.status(201);
-        const token = jwt.sign({ username: findUser.username }, "SECRET_KEY");
-        res.json({ token });
+        const tokenPayload = {
+          username: findUser.username,
+          isAdmin: findUser.isAdmin,
+        };
+        console.log(tokenPayload);
+        const token = jwt.sign(tokenPayload, "SECRET_KEY");
+        res.status(201).json({ token, isAdmin: findUser.isAdmin });
       }
     }
   } catch (error) {
-    res.status(501).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
@@ -153,14 +162,16 @@ app.post("/:username/query", verifytoken, async (req, res) => {
   }
 });
 
-app.get("/:username/displayQueries", verifytoken, async (req, res) => {
+app.get("/:username/display-queries", verifytoken, async (req, res) => {
   const { username } = req.params;
   try {
     const user = await User.findOne({ username });
     console.log(user.isAdmin);
     if (user.isAdmin) {
       console.log("authourized");
+      await Query.deleteMany({ isResolved: true });
       const queries = await Query.find();
+      console.log(queries);
       res.json({ queries });
     } else {
       res
@@ -169,6 +180,15 @@ app.get("/:username/displayQueries", verifytoken, async (req, res) => {
     }
   } catch (error) {
     res.status(501).json({ message: "Internal Server Error" });
+  }
+});
+
+app.get("/display-ques", verifytoken, async (req, res) => {
+  try {
+    const ques = await questions.find({});
+    res.status(201).json(ques);
+  } catch (error) {
+    res.status(501).send("Internal Server Error");
   }
 });
 

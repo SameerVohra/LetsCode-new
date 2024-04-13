@@ -33,7 +33,6 @@ function AddQuery() {
             headers: { Authorization: `Bearer ${token}` },
           },
         );
-        console.log(id);
         console.log(queries);
         alert("Query Recieved");
         setEmail("");

@@ -13,6 +13,7 @@ import ForgotPass from "./components/ForgotPass.jsx";
 import Solve from "./components/Solve.jsx";
 import Questions from "./components/Questions.jsx";
 import Home from "./components/Home.jsx";
+import Admin from "./components/Admin.jsx";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: "/Questions",
         element: <Questions />,
+      },
+      {
+        path: "/:username/admin",
+        element: <Admin />,
       },
     ],
   },
