@@ -192,6 +192,42 @@ app.get("/display-ques", verifytoken, async (req, res) => {
   }
 });
 
+app.get("/:queryId/show-query", verifytoken, async (req, res) => {
+  const { qId } = req.params;
+  try {
+    const user = await Query.findOne(qId);
+    console.log(user);
+    res.status(201).send(user);
+  } catch (error) {
+    res.status(501).send("Internal Server Error");
+  }
+});
+
+app.put("/:queryId/resolve", async (req, res) => {
+  const { queryId } = req.params;
+  try {
+    const query = await Query.findOneAndUpdate(
+      { _id: queryId },
+      { isResolved: true },
+      { new: true },
+    );
+    const query1 = await Query.findOneAndDelete({ isResolved: true });
+    console.log(query);
+    res.status(201).json({ query1 });
+  } catch (error) {
+    res.status(501).send("Internal Server Error");
+  }
+});
+
+app.get("/:username/display-contributed", verifytoken, async (req, res) => {
+  try {
+    const ques = await userQuestion.find();
+    res.status(200).send(ques);
+  } catch (error) {
+    res.status(501).send("Internal Server Error");
+  }
+});
+
 app.post("/forgot-pass", verifytoken, async (req, res) => {
   const { email } = req.body;
   const { newPass } = req.body;

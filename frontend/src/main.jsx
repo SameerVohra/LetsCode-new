@@ -14,7 +14,8 @@ import Solve from "./components/Solve.jsx";
 import Questions from "./components/Questions.jsx";
 import Home from "./components/Home.jsx";
 import Admin from "./components/Admin.jsx";
-
+import ShowQuery from "./components/ShowQuery";
+import DisplayQuestions from "./components/DisplayQuestions.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
         element: <AddQuery />,
       },
       {
-        path: "/:username/displayQueries",
+        path: "/:username/admin/displayQueries",
         element: <DisplayQueries />,
       },
       {
@@ -63,6 +64,14 @@ const router = createBrowserRouter([
       {
         path: "/:username/admin",
         element: <Admin />,
+      },
+      {
+        path: "/:queryId/show-query",
+        element: <ShowQuery />,
+      },
+      {
+        path: "/:username/admin/displayQuestions",
+        element: <DisplayQuestions />,
       },
     ],
   },
