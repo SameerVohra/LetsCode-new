@@ -16,6 +16,8 @@ import Home from "./components/Home.jsx";
 import Admin from "./components/Admin.jsx";
 import ShowQuery from "./components/ShowQuery";
 import DisplayQuestions from "./components/DisplayQuestions.jsx";
+import AcceptQuestion from "./components/AcceptQuestion.jsx";
+import RejectQuestion from "./components/RejectQuestion.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -34,7 +36,7 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: "/:username/addQues",
+        path: "/:username/admin/addQues",
         element: <AddQues />,
       },
       {
@@ -72,6 +74,14 @@ const router = createBrowserRouter([
       {
         path: "/:username/admin/displayQuestions",
         element: <DisplayQuestions />,
+      },
+      {
+        path: "/:username/:qId/accept",
+        element: <AcceptQuestion />,
+      },
+      {
+        path: "/:username/:qId/reject",
+        element: <RejectQuestion />,
       },
     ],
   },

@@ -13,6 +13,8 @@ const app = express();
 require("dotenv").config();
 const db_URI = process.env.DB_URI;
 const cors = require("cors");
+const { ObjectId } = require("mongodb");
+const nodemailer = require("nodemailer");
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -45,6 +47,17 @@ function verifytoken(req, res, next) {
     res.status(500).send("Internal server error");
   }
 }
+
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: false,
+  auth: {
+    user: "sameervohra2004@gmail.com",
+    pass: "axwx lrnm ejii mzoq",
+  },
+});
 
 app.post("/register", async (req, res) => {
   console.log("/register called");
@@ -156,6 +169,15 @@ app.post("/:username/query", verifytoken, async (req, res) => {
       isResolved: false,
     });
     await queries.save();
+    const mailOptions = {
+      from: "sameervohra2004@gmail.com",
+      to: email,
+      subject: `Query Recieved`,
+      text: `Recieved Your Query will contact you soon`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
     return res.json({ message: "Query Recieved" });
   } catch (error) {
     res.status(501).json({ message: "Internal Server Error" });
@@ -211,11 +233,49 @@ app.put("/:queryId/resolve", async (req, res) => {
       { isResolved: true },
       { new: true },
     );
+    if (!query) {
+      return res.status(404).json({ message: "Query not found" });
+    }
+
+    const email = query.email;
+    if (!email) {
+      return res
+        .status(400)
+        .json({ message: "Email not provided in the query" });
+    }
+    console.log(email);
+    const mailOptions = {
+      from: "sameervohra2004@gmail.com",
+      to: email,
+      subject: `Query Resolved with: ${queryId}`,
+      text: `Query With ${queryId} resolved successfully`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
     const query1 = await Query.findOneAndDelete({ isResolved: true });
     console.log(query);
+
     res.status(201).json({ query1 });
   } catch (error) {
-    res.status(501).send("Internal Server Error");
+    console.error("Error resolving query:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.put("/:qId/added", async (req, res) => {
+  const { qId } = req.params;
+  try {
+    const ques = await userQuestion.findOneAndUpdate(
+      { _id: qId },
+      { isApproved: true },
+      { new: true },
+    );
+    const quesDel = await userQuestion.findOneAndDelete({ isApproved: true });
+    console.log(quesDel);
+    return res.status(201).json({ quesDel });
+  } catch (error) {
+    return res.status(500).send("Internal Server Error");
   }
 });
 
@@ -225,6 +285,19 @@ app.get("/:username/display-contributed", verifytoken, async (req, res) => {
     res.status(200).send(ques);
   } catch (error) {
     res.status(501).send("Internal Server Error");
+  }
+});
+
+app.get("/:qid/approve-question", verifytoken, async (req, res) => {
+  const { qid } = req.params;
+  try {
+    const id = new ObjectId(qid);
+    const ques = await userQuestion.findOne({ _id: id });
+    if (!ques) return res.status(404).send("Not found");
+    res.status(200).json({ ques });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
   }
 });
 

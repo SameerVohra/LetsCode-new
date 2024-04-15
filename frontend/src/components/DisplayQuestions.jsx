@@ -23,12 +23,16 @@ function DisplayQuestions() {
             },
           );
           console.log(response.data);
-          setQues(response.data);
+          const pendingQues = response.data.filter(
+            (q) => q.isApproved !== true,
+          );
+          setQues(pendingQues);
         }
       } catch (error) {
         setErr(error.message);
       }
     };
+    ques.filter((q) => q.isApproved != true);
     fetchQuestions();
   }, [params]);
 
@@ -40,11 +44,25 @@ function DisplayQuestions() {
           ques.map((q) => (
             <div
               key={q._id}
-              className="border-2 border-black flex flex-wrap flex-col"
+              className="border-2 border-black flex flex-wrap flex-row items-center justify-between p-4"
             >
-              <div>Contributed by: {q.contributedBy}</div>
-              <div>Question Name: {q.quesName}</div>
-              <div>Question Description: {q.description}</div>
+              <div>
+                <div>Contributed by: {q.contributedBy}</div>
+                <div>Question Name: {q.quesName}</div>
+                <div>Question Description: {q.description}</div>
+              </div>
+              <div className="flex flex-col justify-center items-center gap-2">
+                <LinkBtn
+                  className="border-2 bg-green-500 px-2 py-1"
+                  to={`/${params.username}/${q._id}/accept`}
+                  text="Accept"
+                />
+                <LinkBtn
+                  className="border-2 bg-red-700 px-2 py-1"
+                  to={`/${params.username}/${q._id}/reject`}
+                  text="Reject"
+                />
+              </div>
             </div>
           ))
         ) : (

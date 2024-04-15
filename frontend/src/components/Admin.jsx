@@ -14,6 +14,7 @@ function Admin() {
       <h1>{username}</h1>
       <LinkBtn to={`displayQueries`} text="Display Query" />
       <LinkBtn to={`displayQuestions`} text="Display Question" />
+      <LinkBtn to={`addQues`} text="Add Questions" />
     </>
   );
 }
