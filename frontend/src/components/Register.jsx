@@ -4,6 +4,7 @@ import Input from "./Input";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import LinkBtn from "./Header/LinkBtn";
+import vct from "../assets/vector.png";
 
 function Register() {
   const navigate = useNavigate();
@@ -39,45 +40,51 @@ function Register() {
   };
   return (
     <>
-      <div className="flex justify-center items-center h-screen">
-        {err}
-        <div className="bg-black h-fit w-fit px-10 py-5 flex flex-wrap justify-center items-center flex-col gap-2">
-          <h2 className="text-white">Register</h2>
-          <p className="text-white text-xl">USERNAME</p>
-          <Input
-            placeholder="Username"
-            className="bg-white"
-            onChange={(e) => setName(e.currentTarget.value)}
-            value={name}
-          />
-          <p className="text-white text-xl">Email</p>
-          <Input
-            placeholder="Email"
-            className="bg-white"
-            onChange={(e) => setEmail(e.currentTarget.value)}
-            value={email}
-          />
-          <p className="text-white text-xl">Password</p>
-          <Input
-            type="password"
-            placeholder="Password"
-            className="bg-white"
-            onChange={(e) => setPass(e.currentTarget.value)}
-            value={pass}
-          />
-          <p className="text-sm text-white">
-            Existing User?{" "}
-            <LinkBtn
-              to="/login"
-              text="Login"
-              className="text-sm text-white underline"
+      <div className="bg-blue-500 grid grid-cols-2">
+        <div className="flex justify-center items-center h-screen text-xl">
+          <div className="bg-sky-500 text-black shadow-2xl shadow-black h-auto w-auto px-20 py-10 flex flex-col gap-3 rounded-2xl">
+            {err && (
+              <div className="text-red-900 text-center text-2xl">{err}</div>
+            )}
+            <Input
+              label="Username"
+              placeholder="Username"
+              className="bg-white rounded-2xl"
+              onChange={(e) => setName(e.currentTarget.value)}
+              value={name}
             />
-          </p>
-          <Button
-            children="Register"
-            className="text-white border-2 border-white"
-            onClick={handleInput}
-          />
+            <Input
+              label="Email"
+              placeholder="Email"
+              className="bg-white rounded-2xl"
+              onChange={(e) => setEmail(e.currentTarget.value)}
+              value={email}
+            />
+            <Input
+              label="Password"
+              type="password"
+              placeholder="Password"
+              className="bg-white rounded-2xl"
+              onChange={(e) => setPass(e.currentTarget.value)}
+              value={pass}
+            />
+            <Button
+              children="Register"
+              onClick={handleInput}
+              className=" px-4 py-2 w-full rounded-2xl bg-lime-300 hover:bg-cyan-300 transition-all"
+            />
+            <p className="text-sm text-center">
+              Existing User?{" "}
+              <LinkBtn
+                to="/login"
+                text="Login"
+                className="underline text-lime-300"
+              />
+            </p>
+          </div>
+        </div>
+        <div className="max-h-screen bg-blue-400 flex justify-center items-center text-7xl">
+          <img src={vct} />
         </div>
       </div>
     </>

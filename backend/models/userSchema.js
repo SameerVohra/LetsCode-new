@@ -4,7 +4,9 @@ const userSchema = new mongoose.Schema({
   username: String,
   password: String,
   email: String,
+  quesSolved: [{ name: String }],
   isAdmin: Boolean,
+  quesSolvedNum: { easy: Number, medium: Number, hard: Number },
 });
 
 const User = mongoose.model("User", userSchema);

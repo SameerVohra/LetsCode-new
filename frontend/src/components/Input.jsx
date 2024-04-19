@@ -7,11 +7,11 @@ function Input({
 }) {
   return (
     <>
-      <label className="mr-4">{label}</label>
+      <label>{label}</label>
       <input
         type={type}
         placeholder={placeholder}
-        className={`border-2 ${className}`}
+        className={`border-2 px-4 py-3 mb-3 ${className}`}
         {...props}
       />
     </>

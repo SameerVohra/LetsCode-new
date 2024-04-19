@@ -4,9 +4,12 @@ import Input from "./Input";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import LinkBtn from "./Header/LinkBtn";
-
+import { useDispatch } from "react-redux";
+import { login } from "../Store/authSlice";
+import vct from "../assets/vector.png";
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -25,65 +28,77 @@ function Login() {
           email: email,
           password: pass,
         });
-        console.log(response.data.token);
-        console.log(response);
-        console.log(response.username);
-        if (response.status == 201) {
+        if (response.status === 201) {
           localStorage.setItem("jwtToken", response.data.token);
           localStorage.setItem("isAdmin", response.data.isAdmin);
           localStorage.setItem("username", name);
+          dispatch(login());
           navigate("/");
         }
-        if (response.status == 501) {
+        if (response.status === 404) {
           setErr("User not found");
+          return;
+        }
+        if (response.status === 401) {
+          setErr("Invalid credentials");
           return;
         }
       }
     } catch (error) {
-      console.log(`Error: ${error}`);
+      console.log(error);
+      if (error.response.status === 404) setErr("User not found");
+      if (error.response.status === 401) return setErr("Invalid Credentials");
     }
   };
+  const path = `../assets/10798281_19362653.jpg`;
   return (
     <>
-      <div className="flex justify-center items-center h-screen">
-        {err}
-        <div className="bg-black h-fit w-fit px-10 py-5 flex flex-wrap justify-center items-center flex-col gap-2">
-          <h2 className="text-white">LOGIN</h2>
-          <p className="text-white text-xl">USERNAME</p>
-          <Input
-            placeholder="Username"
-            className="bg-white"
-            onChange={(e) => setName(e.currentTarget.value)}
-            value={name}
-          />
-          <p className="text-white text-xl">Email</p>
-          <Input
-            placeholder="Email"
-            className="bg-white"
-            onChange={(e) => setEmail(e.currentTarget.value)}
-            value={email}
-          />
-          <p className="text-white text-xl">Password</p>
-          <Input
-            type="password"
-            placeholder="Password"
-            className="bg-white"
-            onChange={(e) => setPass(e.currentTarget.value)}
-            value={pass}
-          />
-          <p className="text-sm text-white">
-            New User?{" "}
-            <LinkBtn
-              to="/register"
-              text="Register"
-              className="text-sm text-white underline"
+      <div className="bg-blue-500 grid grid-cols-2">
+        <div className="max-h-screen bg-blue-400 flex justify-center items-center text-7xl">
+          <img src={vct} />
+        </div>
+        <div className="flex justify-center items-center h-screen text-xl">
+          <div className="bg-sky-500 text-black shadow-2xl shadow-black h-auto w-auto px-20 py-10 flex flex-col gap-3 rounded-2xl">
+            {err && (
+              <div className="text-red-900 text-center text-2xl">{err}</div>
+            )}
+            <Input
+              label="Username"
+              placeholder="Username"
+              className="bg-white rounded-2xl"
+              onChange={(e) => setName(e.currentTarget.value)}
+              value={name}
             />
-          </p>
-          <Button
-            children="Login"
-            className="text-white border-2 border-white"
-            onClick={handleInput}
-          />
+            <Input
+              label="Email"
+              placeholder="Email"
+              className="bg-white rounded-2xl"
+              onChange={(e) => setEmail(e.currentTarget.value)}
+              value={email}
+            />
+            <Input
+              label="Password"
+              type="password"
+              placeholder="Password"
+              className="bg-white rounded-2xl"
+              onChange={(e) => setPass(e.currentTarget.value)}
+              value={pass}
+            />
+
+            <Button
+              children="Login"
+              onClick={handleInput}
+              className=" px-4 py-2 w-full rounded-2xl bg-lime-300 hover:bg-cyan-300 transition-all"
+            />
+            <p className="text-sm text-center">
+              New User?{"  "}
+              <LinkBtn
+                to="/register"
+                text=" Register"
+                className="underline text-lime-300"
+              />
+            </p>
+          </div>
         </div>
       </div>
     </>

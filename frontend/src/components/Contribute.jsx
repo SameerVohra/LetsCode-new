@@ -46,22 +46,40 @@ function Contribute() {
 
   return (
     <>
-      <div>
-        <Input
-          label="Question Name"
-          placeholder="Enter the name of the question"
-          onChange={(e) => setQuesName(e.currentTarget.value)}
-          value={quesName}
-        />
-        <Input
-          label="Question Description"
-          placeholder="Question Description"
-          onChange={(e) => setQuesDesc(e.currentTarget.value)}
-          value={quesDesc}
-        />
-        <Button children="Submit" onClick={handleSubmit} />
+      <div className="flex flex-wrap min-h-screen flex-col bg-sky-100">
+        <h1 className="text-center text-3xl">
+          Contribute to the Coding Community
+        </h1>
+        <div className="flex flex-wrap flex-col justify-center items-center h-auto mt-1 ">
+          <div className="border-2 flex flex-wrap justify-center items-center flex-col h-auto w-auto px-10 py-5 gap-3 bg-indigo-900 text-white rounded-3xl">
+            <div className="flex flex-col justify-center items-start text-2xl w-full">
+              <h1>Question Name: </h1>
+              <Input
+                placeholder="Question Name"
+                onChange={(e) => setQuesName(e.currentTarget.value)}
+                value={quesName}
+                className="px-3 py-2 text-xl w-full rounded-xl border-2 border-black text-black p-3 font-sans"
+              />
+            </div>
+            <div className="flex flex-col justify-center items-start text-2xl w-full">
+              <h1>Question Description</h1>
+              <textarea
+                rows={10}
+                cols={60}
+                placeholder="Question Description"
+                onChange={(e) => setQuesDesc(e.currentTarget.value)}
+                value={quesDesc}
+                className="border-2 border-black rounded-2xl text-black p-3 font-sans"
+              />
+            </div>
+            <Button
+              children="Submit"
+              onClick={handleSubmit}
+              className="border-2 border-black px-5 py-2 bg-sky-300 hover:bg-blue-600 hover:shadow-black hover:shadow-2xl transition-all rounded-2xl text-black hover:text-white"
+            />
+          </div>
+        </div>
       </div>
-      {quesName}
     </>
   );
 }

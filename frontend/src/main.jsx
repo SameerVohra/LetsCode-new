@@ -18,6 +18,12 @@ import ShowQuery from "./components/ShowQuery";
 import DisplayQuestions from "./components/DisplayQuestions.jsx";
 import AcceptQuestion from "./components/AcceptQuestion.jsx";
 import RejectQuestion from "./components/RejectQuestion.jsx";
+import DisplayUsers from "./components/DisplayUsers.jsx";
+import UserInfo from "./components/UserInfo.jsx";
+import CodeEditor from "./components/CodeEditor/CodeEditor.jsx";
+import { Provider } from "react-redux";
+import store from "./Store/store.js";
+import Profile from "./components/Profile.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -83,12 +89,30 @@ const router = createBrowserRouter([
         path: "/:username/:qId/reject",
         element: <RejectQuestion />,
       },
+      {
+        path: ":username/admin/displayUsers",
+        element: <DisplayUsers />,
+      },
+      {
+        path: "admin/:username/userInfo",
+        element: <UserInfo />,
+      },
+      {
+        path: ":qId/:username/code",
+        element: <CodeEditor />,
+      },
+      {
+        path: "profile/:username",
+        element: <Profile />,
+      },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>,
 );
