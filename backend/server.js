@@ -67,12 +67,10 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+const allowedOrigins = ["https://lets-code-new-back.vercel.app"];
 app.use(
   cors({
-    origin: [
-      "https://lets-code-new-frontend.vercel.app/",
-      "https://lets-code-new-back.vercel.app/",
-    ],
+    origin: allowedOrigins,
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   }),
