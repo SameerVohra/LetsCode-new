@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("./models/userSchema");
-const mongoose = require("mongoose");
+const { mongoose } = require("mongoose");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -19,8 +19,6 @@ const nodemailer = require("nodemailer");
 const tmp = require("tmp-promise");
 const fs = require("fs");
 const { exec, spawn } = require("child_process");
-
-console.log(db_URI);
 app.use(cors());
 app.use(bodyParser.json());
 const email = "sameervohra2004@gmail.com";
@@ -64,11 +62,6 @@ const transporter = nodemailer.createTransport({
     user: email,
     pass: "axwx lrnm ejii mzoq",
   },
-});
-
-app.get("/", (req, res) => {
-  console.log("Hello world");
-  res.send("Hello world");
 });
 
 app.post("/register", async (req, res) => {
