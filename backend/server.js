@@ -21,13 +21,7 @@ const fs = require("fs");
 const { exec, spawn } = require("child_process");
 
 console.log(db_URI);
-app.use(
-  cors({
-    origin: "https://lets-code-new-frontend.vercel.app",
-    methods: ["POST", "GET", "PUT", "DELETE"],
-    credentials: true,
-  }),
-);
+app.use(cors());
 app.use(bodyParser.json());
 const email = "sameervohra2004@gmail.com";
 
