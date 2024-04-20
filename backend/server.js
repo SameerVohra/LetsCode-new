@@ -8,7 +8,6 @@ const Ques = require("./models/questions");
 const userQuestion = require("./models/contributedQues");
 const Query = require("./models/query");
 const questions = require("./models/questions");
-const Code = require("./models/code");
 const port = 3000;
 const app = express();
 require("dotenv").config();
@@ -70,12 +69,14 @@ const transporter = nodemailer.createTransport({
 
 app.use(
   cors({
-    origin: ["https://lets-code-new-back.vercel.app/"],
+    origin: [
+      "https://lets-code-new-frontend.vercel.app/",
+      "https://lets-code-new-back.vercel.app/",
+    ],
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   }),
 );
-
 app.get("/", (req, res) => {
   console.log("Hello world");
   res.send("Hello world");
