@@ -15,7 +15,7 @@ function App() {
     }
   }, [dispatch]);
 
-  console.log(import.meta.env.VITE_LINK);
+  console.log(`${import.meta.env.VITE_LINK}/login`);
 
   return (
     <>

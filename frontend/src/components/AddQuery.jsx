@@ -24,7 +24,7 @@ function AddQuery() {
         }
         setErr("");
         const queries = await axios.post(
-          `http://localhost:3000/${params.username}/query`,
+          `/api/${params.username}/query`,
           {
             email,
             query,

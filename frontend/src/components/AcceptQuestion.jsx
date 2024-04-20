@@ -21,12 +21,9 @@ function AcceptQuestion() {
           return;
         } else {
           const qid = params.qId;
-          const data = await axios.get(
-            `http://localhost:3000/${qid}/approve-question`,
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            },
-          );
+          const data = await axios.get(`/api/${qid}/approve-question`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
           console.log(data.data.ques);
           setQuesData(data.data.ques);
           setQuesName(data.data.ques.quesName);
@@ -67,7 +64,7 @@ function AcceptQuestion() {
         return;
       } else {
         const approve = await axios.post(
-          `http://localhost:3000/${username}/addQues`,
+          `/api/${username}/addQues`,
           {
             quesName: quesName,
             difficulty: quesDiff,
@@ -79,7 +76,7 @@ function AcceptQuestion() {
           },
         );
 
-        const quesDel = await axios.put(`http://localhost:3000/${qId}/added`, {
+        const quesDel = await axios.put(`/api/${qId}/added`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

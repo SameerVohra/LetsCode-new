@@ -24,13 +24,14 @@ import CodeEditor from "./components/CodeEditor/CodeEditor.jsx";
 import { Provider } from "react-redux";
 import store from "./Store/store.js";
 import Profile from "./components/Profile.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
       {
-        path: "/",
+        path: "/", // Root path
         element: <Home />,
       },
       {
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "/register",
+        path: "/register", // Updated path without "/api" prefix
         element: <Register />,
       },
       {
@@ -66,7 +67,7 @@ const router = createBrowserRouter([
         element: <Solve />,
       },
       {
-        path: "/Questions",
+        path: "/questions", // Updated path (without starting slash)
         element: <Questions />,
       },
       {
@@ -90,24 +91,25 @@ const router = createBrowserRouter([
         element: <RejectQuestion />,
       },
       {
-        path: ":username/admin/displayUsers",
+        path: "/:username/admin/displayUsers",
         element: <DisplayUsers />,
       },
       {
-        path: "admin/:username/userInfo",
+        path: "/admin/:username/userInfo", // Updated path (without starting slash)
         element: <UserInfo />,
       },
       {
-        path: ":qId/:username/code",
+        path: "/:qId/:username/code",
         element: <CodeEditor />,
       },
       {
-        path: "profile/:username",
+        path: "/profile/:username", // Updated path (without starting slash)
         element: <Profile />,
       },
     ],
   },
 ]);
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>

@@ -18,14 +18,11 @@ function DisplayQueries() {
           setErr("Not Authorized for this action");
           return;
         } else {
-          const data = await axios.get(
-            `http://localhost:3000/${username}/display-queries`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
+          const data = await axios.get(`/api/${username}/display-queries`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
             },
-          );
+          });
           console.log(data.data.queries);
           const queryArr = data.data.queries;
           queryArr.filter((q) => q.isResolved !== true);

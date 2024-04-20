@@ -13,7 +13,7 @@ function DisplayUsers() {
     const users = async () => {
       const token = localStorage.getItem("jwtToken");
       try {
-        const user = await axios.get(`http://localhost:3000/display-users`, {
+        const user = await axios.get(`/api/display-users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

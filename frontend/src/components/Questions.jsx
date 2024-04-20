@@ -19,12 +19,9 @@ function Questions() {
     const data = async () => {
       const token = localStorage.getItem("jwtToken");
       try {
-        const userData = await axios.get(
-          `http://localhost:3000/${username}/userInfo`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const userData = await axios.get(`/api/${username}/userInfo`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         console.log(userData.data);
         setUserSolved(userData.data.quesSolvedNum);
         console.log(userSolved);
@@ -43,7 +40,7 @@ function Questions() {
           setErr("Not authorized for this action");
           return;
         } else {
-          const ques = await axios.get("http://localhost:3000/display-ques", {
+          const ques = await axios.get("/api/display-ques", {
             headers: { Authorization: `Bearer ${token}` },
           });
           console.log(ques.data.length);

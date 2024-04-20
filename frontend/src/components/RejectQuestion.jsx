@@ -17,7 +17,7 @@ function RejectQuestion() {
     try {
       if (!token) return setErr("Login");
 
-      const reject = await axios.delete(`http://localhost:3000/${qId}/reject`, {
+      const reject = await axios.delete(`/api/${qId}/reject`, {
         data: { msg: reason },
         headers: { Authorization: `Bearer ${token}` },
       });

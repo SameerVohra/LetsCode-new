@@ -15,9 +15,7 @@ function CodeEditor() {
     const token = localStorage.getItem("jwtToken");
     try {
       if (!token) return setErr("Login to perform this action");
-      const data = await axios.put(
-        `http://localhost:3000/${qId}/${username}/solved`,
-      );
+      const data = await axios.put(`/api/${qId}/${username}/solved`);
       console.log(data);
     } catch (error) {
       setErr(error.message);
@@ -28,9 +26,7 @@ function CodeEditor() {
     console.log(qId);
     const quesInfo = async () => {
       try {
-        const data = await axios.get(
-          `http://localhost:3000/${qId}/ques-details`,
-        );
+        const data = await axios.get(`/api/${qId}/ques-details`);
         console.log(data);
         setQuesInfo(data.data);
       } catch (error) {
@@ -41,12 +37,9 @@ function CodeEditor() {
   }, [qId]);
   const handleCompile = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:3000/${qId}/compile-cpp`,
-        {
-          code: code,
-        },
-      );
+      const response = await axios.post(`/api/${qId}/compile-cpp`, {
+        code: code,
+      });
       if (response.data.totalCount === response.data.passedCount)
         await solved();
       console.log(response);

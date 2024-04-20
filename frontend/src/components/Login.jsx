@@ -23,7 +23,7 @@ function Login() {
         return;
       } else {
         setErr("");
-        const response = await axios.post("http://localhost:3000/login", {
+        const response = await axios.post("/api/login", {
           username: name,
           email: email,
           password: pass,

@@ -12,12 +12,9 @@ function UserInfo() {
       const token = localStorage.getItem("jwtToken");
       try {
         if (!token) return setErr("Login to perform this action");
-        const user = await axios.get(
-          `http://localhost:3000/${username}/userInfo`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const user = await axios.get(`/api/${username}/userInfo`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         console.log(user.data);
         setUserData(user.data);
       } catch (error) {
@@ -31,7 +28,7 @@ function UserInfo() {
   const handleMake = async () => {
     try {
       console.log(username);
-      await axios.put(`http://localhost:3000/${username}/make-admin`);
+      await axios.put(`/api/${username}/make-admin`);
       setUserData((prev) => ({ ...prev, isAdmin: true }));
     } catch (error) {
       setErr(error.message);
@@ -40,7 +37,7 @@ function UserInfo() {
 
   const handleRemove = async () => {
     try {
-      await axios.put(`http://localhost:3000/${username}/remove-admin`);
+      await axios.put(`/api/${username}/remove-admin`);
       setUserData((prev) => ({ ...prev, isAdmin: false }));
     } catch (error) {
       setErr(error.message);

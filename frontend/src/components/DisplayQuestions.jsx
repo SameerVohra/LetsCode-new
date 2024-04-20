@@ -17,7 +17,7 @@ function DisplayQuestions() {
         } else {
           const { username } = params;
           const response = await axios.get(
-            `http://localhost:3000/${username}/display-contributed`,
+            `/api/${username}/display-contributed`,
             {
               headers: { Authorization: `Bearer ${token}` },
             },

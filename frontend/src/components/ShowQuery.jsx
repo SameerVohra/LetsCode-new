@@ -19,12 +19,9 @@ function ShowQuery() {
           return;
         }
         console.log(token);
-        const queryData = await axios.get(
-          `http://localhost:3000/${queryId}/show-query`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const queryData = await axios.get(`/api/${queryId}/show-query`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         console.log(queryData.data);
         setUserData(queryData.data);
       } catch (error) {
@@ -38,7 +35,7 @@ function ShowQuery() {
   const handleResolve = async () => {
     try {
       const username = localStorage.getItem("username");
-      const data = await axios.put(`http://localhost:3000/${queryId}/resolve`);
+      const data = await axios.put(`/api/${queryId}/resolve`);
       setUserData(data);
       navigate(`/${username}/admin/displayQueries`);
     } catch (error) {

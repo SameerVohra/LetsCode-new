@@ -25,7 +25,7 @@ function Contribute() {
         return;
       } else {
         const question = await axios.post(
-          `http://localhost:3000/${params.username}/contribute`,
+          `/api/${params.username}/contribute`,
           {
             quesName: quesName,
             description: quesDesc,
