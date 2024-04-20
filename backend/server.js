@@ -23,6 +23,7 @@ const { exec, spawn } = require("child_process");
 console.log(db_URI);
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 const email = "sameervohra2004@gmail.com";
 
 mongoose
