@@ -21,11 +21,14 @@ function Register() {
         return;
       } else {
         setErr("");
-        const response = await axios.post("http://localhost:3000/register", {
-          username: name,
-          email: email,
-          password: pass,
-        });
+        const response = await axios.post(
+          "https://lc-backend-jet.vercel.app/register",
+          {
+            username: name,
+            email: email,
+            password: pass,
+          },
+        );
         if (response.status == 201) {
           navigate("/login");
         }

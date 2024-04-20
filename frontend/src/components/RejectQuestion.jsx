@@ -17,10 +17,13 @@ function RejectQuestion() {
     try {
       if (!token) return setErr("Login");
 
-      const reject = await axios.delete(`http://localhost:3000/${qId}/reject`, {
-        data: { msg: reason },
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const reject = await axios.delete(
+        `https://lc-backend-jet.vercel.app/${qId}/reject`,
+        {
+          data: { msg: reason },
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
 
       if (reject.status === 201) {
         navigate(`/${username}/admin/displayQuestions`);

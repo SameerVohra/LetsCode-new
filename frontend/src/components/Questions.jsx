@@ -20,7 +20,7 @@ function Questions() {
       const token = localStorage.getItem("jwtToken");
       try {
         const userData = await axios.get(
-          `http://localhost:3000/${username}/userInfo`,
+          `https://lc-backend-jet.vercel.app/${username}/userInfo`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -43,9 +43,12 @@ function Questions() {
           setErr("Not authorized for this action");
           return;
         } else {
-          const ques = await axios.get("http://localhost:3000/display-ques", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          const ques = await axios.get(
+            "https://lc-backend-jet.vercel.app/display-ques",
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            },
+          );
           console.log(ques.data.length);
           setQues(ques.data);
           let e = 0;

@@ -13,9 +13,12 @@ function DisplayUsers() {
     const users = async () => {
       const token = localStorage.getItem("jwtToken");
       try {
-        const user = await axios.get(`http://localhost:3000/display-users`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const user = await axios.get(
+          `https://lc-backend-jet.vercel.app/display-users`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
 
         console.log(user.data);
         setUser(user.data);

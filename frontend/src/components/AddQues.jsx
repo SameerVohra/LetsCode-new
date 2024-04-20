@@ -41,7 +41,7 @@ function AddQues() {
     const token = localStorage.getItem("jwtToken");
     const username = params.username;
     await axios.post(
-      `http://localhost:3000/${username}/addQues`,
+      `https://lc-backend-jet.vercel.app/${username}/addQues`,
       {
         quesName: quesName,
         difficulty: quesDiff,

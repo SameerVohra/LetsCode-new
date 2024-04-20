@@ -23,11 +23,14 @@ function Login() {
         return;
       } else {
         setErr("");
-        const response = await axios.post("http://localhost:3000/login", {
-          username: name,
-          email: email,
-          password: pass,
-        });
+        const response = await axios.post(
+          "https://lc-backend-jet.vercel.app/login",
+          {
+            username: name,
+            email: email,
+            password: pass,
+          },
+        );
         if (response.status === 201) {
           localStorage.setItem("jwtToken", response.data.token);
           localStorage.setItem("isAdmin", response.data.isAdmin);
@@ -50,7 +53,6 @@ function Login() {
       if (error.response.status === 401) return setErr("Invalid Credentials");
     }
   };
-  const path = `../assets/10798281_19362653.jpg`;
   return (
     <>
       <div className="bg-blue-500 grid grid-cols-2">

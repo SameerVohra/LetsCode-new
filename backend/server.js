@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("./models/userSchema");
-const { mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -19,7 +19,15 @@ const nodemailer = require("nodemailer");
 const tmp = require("tmp-promise");
 const fs = require("fs");
 const { exec, spawn } = require("child_process");
-app.use(cors());
+
+console.log(db_URI);
+app.use(
+  cors({
+    origin: "https://lc-frontend-red.vercel.app",
+    methods: ["POST", "GET", "PUT", "DELETE"],
+    credentials: true,
+  }),
+);
 app.use(bodyParser.json());
 const email = "sameervohra2004@gmail.com";
 
@@ -62,6 +70,10 @@ const transporter = nodemailer.createTransport({
     user: email,
     pass: "axwx lrnm ejii mzoq",
   },
+});
+
+app.get("/helloworld", (req, res) => {
+  res.send("Hello world");
 });
 
 app.post("/register", async (req, res) => {
