@@ -13,7 +13,6 @@ const port = 3000;
 const app = express();
 require("dotenv").config();
 const db_URI = process.env.DB_URI;
-const cors = require("cors");
 const { ObjectId } = require("mongodb");
 const nodemailer = require("nodemailer");
 const tmp = require("tmp-promise");
