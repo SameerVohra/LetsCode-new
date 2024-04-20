@@ -17,6 +17,7 @@ const nodemailer = require("nodemailer");
 const tmp = require("tmp-promise");
 const fs = require("fs");
 const { exec, spawn } = require("child_process");
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
 app.use(bodyParser.json());
 const email = "sameervohra2004@gmail.com";
@@ -26,6 +27,17 @@ mongoose
   .then(() => console.log("Connection successful"))
   .catch((error) => console.log(`Error Connecting to Database ${error}`));
 
+module.exports = (req, res) => {
+  const proxy = createProxyMiddleware({
+    target: "https://lets-code-new-back.vercel.app",
+    changeOrigin: true,
+    pathRewrite: {
+      "^/api": "",
+    },
+  });
+
+  proxy(req, res);
+};
 function verifytoken(req, res, next) {
   const token = req.headers["authorization"];
   if (!token) {
