@@ -67,22 +67,16 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const allowedOrigins = ["https://lets-code-new-back.vercel.app"];
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: [
+      "https://lets-code-new-frontend.vercel.app/",
+      "https://lets-code-new-back.vercel.app/",
+    ],
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   }),
 );
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // Allow requests from all origins
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-  );
-  next();
-});
 app.get("/", (req, res) => {
   console.log("Hello world");
   res.send("Hello world");
