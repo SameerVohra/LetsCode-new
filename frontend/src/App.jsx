@@ -15,6 +15,8 @@ function App() {
     }
   }, [dispatch]);
 
+  console.log(import.meta.env.VITE_LINK);
+
   return (
     <>
       <div className="min-h-screen">

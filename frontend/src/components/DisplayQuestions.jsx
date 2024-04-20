@@ -17,7 +17,7 @@ function DisplayQuestions() {
         } else {
           const { username } = params;
           const response = await axios.get(
-            `https://lets-code-new-back.vercel.app/${username}/display-contributed`,
+            `http://localhost:3000/${username}/display-contributed`,
             {
               headers: { Authorization: `Bearer ${token}` },
             },

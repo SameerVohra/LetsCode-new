@@ -26,11 +26,11 @@ import store from "./Store/store.js";
 import Profile from "./components/Profile.jsx";
 const router = createBrowserRouter([
   {
-    path: "/api",
+    path: "/",
     element: <App />,
     children: [
       {
-        path: "/api",
+        path: "/",
         element: <Home />,
       },
       {
@@ -108,7 +108,6 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>

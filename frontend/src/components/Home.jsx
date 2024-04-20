@@ -4,6 +4,7 @@ import Typewriter from "typewriter-effect";
 import { useNavigate } from "react-router";
 
 function Home() {
+  console.log(import.meta.env.link);
   const username = localStorage.getItem("username");
   const navigate = useNavigate();
   return (

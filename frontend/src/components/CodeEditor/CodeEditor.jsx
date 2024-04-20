@@ -16,7 +16,7 @@ function CodeEditor() {
     try {
       if (!token) return setErr("Login to perform this action");
       const data = await axios.put(
-        `https://lets-code-new-back.vercel.app/${qId}/${username}/solved`,
+        `http://localhost:3000/${qId}/${username}/solved`,
       );
       console.log(data);
     } catch (error) {
@@ -29,7 +29,7 @@ function CodeEditor() {
     const quesInfo = async () => {
       try {
         const data = await axios.get(
-          `https://lets-code-new-back.vercel.app/${qId}/ques-details`,
+          `http://localhost:3000/${qId}/ques-details`,
         );
         console.log(data);
         setQuesInfo(data.data);
@@ -42,7 +42,7 @@ function CodeEditor() {
   const handleCompile = async () => {
     try {
       const response = await axios.post(
-        `https://lets-code-new-back.vercel.app/${qId}/compile-cpp`,
+        `http://localhost:3000/${qId}/compile-cpp`,
         {
           code: code,
         },

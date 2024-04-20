@@ -21,14 +21,11 @@ function Register() {
         return;
       } else {
         setErr("");
-        const response = await axios.post(
-          "https://lets-code-new-back.vercel.app/register",
-          {
-            username: name,
-            email: email,
-            password: pass,
-          },
-        );
+        const response = await axios.post("http://localhost:300/register", {
+          username: name,
+          email: email,
+          password: pass,
+        });
         if (response.status == 201) {
           navigate("/login");
         }

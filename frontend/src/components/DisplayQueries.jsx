@@ -19,7 +19,7 @@ function DisplayQueries() {
           return;
         } else {
           const data = await axios.get(
-            `https://lets-code-new-back.vercel.app/${username}/display-queries`,
+            `http://localhost:3000/${username}/display-queries`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

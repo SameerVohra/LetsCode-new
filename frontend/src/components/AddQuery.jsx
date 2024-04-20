@@ -24,7 +24,7 @@ function AddQuery() {
         }
         setErr("");
         const queries = await axios.post(
-          `https://lets-code-new-back.vercel.app/${params.username}/query`,
+          `http://localhost:3000/${params.username}/query`,
           {
             email,
             query,
