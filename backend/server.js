@@ -75,6 +75,14 @@ app.use(
     credentials: true,
   }),
 );
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*"); // Allow requests from all origins
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+  );
+  next();
+});
 app.get("/", (req, res) => {
   console.log("Hello world");
   res.send("Hello world");
