@@ -20,7 +20,7 @@ function ShowQuery() {
         }
         console.log(token);
         const queryData = await axios.get(
-          `https://lc-backend-jet.vercel.app/${queryId}/show-query`,
+          `https://lets-code-new-back.vercel.app/${queryId}/show-query`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -39,7 +39,7 @@ function ShowQuery() {
     try {
       const username = localStorage.getItem("username");
       const data = await axios.put(
-        `https://lc-backend-jet.vercel.app/${queryId}/resolve`,
+        `https://lets-code-new-back.vercel.app/${queryId}/resolve`,
       );
       setUserData(data);
       navigate(`/${username}/admin/displayQueries`);

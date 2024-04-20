@@ -22,7 +22,7 @@ function AcceptQuestion() {
         } else {
           const qid = params.qId;
           const data = await axios.get(
-            `https://lc-backend-jet.vercel.app/${qid}/approve-question`,
+            `https://lets-code-new-back.vercel.app/${qid}/approve-question`,
             {
               headers: { Authorization: `Bearer ${token}` },
             },
@@ -67,7 +67,7 @@ function AcceptQuestion() {
         return;
       } else {
         const approve = await axios.post(
-          `https://lc-backend-jet.vercel.app/${username}/addQues`,
+          `https://lets-code-new-back.vercel.app/${username}/addQues`,
           {
             quesName: quesName,
             difficulty: quesDiff,
@@ -80,7 +80,7 @@ function AcceptQuestion() {
         );
 
         const quesDel = await axios.put(
-          `https://lc-backend-jet.vercel.app/${qId}/added`,
+          `https://lets-code-new-back.vercel.app/${qId}/added`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },

@@ -22,7 +22,7 @@ function Register() {
       } else {
         setErr("");
         const response = await axios.post(
-          "https://lc-backend-jet.vercel.app/register",
+          "https://lets-code-new-back.vercel.app/register",
           {
             username: name,
             email: email,

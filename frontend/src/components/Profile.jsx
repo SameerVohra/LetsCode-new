@@ -14,7 +14,7 @@ function Profile() {
       try {
         if (!token) return setErr("Login to see your data");
         const response = await axios.get(
-          `https://lc-backend-jet.vercel.app/${username}/userInfo`,
+          `https://lets-code-new-back.vercel.app/${username}/userInfo`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },

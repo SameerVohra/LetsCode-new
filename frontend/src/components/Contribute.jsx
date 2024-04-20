@@ -25,7 +25,7 @@ function Contribute() {
         return;
       } else {
         const question = await axios.post(
-          `https://lc-backend-jet.vercel.app/${params.username}/contribute`,
+          `https://lets-code-new-back.vercel.app/${params.username}/contribute`,
           {
             quesName: quesName,
             description: quesDesc,

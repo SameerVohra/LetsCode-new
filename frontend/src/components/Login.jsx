@@ -24,7 +24,7 @@ function Login() {
       } else {
         setErr("");
         const response = await axios.post(
-          "https://lc-backend-jet.vercel.app/login",
+          "https://lets-code-new-back.vercel.app/login",
           {
             username: name,
             email: email,

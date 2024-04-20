@@ -18,7 +18,7 @@ function RejectQuestion() {
       if (!token) return setErr("Login");
 
       const reject = await axios.delete(
-        `https://lc-backend-jet.vercel.app/${qId}/reject`,
+        `https://lets-code-new-back.vercel.app/${qId}/reject`,
         {
           data: { msg: reason },
           headers: { Authorization: `Bearer ${token}` },

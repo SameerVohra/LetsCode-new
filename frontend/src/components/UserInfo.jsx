@@ -13,7 +13,7 @@ function UserInfo() {
       try {
         if (!token) return setErr("Login to perform this action");
         const user = await axios.get(
-          `https://lc-backend-jet.vercel.app/${username}/userInfo`,
+          `https://lets-code-new-back.vercel.app/${username}/userInfo`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -32,7 +32,7 @@ function UserInfo() {
     try {
       console.log(username);
       await axios.put(
-        `https://lc-backend-jet.vercel.app/${username}/make-admin`,
+        `https://lets-code-new-back.vercel.app/${username}/make-admin`,
       );
       setUserData((prev) => ({ ...prev, isAdmin: true }));
     } catch (error) {
@@ -43,7 +43,7 @@ function UserInfo() {
   const handleRemove = async () => {
     try {
       await axios.put(
-        `https://lc-backend-jet.vercel.app/${username}/remove-admin`,
+        `https://lets-code-new-back.vercel.app/${username}/remove-admin`,
       );
       setUserData((prev) => ({ ...prev, isAdmin: false }));
     } catch (error) {
