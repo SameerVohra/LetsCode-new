@@ -19,7 +19,7 @@ const nodemailer = require("nodemailer");
 const tmp = require("tmp-promise");
 const fs = require("fs");
 const { exec, spawn } = require("child_process");
-app.use(cors());
+
 app.use(bodyParser.json());
 const email = "sameervohra2004@gmail.com";
 
