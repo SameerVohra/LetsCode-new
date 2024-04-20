@@ -8,6 +8,7 @@ const Ques = require("./models/questions");
 const userQuestion = require("./models/contributedQues");
 const Query = require("./models/query");
 const questions = require("./models/questions");
+const Code = require("./models/code");
 const port = 3000;
 const app = express();
 require("dotenv").config();
@@ -20,10 +21,14 @@ const fs = require("fs");
 const { exec, spawn } = require("child_process");
 
 console.log(db_URI);
-
+app.use(
+  cors({
+    origin: "https://lets-code-new-frontend.vercel.app",
+    methods: ["POST", "GET", "PUT", "DELETE"],
+    credentials: true,
+  }),
+);
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 const email = "sameervohra2004@gmail.com";
 
 mongoose
@@ -67,17 +72,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.use(
-  cors({
-    origin: [
-      "https://lets-code-new-frontend.vercel.app/",
-      "https://lets-code-new-back.vercel.app/",
-    ],
-    methods: ["POST", "GET", "PUT", "DELETE"],
-    credentials: true,
-  }),
-);
-app.get("/", (req, res) => {
+app.get("/helloworld", (req, res) => {
   console.log("Hello world");
   res.send("Hello world");
 });
