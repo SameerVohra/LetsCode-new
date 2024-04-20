@@ -15,8 +15,6 @@ function App() {
     }
   }, [dispatch]);
 
-  console.log(`${import.meta.env.VITE_LINK}/login`);
-
   return (
     <>
       <div className="min-h-screen">
