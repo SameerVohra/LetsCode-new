@@ -23,7 +23,7 @@ const { exec, spawn } = require("child_process");
 console.log(db_URI);
 app.use(
   cors({
-    origin: "https://lc-frontend-red.vercel.app",
+    origin: "https://lets-code-new-frontend.vercel.app",
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   }),
