@@ -74,7 +74,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.get("/h", (req, res) => {
+app.get("/api/h", (req, res) => {
+  console.log("hello called");
   res.send("hello");
 });
 
