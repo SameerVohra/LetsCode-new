@@ -74,6 +74,10 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+app.get("/h", (req, res) => {
+  res.send("hello");
+});
+
 app.post("/register", async (req, res) => {
   console.log("/register called");
   const { username, password, email, isAdmin } = req.body;
@@ -202,6 +206,7 @@ app.post("/:username/query", verifytoken, async (req, res) => {
     await queries.save();
     const mailOptions = {
       from: "sameervohra2004@gmail.com",
+
       to: email,
       subject: `Query Recieved`,
       text: `Recieved Your Query will contact you soon`,

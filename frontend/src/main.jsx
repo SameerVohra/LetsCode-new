@@ -26,11 +26,11 @@ import store from "./Store/store.js";
 import Profile from "./components/Profile.jsx";
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/api",
     element: <App />,
     children: [
       {
-        path: "/",
+        path: "/api",
         element: <Home />,
       },
       {
