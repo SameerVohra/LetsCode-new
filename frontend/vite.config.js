@@ -5,8 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   server: {
     proxy: {
-      "/api":
-        "https://lets-code-new-back-2sbsb8fr3-sameervohras-projects.vercel.app/",
+      "/api": "http://localhost:3000/",
     },
   },
   plugins: [react()],
