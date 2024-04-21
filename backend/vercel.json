@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/*",
-      "destination": "https://lets-code-new-back.vercel.app/api/*"
+      "destination": "/api/*"
     }
   ]
 }
