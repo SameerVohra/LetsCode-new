@@ -551,4 +551,6 @@ app.all("/api/*", (req, res) => {
   res.status(404).send("Page Not Found");
 });
 
-app.listen(console.log(`Listening to port ${port}`));
+app.listen(port, () => {
+  console.log(`Listening to port ${port}`);
+});
