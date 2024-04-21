@@ -1,10 +1,8 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "./index.js",
-      "use": "@vercel/node"
+      "source": "/api/*",
+      "destination": "https://lets-code-new-back.vercel.app/api/*"
     }
-  ],
-  "routes": [{ "src": "/api/(.*)", "dest": "./index.js" }]
+  ]
 }
