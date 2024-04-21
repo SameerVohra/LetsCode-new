@@ -1,13 +1,11 @@
 {
   "version": 2,
   "routes": [
+    { "handle": "filesystem" },
     {
       "src": "/api/(.*)",
-      "dest": "/index.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.js"
+      "dest": "https://lets-code-new-back.vercel.app/api/$1"
     }
-  ]
+  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
