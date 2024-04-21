@@ -21,7 +21,7 @@ function Register() {
         return;
       } else {
         setErr("");
-        const response = await axios.post("/register", {
+        const response = await axios.post("/api/register", {
           username: name,
           email: email,
           password: pass,
