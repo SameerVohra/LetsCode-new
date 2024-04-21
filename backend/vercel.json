@@ -1,8 +1,10 @@
 {
+  "version": 2,
+  "builds": [{ "src": "*.js", "use": "@vercel/node" }],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "https://lets-code-new-back.vercel.app/api/*"
+      "dest": "/api"
     }
   ]
 }
