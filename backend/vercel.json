@@ -1,11 +1,8 @@
 {
-  "version": 2,
-  "routes": [
-    { "handle": "filesystem" },
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "https://lets-code-new-back.vercel.app/api/$1"
+      "source": "/api/(.*)",
+      "destination": "/api"
     }
-  ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  ]
 }
