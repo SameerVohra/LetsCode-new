@@ -1,4 +1,7 @@
 {
   "version": 2,
-  "routes": [{ "src": "/api/(.*)", "dest": "/app.js" }]
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/api/.*", "dest": "/app.js" }
+  ]
 }
