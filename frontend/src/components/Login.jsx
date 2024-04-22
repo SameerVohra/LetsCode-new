@@ -7,6 +7,9 @@ import LinkBtn from "./Header/LinkBtn";
 import { useDispatch } from "react-redux";
 import { login } from "../Store/authSlice";
 import vct from "../assets/vector.png";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -14,6 +17,10 @@ function Login() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [err, setErr] = useState("");
+
+  const success = () => {
+    toast.success("Login Successful");
+  };
 
   const handleInput = async (e) => {
     e.preventDefault();
@@ -32,10 +39,12 @@ function Login() {
           },
         );
         if (response.status === 201) {
+          success();
           localStorage.setItem("jwtToken", response.data.token);
           localStorage.setItem("isAdmin", response.data.isAdmin);
           localStorage.setItem("username", name);
           dispatch(login());
+
           navigate("/");
         }
         if (response.status === 404) {
@@ -103,6 +112,7 @@ function Login() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }

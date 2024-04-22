@@ -94,7 +94,9 @@ function CodeEditor() {
             <h1 className="text-white font-bold text-2xl">Output:</h1>
             {err && <div className="text-red-500">{err}</div>}
             {compileResult && (
-              <div className="text-green-400">
+              <div
+                className={`{compileResult.passedPercentage===100}?text-green-400 : text-red-500`}
+              >
                 <div>
                   <pre>
                     <h3>
