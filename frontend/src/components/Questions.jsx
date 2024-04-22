@@ -96,7 +96,7 @@ function Questions() {
     }
   };
   return (
-    <div className="bg-sky-100 h-[100vh]">
+    <div>
       <div
         className="grid grid-cols-2 items-start px-2 py-3"
         style={{ gridTemplateColumns: "1fr 0.3fr" }}

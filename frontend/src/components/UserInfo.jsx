@@ -47,19 +47,31 @@ function UserInfo() {
   return (
     <>
       {userData && (
-        <div>
-          <h2>{userData.username}</h2>
-          <h2>{userData.email}</h2>
-          <h2>
-            {userData.isAdmin
-              ? `${userData.username} is an admin`
-              : `${userData.username} is not an admin`}
-          </h2>
-          {!userData.isAdmin ? (
-            <button onClick={handleMake}>Make Admin</button>
-          ) : (
-            <button onClick={handleRemove}>Remove as Admin</button>
-          )}
+        <div className="flex flex-wrap justify-center items-center flex-col px-10 py-3">
+          <div className=" bg-sky-400 px-32 py-20 rounded-xl text-center text-2xl">
+            <h2>{userData.username}</h2>
+            <h2>{userData.email}</h2>
+            <h2>
+              {userData.isAdmin
+                ? `${userData.username} is an admin`
+                : `${userData.username} is not an admin`}
+            </h2>
+            {!userData.isAdmin ? (
+              <button
+                onClick={handleMake}
+                className="bg-blue-800 text-white px-4 py-2 rounded-2xl hover:bg-cyan-300 hover:text-black transition-all mt-4 text-xl"
+              >
+                Make Admin
+              </button>
+            ) : (
+              <button
+                onClick={handleRemove}
+                className="bg-blue-800 text-white px-4 py-2 rounded-2xl hover:bg-cyan-300 hover:text-black transition-all mt-4 text-xl"
+              >
+                Remove as Admin
+              </button>
+            )}
+          </div>
         </div>
       )}
     </>

@@ -45,7 +45,7 @@ function AddQuery() {
   };
   return (
     <>
-      <div className="bg-sky-100 min-h-screen flex flex-wrap justify-center items-center">
+      <div className="flex flex-wrap justify-center items-center">
         <div className="flex flex-wrap justify-center items-center h-auto mt-1 flex-col">
           <div className="border-2 flex flex-wrap justify-center items-center flex-col h-auto w-auto px-10 py-5 gap-3 bg-indigo-900 text-white rounded-3xl">
             <div className="flex flex-col justify-center items-start text-2xl w-full">

@@ -44,21 +44,30 @@ function DisplayQuestions() {
           ques.map((q) => (
             <div
               key={q._id}
-              className="border-2 border-black flex flex-wrap flex-row items-center justify-between p-4"
+              className="flex flex-wrap flex-row justify-between items-center px-10 py-4 rounded-2xl bg-cyan-600"
             >
-              <div>
-                <div>Contributed by: {q.contributedBy}</div>
-                <div>Question Name: {q.quesName}</div>
-                <div>Question Description: {q.description}</div>
+              <div className="px-3 py-1 text-2xl">
+                <h1 className="font-bold font-serif">
+                  Contributed by:{" "}
+                  <span className="font-thin font-mono">{q.contributedBy}</span>
+                </h1>
+                <h1 className="font-bold font-serif">
+                  Question Name:{" "}
+                  <span className="font-thin font-mono">{q.quesName}</span>
+                </h1>
+                <h1 className="font-bold font-serif">
+                  Question Description:{" "}
+                  <span className="font-thin font-mono">{q.description}</span>
+                </h1>
               </div>
               <div className="flex flex-col justify-center items-center gap-2">
                 <LinkBtn
-                  className="border-2 bg-green-500 px-2 py-1"
+                  className="border-2 bg-lime-500 px-5 py-2 hover:bg-green-700 hover:text-white transition-all rounded-xl hover:shadow-2xl hover:shadow-black shadow-xl"
                   to={`/${params.username}/${q._id}/accept`}
                   text="Accept"
                 />
                 <LinkBtn
-                  className="border-2 bg-red-700 px-2 py-1"
+                  className="border-2 bg-red-600 px-5 py-2 hover:bg-red-800 hover:text-white transition-all rounded-xl hover:shadow-2xl hover:shadow-black shadow-xl"
                   to={`/${params.username}/${q._id}/reject`}
                   text="Reject"
                 />

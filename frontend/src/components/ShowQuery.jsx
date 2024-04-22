@@ -37,6 +37,7 @@ function ShowQuery() {
       const username = localStorage.getItem("username");
       const data = await axios.put(`/api/${queryId}/resolve`);
       setUserData(data);
+      alert("Query Resolved");
       navigate(`/${username}/admin/displayQueries`);
     } catch (error) {
       console.log(error);
@@ -45,15 +46,24 @@ function ShowQuery() {
   };
   return (
     <>
-      {userData && (
-        <div>
-          <h2>USERNAME: {userData.username}</h2>
-          <h2>EMAIL: {userData.email}</h2>
-          <h2>QUERY: {userData.query}</h2>
-          <button onClick={handleResolve}>Resolve</button>
-        </div>
-      )}
-      {err && err.message}
+      <div className="flex flex-wrap justify-center items-center flex-row min-h-screen bg-blue-100">
+        {userData && (
+          <div className="min-h-screen flex flex-wrap justify-center items-center flex-col">
+            <div className="flex flex-col flex-wrap gap-5 justify-center items-center px-16 py-5 h-auto max-w-3/6 bg-cyan-400 rounded-2xl">
+              <h2>USERNAME: {userData.username}</h2>
+              <h2>EMAIL: {userData.email}</h2>
+              <h2>QUERY: {userData.query}</h2>
+            </div>
+            <button
+              onClick={handleResolve}
+              className="mt-5 px-5 py-3 bg-blue-900 text-lime-300 hover:shadow-black hover:shadow-2xl transition-all hover:bg-cyan-600 hover:text-black "
+            >
+              Resolve
+            </button>
+          </div>
+        )}
+        {err && err.message}{" "}
+      </div>
     </>
   );
 }

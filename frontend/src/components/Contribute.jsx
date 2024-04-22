@@ -46,7 +46,7 @@ function Contribute() {
 
   return (
     <>
-      <div className="flex flex-wrap min-h-screen flex-col bg-sky-100">
+      <div className="flex flex-wrap flex-col">
         <h1 className="text-center text-3xl">
           Contribute to the Coding Community
         </h1>

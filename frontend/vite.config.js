@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://lc-back.onrender.com/",
+        target: "http://localhost:3000",
         changeOrigin: true,
       },
     },

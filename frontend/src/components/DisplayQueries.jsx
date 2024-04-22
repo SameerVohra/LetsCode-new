@@ -38,21 +38,33 @@ function DisplayQueries() {
 
   return (
     <>
-      {queries.length > 0
-        ? queries.map((q, index) => (
-            <div key={index}>
-              {q.query} <span>by</span>{" "}
-              <span className="font-bold">
-                {q.username} query id {q._id}
-              </span>
+      <div className=" px-10 py-5 flex flex-col justify-start items-center gap-10 min-h-screen bg-sky-100 text-xl ">
+        {queries.length > 0 ? (
+          queries.map((q, index) => (
+            <div
+              key={index}
+              className="bg-cyan-400 flex px-10 py-3 w-3/6 justify-center items-center flex-col h-auto gap-4 rounded-xl shadow-black shadow-2xl"
+            >
+              <div className="font-bold">
+                Query: <span className="font-mono font-thin">{q.query}</span>
+              </div>
+              <div className="font-bold">
+                Username:{" "}
+                <span className="text-gray-600 font-semibold">
+                  {q.username}
+                </span>
+              </div>
               <LinkBtn
                 to={`/${q._id}/show-query`}
                 text="Resolve"
-                className="text-black"
+                className="text-xl px-5 py-2 bg-blue-900 text-lime-300 hover:bg-blue-800 hover:text-white transition-all hover:shadow-black hover:shadow-2xl"
               />
             </div>
           ))
-        : "no queries"}
+        ) : (
+          <h1>No Queries</h1>
+        )}
+      </div>
     </>
   );
 }

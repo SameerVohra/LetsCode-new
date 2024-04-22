@@ -53,7 +53,7 @@ function CodeEditor() {
   };
 
   return (
-    <div className="bg-sky-100 px-5 py-3 min-h-screen">
+    <div className="px-5 py-3">
       <div className="grid grid-cols-2 mt-5 gap-4">
         <div
           className="grid grid-rows-3"
@@ -117,7 +117,7 @@ function CodeEditor() {
             language="cpp"
             onChange={setCode}
             value={code}
-            defaultValue={`#include<iostream>\nusing namespace std;\n\nint main(){\n\t\n}`}
+            defaultValue={`#include<iostream>\nusing namespace std;\n\nint main(){\n\t\n\treturn 0;\n}`}
           />
         </div>
       </div>

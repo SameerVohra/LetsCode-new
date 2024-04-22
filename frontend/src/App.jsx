@@ -17,7 +17,7 @@ function App() {
 
   return (
     <>
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-sky-100">
         <Header isAdmin={localStorage.getItem("isAdmin")} />
         <Outlet />
       </div>

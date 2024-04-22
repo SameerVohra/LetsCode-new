@@ -8,7 +8,7 @@ function Home() {
   const username = localStorage.getItem("username");
   const navigate = useNavigate();
   return (
-    <div className="flex flex-wrap justify-around items-center min-h-screen bg-blue-100">
+    <div className="flex flex-wrap justify-center items-center p-5 mt-10">
       <div className="grid grid-cols-2">
         <div>
           <img src={logo} height={700} />
