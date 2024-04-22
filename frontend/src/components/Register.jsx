@@ -5,9 +5,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import LinkBtn from "./Header/LinkBtn";
 import vct from "../assets/vector.png";
-import { toast } from "react-toastify";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 function Register() {
   const navigate = useNavigate();
@@ -33,10 +30,6 @@ function Register() {
           },
         );
         if (response.status == 201) {
-          toast.success("Login to continue", {
-            position: toast.POSITION.BOTTOM_LEFT,
-            autoClose: 10000,
-          });
           navigate("/login");
         }
         if (response.status == 400) {
@@ -97,7 +90,6 @@ function Register() {
           <img src={vct} />
         </div>
       </div>
-      <ToastContainer />
     </>
   );
 }
