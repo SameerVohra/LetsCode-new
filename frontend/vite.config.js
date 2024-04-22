@@ -8,7 +8,8 @@ export default defineConfig({
       "/api": {
         target: "https://letscode-new-backend.onrender.com",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        secure: false,
+        ws: true,
       },
     },
   },
