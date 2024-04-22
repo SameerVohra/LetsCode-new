@@ -41,7 +41,7 @@ function AddQues() {
     const token = localStorage.getItem("jwtToken");
     const username = params.username;
     await axios.post(
-      `/api/${username}/addQues`,
+      `https://letscode-new-backend.onrender.com/${username}/addQues`,
       {
         quesName: quesName,
         difficulty: quesDiff,

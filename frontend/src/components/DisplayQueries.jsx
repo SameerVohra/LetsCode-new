@@ -18,11 +18,14 @@ function DisplayQueries() {
           setErr("Not Authorized for this action");
           return;
         } else {
-          const data = await axios.get(`/api/${username}/display-queries`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
+          const data = await axios.get(
+            `https://letscode-new-backend.onrender.com/${username}/display-queries`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
-          });
+          );
           console.log(data.data.queries);
           const queryArr = data.data.queries;
           queryArr.filter((q) => q.isResolved !== true);

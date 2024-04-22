@@ -25,7 +25,7 @@ function Contribute() {
         return;
       } else {
         const question = await axios.post(
-          `/api/${params.username}/contribute`,
+          `https://letscode-new-backend.onrender.com/${params.username}/contribute`,
           {
             quesName: quesName,
             description: quesDesc,

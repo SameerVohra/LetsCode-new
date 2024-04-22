@@ -10,9 +10,12 @@ function Admin() {
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     const userAdmin = async () => {
-      const response = await axios.get(`/api/${username}/userInfo`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `https://letscode-new-backend.onrender.com/${username}/userInfo`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       console.log(response.data);
       setUserData(response.data);
     };

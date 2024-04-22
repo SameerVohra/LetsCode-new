@@ -24,9 +24,12 @@ function AcceptQuestion() {
           return;
         } else {
           const qid = params.qId;
-          const data = await axios.get(`/api/${qid}/approve-question`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          const data = await axios.get(
+            `https://letscode-new-backend.onrender.com/${qid}/approve-question`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            },
+          );
           console.log(data.data.ques);
           setQuesData(data.data.ques);
           setQuesName(data.data.ques.quesName);

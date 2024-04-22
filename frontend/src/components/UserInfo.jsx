@@ -12,9 +12,12 @@ function UserInfo() {
       const token = localStorage.getItem("jwtToken");
       try {
         if (!token) return setErr("Login to perform this action");
-        const user = await axios.get(`/api/${username}/userInfo`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const user = await axios.get(
+          `https://letscode-new-backend.onrender.com/${username}/userInfo`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
         console.log(user.data);
         setUserData(user.data);
       } catch (error) {
@@ -28,7 +31,9 @@ function UserInfo() {
   const handleMake = async () => {
     try {
       console.log(username);
-      await axios.put(`/api/${username}/make-admin`);
+      await axios.put(
+        `https://letscode-new-backend.onrender.com/${username}/make-admin`,
+      );
       setUserData((prev) => ({ ...prev, isAdmin: true }));
     } catch (error) {
       setErr(error.message);
@@ -37,7 +42,9 @@ function UserInfo() {
 
   const handleRemove = async () => {
     try {
-      await axios.put(`/api/${username}/remove-admin`);
+      await axios.put(
+        `https://letscode-new-backend.onrender.com/${username}/remove-admin`,
+      );
       setUserData((prev) => ({ ...prev, isAdmin: false }));
     } catch (error) {
       setErr(error.message);

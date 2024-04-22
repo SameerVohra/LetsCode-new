@@ -23,11 +23,14 @@ function Login() {
         return;
       } else {
         setErr("");
-        const response = await axios.post("/api/login", {
-          username: name,
-          email: email,
-          password: pass,
-        });
+        const response = await axios.post(
+          "https://letscode-new-backend.onrender.com/login",
+          {
+            username: name,
+            email: email,
+            password: pass,
+          },
+        );
         if (response.status === 201) {
           localStorage.setItem("jwtToken", response.data.token);
           localStorage.setItem("isAdmin", response.data.isAdmin);

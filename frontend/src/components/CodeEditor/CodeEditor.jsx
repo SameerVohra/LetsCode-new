@@ -26,7 +26,9 @@ function CodeEditor() {
     console.log(qId);
     const quesInfo = async () => {
       try {
-        const data = await axios.get(`/api/${qId}/ques-details`);
+        const data = await axios.get(
+          `https://letscode-new-backend.onrender.com/${qId}/ques-details`,
+        );
         console.log(data);
         setQuesInfo(data.data);
       } catch (error) {
@@ -37,9 +39,12 @@ function CodeEditor() {
   }, [qId]);
   const handleCompile = async () => {
     try {
-      const response = await axios.post(`/api/${qId}/compile-cpp`, {
-        code: code,
-      });
+      const response = await axios.post(
+        `https://letscode-new-backend.onrender.com/${qId}/compile-cpp`,
+        {
+          code: code,
+        },
+      );
       if (response.data.totalCount === response.data.passedCount)
         await solved();
       console.log(response);

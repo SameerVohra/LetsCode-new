@@ -17,10 +17,13 @@ function RejectQuestion() {
     try {
       if (!token) return setErr("Login");
 
-      const reject = await axios.delete(`/api/${qId}/reject`, {
-        data: { msg: reason },
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const reject = await axios.delete(
+        `https://letscode-new-backend.onrender.com/${qId}/reject`,
+        {
+          data: { msg: reason },
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
 
       if (reject.status === 201) {
         navigate(`/${username}/admin/displayQuestions`);

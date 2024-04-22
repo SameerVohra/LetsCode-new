@@ -35,7 +35,9 @@ function ShowQuery() {
   const handleResolve = async () => {
     try {
       const username = localStorage.getItem("username");
-      const data = await axios.put(`/api/${queryId}/resolve`);
+      const data = await axios.put(
+        `https://letscode-new-backend.onrender.com/${queryId}/resolve`,
+      );
       setUserData(data);
       alert("Query Resolved");
       navigate(`/${username}/admin/displayQueries`);

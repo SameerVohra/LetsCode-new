@@ -17,7 +17,7 @@ function DisplayQuestions() {
         } else {
           const { username } = params;
           const response = await axios.get(
-            `/api/${username}/display-contributed`,
+            `https://letscode-new-backend.onrender.com/${username}/display-contributed`,
             {
               headers: { Authorization: `Bearer ${token}` },
             },

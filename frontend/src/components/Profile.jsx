@@ -13,9 +13,12 @@ function Profile() {
     const fetchUserData = async () => {
       try {
         if (!token) return setErr("Login to see your data");
-        const response = await axios.get(`/api/${username}/userInfo`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(
+          `https://letscode-new-backend.onrender.com/${username}/userInfo`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
         setData(response.data);
       } catch (error) {
         setErr(error.message);
