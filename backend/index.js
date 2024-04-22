@@ -63,11 +63,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.get("/api/", (req, res) => {
-  console.log("hello called");
-  res.send({ message: "hello" });
-});
-
 app.post("/api/register", async (req, res) => {
   console.log("/register called");
   const { username, password, email, isAdmin } = req.body;
