@@ -11,8 +11,7 @@ const questions = require("./models/questions");
 const port = process.env.PORT || 3000;
 const app = express();
 require("dotenv").config();
-const db_URI =
-  "mongodb+srv://sameervohra943:vzoQ6EsuNLPRk207@cluster0.dpuumzd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const db_URI = process.env.DB_URI;
 const { ObjectId } = require("mongodb");
 const nodemailer = require("nodemailer");
 const tmp = require("tmp-promise");

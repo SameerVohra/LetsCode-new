@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://lets-code-new-back.vercel.app",
+        target: "http://localhost:3000",
         changeOrigin: true,
       },
     },
