@@ -58,7 +58,7 @@ function Header({ isAdmin }) {
               )}
 
               {isDropdownOpen === true && (
-                <div className="absolute top-full left-0 bg-blue-900 border border-gray-300 py-4 px-8 shadow-md rounded w-fit ">
+                <div className="absolute top-full left-0 bg-blue-900 border border-gray-300 py-4 px-4 shadow-md rounded w-fit ">
                   {isAdmin === "true" && (
                     <LinkBtn
                       text="Admin"

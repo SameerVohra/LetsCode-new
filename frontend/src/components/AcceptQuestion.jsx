@@ -84,7 +84,7 @@ function AcceptQuestion() {
         return;
       } else {
         const approve = await axios.post(
-          `/api/${username}/addQues`,
+          `https://letscode-new-backend.onrender.com/${username}/addQues`,
           {
             quesName: quesName,
             difficulty: quesDiff,
@@ -97,9 +97,12 @@ function AcceptQuestion() {
           },
         );
 
-        const quesDel = await axios.put(`/api/${qId}/added`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const quesDel = await axios.put(
+          `https://letscode-new-backend.onrender.com/${qId}/added`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
 
         console.log(approve);
         alert("Question Added successfully");

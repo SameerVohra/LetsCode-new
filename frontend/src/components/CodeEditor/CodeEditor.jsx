@@ -15,7 +15,9 @@ function CodeEditor() {
     const token = localStorage.getItem("jwtToken");
     try {
       if (!token) return setErr("Login to perform this action");
-      const data = await axios.put(`/api/${qId}/${username}/solved`);
+      const data = await axios.put(
+        `https://letscode-new-backend.onrender.com/${qId}/${username}/solved`,
+      );
       console.log(data);
     } catch (error) {
       setErr(error.message);

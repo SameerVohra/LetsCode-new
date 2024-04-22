@@ -19,9 +19,12 @@ function ShowQuery() {
           return;
         }
         console.log(token);
-        const queryData = await axios.get(`/api/${queryId}/show-query`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const queryData = await axios.get(
+          `https://letscode-new-backend.onrender.com/${queryId}/show-query`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
         console.log(queryData.data);
         setUserData(queryData.data);
       } catch (error) {

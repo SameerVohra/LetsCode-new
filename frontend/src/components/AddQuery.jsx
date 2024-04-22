@@ -24,7 +24,7 @@ function AddQuery() {
         }
         setErr("");
         const queries = await axios.post(
-          `https://letscode-new-backend.onrender.com/api/${params.username}/query`,
+          `https://letscode-new-backend.onrender.com/${params.username}/query`,
           {
             email,
             query,

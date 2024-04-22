@@ -63,7 +63,7 @@ function DisplayUsers() {
           ? user.map((u, ind) => (
               <div
                 key={ind}
-                className="bg-sky-300 px-10 rounded-xl flex flex-col justify-center items-center py-8 gap-2 w-10"
+                className="bg-sky-300 px-10 rounded-xl flex flex-col justify-center items-center py-8 gap-2 w-[20%]"
               >
                 <h3>{u.username}</h3>
                 <h3>{u.email}</h3>
