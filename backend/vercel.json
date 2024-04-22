@@ -1,20 +1,7 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "build/index.html", "use": "@vercel/static-builder" },
-    { "src": "/api/(.*)", "use": "@vercel/server" }
-  ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/build/index.html"
-    }
+    { "handle": "filesystem" },
+    { "src": "/api/(.*)", "dest": "/index.js" }
   ]
 }
