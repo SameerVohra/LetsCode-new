@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://letscode-new-backend.onrender.com",
+        target: "https://lc-back.onrender.com/",
         changeOrigin: true,
       },
     },
