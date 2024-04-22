@@ -17,7 +17,8 @@ const nodemailer = require("nodemailer");
 const tmp = require("tmp-promise");
 const fs = require("fs");
 const { exec, spawn } = require("child_process");
-
+const cors = require("cors");
+app.use(cors());
 app.use(bodyParser.json());
 const email = "sameervohra2004@gmail.com";
 
@@ -62,13 +63,13 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.post("/api/hello", (req, res) => {
+app.post("/hello", (req, res) => {
   res.send({
     message: "hello",
   });
 });
 
-app.post("/api/register", async (req, res) => {
+app.post("/register", async (req, res) => {
   console.log("/register called");
   const { username, password, email, isAdmin } = req.body;
   try {
@@ -98,7 +99,7 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
-app.post("/api/login", async (req, res) => {
+app.post("/login", async (req, res) => {
   const { username, password, email } = req.body;
   try {
     const findUser = await User.findOne({ username });
@@ -127,7 +128,7 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-app.post("/api/:username/addQues", verifytoken, async (req, res) => {
+app.post("/:username/addQues", verifytoken, async (req, res) => {
   const { quesName, difficulty, description, constraints, testcases } =
     req.body;
   const { username } = req.params;
@@ -153,7 +154,7 @@ app.post("/api/:username/addQues", verifytoken, async (req, res) => {
   }
 });
 
-app.post("/api/:username/contribute", verifytoken, async (req, res) => {
+app.post("/:username/contribute", verifytoken, async (req, res) => {
   const { username } = req.params;
   const { quesName, description, isApproved } = req.body;
   try {
@@ -182,7 +183,7 @@ app.post("/api/:username/contribute", verifytoken, async (req, res) => {
   }
 });
 
-app.post("/api/:username/query", verifytoken, async (req, res) => {
+app.post("/:username/query", verifytoken, async (req, res) => {
   const { username } = req.params;
   const { email, query } = req.body;
 
@@ -210,7 +211,7 @@ app.post("/api/:username/query", verifytoken, async (req, res) => {
   }
 });
 
-app.get("/api/:username/display-queries", verifytoken, async (req, res) => {
+app.get("/:username/display-queries", verifytoken, async (req, res) => {
   const { username } = req.params;
   try {
     const user = await User.findOne({ username });
@@ -231,7 +232,7 @@ app.get("/api/:username/display-queries", verifytoken, async (req, res) => {
   }
 });
 
-app.get("/api/display-ques", verifytoken, async (req, res) => {
+app.get("/display-ques", verifytoken, async (req, res) => {
   try {
     const ques = await questions.find({});
     res.status(201).json(ques);
@@ -240,7 +241,7 @@ app.get("/api/display-ques", verifytoken, async (req, res) => {
   }
 });
 
-app.get("/api/:queryId/show-query", verifytoken, async (req, res) => {
+app.get("/:queryId/show-query", verifytoken, async (req, res) => {
   const { qId } = req.params;
   try {
     const user = await Query.findOne(qId);
@@ -251,7 +252,7 @@ app.get("/api/:queryId/show-query", verifytoken, async (req, res) => {
   }
 });
 
-app.put("/api/:queryId/resolve", async (req, res) => {
+app.put("/:queryId/resolve", async (req, res) => {
   const { queryId } = req.params;
   try {
     const query = await Query.findOneAndUpdate(
@@ -289,7 +290,7 @@ app.put("/api/:queryId/resolve", async (req, res) => {
   }
 });
 
-app.put("/api/:qId/added", async (req, res) => {
+app.put("/:qId/added", async (req, res) => {
   const { qId } = req.params;
   try {
     const findUname = await userQuestion.findOne({ _id: qId });
@@ -320,7 +321,7 @@ app.put("/api/:qId/added", async (req, res) => {
   }
 });
 
-app.get("/api/:username/display-contributed", verifytoken, async (req, res) => {
+app.get("/:username/display-contributed", verifytoken, async (req, res) => {
   try {
     const ques = await userQuestion.find();
     res.status(200).send(ques);
@@ -329,7 +330,7 @@ app.get("/api/:username/display-contributed", verifytoken, async (req, res) => {
   }
 });
 
-app.get("/api/:qid/approve-question", verifytoken, async (req, res) => {
+app.get("/:qid/approve-question", verifytoken, async (req, res) => {
   const { qid } = req.params;
   try {
     const id = new ObjectId(qid);
@@ -342,7 +343,7 @@ app.get("/api/:qid/approve-question", verifytoken, async (req, res) => {
   }
 });
 
-app.delete("/api/:qId/reject", verifytoken, async (req, res) => {
+app.delete("/:qId/reject", verifytoken, async (req, res) => {
   const { qId } = req.params;
   const { msg } = req.body;
 
@@ -368,7 +369,7 @@ question base because ${msg}`,
   }
 });
 
-app.get("/api/display-users", verifytoken, async (req, res) => {
+app.get("/display-users", verifytoken, async (req, res) => {
   try {
     const user = await User.find();
     res.status(200).send(user);
@@ -378,7 +379,7 @@ app.get("/api/display-users", verifytoken, async (req, res) => {
   }
 });
 
-app.get("/api/:username/userInfo", verifytoken, async (req, res) => {
+app.get("/:username/userInfo", verifytoken, async (req, res) => {
   const { username } = req.params;
   try {
     const userInfo = await User.findOne({ username });
@@ -388,7 +389,7 @@ app.get("/api/:username/userInfo", verifytoken, async (req, res) => {
   }
 });
 
-app.put("/api/:username/make-admin", async (req, res) => {
+app.put("/:username/make-admin", async (req, res) => {
   const { username } = req.params;
   try {
     const user = await User.findOneAndUpdate(
@@ -403,7 +404,7 @@ app.put("/api/:username/make-admin", async (req, res) => {
   }
 });
 
-app.put("/api/:username/remove-admin", async (req, res) => {
+app.put("/:username/remove-admin", async (req, res) => {
   const { username } = req.params;
   try {
     const user = await User.findOneAndUpdate(
@@ -417,13 +418,13 @@ app.put("/api/:username/remove-admin", async (req, res) => {
   }
 });
 
-app.get("/api/:qId/ques-details", async (req, res) => {
+app.get("/:qId/ques-details", async (req, res) => {
   const { qId } = req.params;
   const ques = await Ques.findOne({ _id: qId });
   return res.status(200).send(ques);
 });
 
-app.post("/api/:qId/compile-cpp", async (req, res) => {
+app.post("/:qId/compile-cpp", async (req, res) => {
   const { code } = req.body;
   const { qId } = req.params;
 
@@ -488,7 +489,7 @@ app.post("/api/:qId/compile-cpp", async (req, res) => {
   }
 });
 
-app.put("/api/:qId/:username/solved", async (req, res) => {
+app.put("/:qId/:username/solved", async (req, res) => {
   const { qId, username } = req.params;
   try {
     const ques = await Ques.findOne({ _id: qId });
@@ -516,7 +517,7 @@ app.put("/api/:qId/:username/solved", async (req, res) => {
   }
 });
 
-app.post("/api/forgot-pass", verifytoken, async (req, res) => {
+app.post("/forgot-pass", verifytoken, async (req, res) => {
   const { email } = req.body;
   const { newPass } = req.body;
   try {
@@ -548,7 +549,7 @@ app.post("/api/forgot-pass", verifytoken, async (req, res) => {
   }
 });
 
-app.all("/api/*", (req, res) => {
+app.all("/*", (req, res) => {
   res.status(404).send("Page Not Found");
 });
 
