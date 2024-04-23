@@ -95,7 +95,7 @@ function CodeEditor() {
             {err && <div className="text-red-500">{err}</div>}
             {compileResult && (
               <div
-                className={`{compileResult.passedPercentage===100}?text-green-400 : text-red-500 text-xl mt-10`}
+                className={`text-xl mt-10 {compileResult.passedPercentage===100}?text-green-400 : text-red-500 `}
               >
                 <div>
                   <pre>
