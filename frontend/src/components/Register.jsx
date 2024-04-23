@@ -24,9 +24,7 @@ function Register() {
         setErr("Invalid email format");
         return;
       } else if (!passRegex.test(pass)) {
-        setErr(
-          "Password must contain at least one lowercase letter, one uppercase letter, one digit, and be at least 8 characters long",
-        );
+        setErr("Password Not Valid");
         return;
       } else {
         setErr("");
