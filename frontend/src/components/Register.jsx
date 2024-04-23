@@ -12,12 +12,21 @@ function Register() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [err, setErr] = useState("");
-
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
   const handleInput = async (e) => {
     e.preventDefault();
     try {
       if (!email || !name || !pass) {
         setErr("Every field is required!!");
+        return;
+      } else if (!emailRegex.test(email)) {
+        setErr("Invalid email format");
+        return;
+      } else if (!passRegex.test(pass)) {
+        setErr(
+          "Password must contain at least one lowercase letter, one uppercase letter, one digit, and be at least 8 characters long",
+        );
         return;
       } else {
         setErr("");
@@ -29,25 +38,33 @@ function Register() {
             password: pass,
           },
         );
+        console.log(response.status);
         if (response.status == 201) {
           navigate("/login");
         }
-        if (response.status == 400) {
+        if (response.status == 403) {
           setErr("User Already Exists");
+          return;
+        }
+        if (response.status == 403) {
+          setErr("Password Length should be atleast 8");
           return;
         }
       }
     } catch (error) {
       console.log(`Error: ${error}`);
+      setErr(error.message);
     }
   };
   return (
     <>
       <div className="bg-blue-500 grid grid-cols-2">
         <div className="flex justify-center items-center h-screen text-xl">
-          <div className="bg-sky-500 text-black shadow-2xl shadow-black h-auto w-auto px-20 py-10 flex flex-col gap-3 rounded-2xl">
+          <div className="bg-sky-500 text-black shadow-2xl shadow-black h-auto w-fit px-20 py-10 flex flex-col gap-3 rounded-2xl">
             {err && (
-              <div className="text-red-900 text-center text-2xl">{err}</div>
+              <div className="text-red-900 text-center text-sm w-full">
+                {err}
+              </div>
             )}
             <Input
               label="Username"

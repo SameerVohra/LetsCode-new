@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 import Input from "./Input";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import axios from "axios";
 
 function AddQuery() {
@@ -9,6 +9,8 @@ function AddQuery() {
   const [query, setQuery] = useState("");
   const [err, setErr] = useState("");
   const params = useParams();
+  const token = localStorage.getItem("jwtToken");
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -43,6 +45,9 @@ function AddQuery() {
       setErr("Internal Server Error");
     }
   };
+  useEffect(() => {
+    if (!token) navigate("/login");
+  }, [token, navigate]);
   return (
     <>
       <div className="flex flex-wrap justify-center items-center">

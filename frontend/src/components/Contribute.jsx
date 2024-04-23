@@ -1,15 +1,19 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Button from "./Button";
 import Input from "./Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 function Contribute() {
   const [quesName, setQuesName] = useState("");
   const [quesDesc, setQuesDesc] = useState("");
   const [err, setErr] = useState("");
-
+  const token = localStorage.getItem("jwtToken");
+  const navigate = useNavigate();
   const params = useParams();
+  useEffect(() => {
+    if (!token) navigate("/login");
+  }, [token, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

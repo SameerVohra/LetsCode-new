@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "../assets/logo.png";
 import Typewriter from "typewriter-effect";
 import { useNavigate } from "react-router";
@@ -6,7 +6,11 @@ import { useNavigate } from "react-router";
 function Home() {
   console.log(import.meta.env.VITE_LINK);
   const username = localStorage.getItem("username");
+  const token = localStorage.getItem("jwtToken");
   const navigate = useNavigate();
+  useEffect(() => {
+    if (!token) navigate("/login");
+  }, [token, navigate]);
   return (
     <div className="flex flex-wrap justify-center items-center p-5 mt-10">
       <div className="grid grid-cols-2">

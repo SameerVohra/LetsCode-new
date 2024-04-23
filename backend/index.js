@@ -20,7 +20,7 @@ const { exec, spawn } = require("child_process");
 const cors = require("cors");
 app.use(cors());
 app.use(bodyParser.json());
-const email = "sameervohra2004@gmail.com";
+const email = process.env.EMAIL;
 
 mongoose
   .connect(db_URI)
@@ -59,7 +59,7 @@ const transporter = nodemailer.createTransport({
   secure: false,
   auth: {
     user: email,
-    pass: "axwx lrnm ejii mzoq",
+    pass: process.env.SMTP_PASS,
   },
 });
 
@@ -76,10 +76,12 @@ app.post("/register", async (req, res) => {
     const existingUser = await User.findOne({ username });
     const existingEmail = await User.findOne({ email });
     if (existingUser || existingEmail) {
-      return res.status(400).json({ message: "Username/Email already exists" });
+      return res.status(409).send("Username/Email already exists");
     }
     if (password.length < 8) {
-      return res.json({ message: "Password length should be atleast 8" });
+      return res
+        .status(403)
+        .json({ message: "Password length should be atleast 8" });
     } else {
       const hashedPassword = bcrypt.hashSync(password, 8);
       const newUser = new User({

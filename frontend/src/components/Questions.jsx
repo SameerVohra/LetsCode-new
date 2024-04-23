@@ -15,6 +15,10 @@ function Questions() {
   const [hard, setHard] = useState(0);
   const navigate = useNavigate();
   const username = localStorage.getItem("username");
+  const token = localStorage.getItem("jwtToken");
+  useEffect(() => {
+    if (!token) navigate("/login");
+  }, [token, navigate]);
   useEffect(() => {
     const data = async () => {
       const token = localStorage.getItem("jwtToken");
@@ -33,7 +37,7 @@ function Questions() {
       }
     };
     data();
-  }, [username]);
+  }, [username, userSolved]);
 
   useEffect(() => {
     const fetchData = async () => {

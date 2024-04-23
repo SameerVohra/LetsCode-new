@@ -22,11 +22,15 @@ function Login() {
     toast.success("Login Successful");
   };
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const handleInput = async (e) => {
     e.preventDefault();
     try {
       if (!email || !name || !pass) {
         setErr("Every field is required!!");
+        return;
+      } else if (!emailRegex.test(email)) {
+        setErr("Invalid email format");
         return;
       } else {
         setErr("");
