@@ -93,9 +93,10 @@ function CodeEditor() {
           <div className="bg-black flex flex-wrap items-center justify-start flex-col">
             <h1 className="text-white font-bold text-2xl">Output:</h1>
             {err && <div className="text-red-500">{err}</div>}
+
             {compileResult && (
               <div
-                className={`text-xl mt-10 {compileResult.passedPercentage===100}?text-green-400 : text-red-500 `}
+                className={`text-xl mt-10 ${compileResult.passedCount === compileResult.totalCount ? "text-green-400" : "text-red-500"}`}
               >
                 <div>
                   <pre>
