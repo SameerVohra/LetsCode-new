@@ -65,14 +65,13 @@ function Header({ isAdmin }) {
               )}
               {isDropdownOpen && (
                 <div className="absolute top-full left-0 bg-blue-900 border border-gray-300 py-4 px-4 shadow-md rounded w-fit sm:w-auto">
-                  {isAdmin ===
-                    "true"(
-                      <LinkBtn
-                        text="Admin"
-                        to={`${username}/admin`}
-                        className="block hover:text-white"
-                      />,
-                    )}
+                  {isAdmin === true && (
+                    <LinkBtn
+                      text="Admin"
+                      to={`${username}/admin`}
+                      className="block hover:text-white"
+                    />
+                  )}
                   <LinkBtn
                     text="Profile"
                     to={`/profile/${username}`}
