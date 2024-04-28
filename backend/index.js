@@ -76,7 +76,7 @@ app.post("/register", async (req, res) => {
     const existingUser = await User.findOne({ username });
     const existingEmail = await User.findOne({ email });
     if (existingUser || existingEmail) {
-      return res.status(409).send("Username/Email already exists");
+      return res.status(403).send("Username/Email already exists");
     }
     if (password.length < 8) {
       return res

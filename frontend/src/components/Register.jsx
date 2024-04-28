@@ -13,7 +13,8 @@ function Register() {
   const [pass, setPass] = useState("");
   const [err, setErr] = useState("");
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+  const passRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/;
   const handleInput = async (e) => {
     e.preventDefault();
     try {
@@ -51,7 +52,7 @@ function Register() {
       }
     } catch (error) {
       console.log(`Error: ${error}`);
-      setErr(error.message);
+      setErr("An error occured while registering the user");
     }
   };
   return (
