@@ -24,6 +24,7 @@ import CodeEditor from "./components/CodeEditor/CodeEditor.jsx";
 import { Provider } from "react-redux";
 import store from "./Store/store.js";
 import Profile from "./components/Profile.jsx";
+import Chat from "./components/CommunityChat/Chat.jsx";
 
 const router = createBrowserRouter([
   {
@@ -106,14 +107,18 @@ const router = createBrowserRouter([
         path: "/profile/:username", // Updated path (without starting slash)
         element: <Profile />,
       },
+      {
+        path: "/chat-room",
+        element: <Chat />,
+      },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <>
     <Provider store={store}>
       <RouterProvider router={router} />
     </Provider>
-  </React.StrictMode>,
+  </>,
 );

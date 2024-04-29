@@ -4,6 +4,7 @@ import Button from "./Button";
 import { useNavigate } from "react-router";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import link from "../assets/link.json";
 
 function Questions() {
   const [ques, setQues] = useState([]);
@@ -23,12 +24,9 @@ function Questions() {
     const data = async () => {
       const token = localStorage.getItem("jwtToken");
       try {
-        const userData = await axios.get(
-          `https://letscode-new-backend.onrender.com/${username}/userInfo`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const userData = await axios.get(`${link.url}/${username}/userInfo`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         console.log(userData.data);
         setUserSolved(userData.data.quesSolvedNum);
         console.log(userSolved);
@@ -47,12 +45,9 @@ function Questions() {
           setErr("Not authorized for this action");
           return;
         } else {
-          const ques = await axios.get(
-            "https://letscode-new-backend.onrender.com/display-ques",
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            },
-          );
+          const ques = await axios.get(`${link.url}/display-ques`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
           console.log(ques.data.length);
           setQues(ques.data);
           let e = 0;

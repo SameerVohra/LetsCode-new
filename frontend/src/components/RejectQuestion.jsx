@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import link from "../assets/link.json";
 
 function RejectQuestion() {
   const params = useParams();
@@ -17,13 +18,10 @@ function RejectQuestion() {
     try {
       if (!token) return setErr("Login");
 
-      const reject = await axios.delete(
-        `https://letscode-new-backend.onrender.com/${qId}/reject`,
-        {
-          data: { msg: reason },
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const reject = await axios.delete(`${link.url}/${qId}/reject`, {
+        data: { msg: reason },
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       if (reject.status === 201) {
         navigate(`/${username}/admin/displayQuestions`);

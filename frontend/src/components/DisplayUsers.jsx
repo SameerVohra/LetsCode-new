@@ -2,6 +2,7 @@ import axios from "axios";
 import Input from "./Input";
 import React, { useEffect, useState } from "react";
 import LinkBtn from "./Header/LinkBtn";
+import link from "../assets/link.json";
 
 function DisplayUsers() {
   const [user, setUser] = useState([]);
@@ -13,12 +14,9 @@ function DisplayUsers() {
     const users = async () => {
       const token = localStorage.getItem("jwtToken");
       try {
-        const user = await axios.get(
-          `https://letscode-new-backend.onrender.com/display-users`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const user = await axios.get(`${link.url}/display-users`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         console.log(user.data);
         setUser(user.data);

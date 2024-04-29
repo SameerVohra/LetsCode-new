@@ -3,6 +3,7 @@ import Button from "./Button";
 import Input from "./Input";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import link from "../assets/link.json";
 
 function Contribute() {
   const [quesName, setQuesName] = useState("");
@@ -29,7 +30,7 @@ function Contribute() {
         return;
       } else {
         const question = await axios.post(
-          `https://letscode-new-backend.onrender.com/${params.username}/contribute`,
+          `${link.url}/${params.username}/contribute`,
           {
             quesName: quesName,
             description: quesDesc,

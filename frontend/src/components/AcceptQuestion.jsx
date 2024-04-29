@@ -2,6 +2,7 @@ import axios from "axios";
 import Input from "./Input";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import link from "../assets/link.json";
 function AcceptQuestion() {
   const params = useParams();
 
@@ -24,12 +25,9 @@ function AcceptQuestion() {
           return;
         } else {
           const qid = params.qId;
-          const data = await axios.get(
-            `https://letscode-new-backend.onrender.com/${qid}/approve-question`,
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            },
-          );
+          const data = await axios.get(`${link.url}/${qid}/approve-question`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
           console.log(data.data.ques);
           setQuesData(data.data.ques);
           setQuesName(data.data.ques.quesName);
@@ -84,7 +82,7 @@ function AcceptQuestion() {
         return;
       } else {
         const approve = await axios.post(
-          `https://letscode-new-backend.onrender.com/${username}/addQues`,
+          `${link.url}/${username}/addQues`,
           {
             quesName: quesName,
             difficulty: quesDiff,
@@ -97,12 +95,9 @@ function AcceptQuestion() {
           },
         );
 
-        const quesDel = await axios.put(
-          `https://letscode-new-backend.onrender.com/${qId}/added`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const quesDel = await axios.put(`${link.url}/${qId}/added`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         console.log(approve);
         alert("Question Added successfully");

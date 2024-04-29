@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import LinkBtn from "./Header/LinkBtn";
+import link from "../assets/link.json";
 
 function DisplayQuestions() {
   const [err, setErr] = useState("");
@@ -17,7 +18,7 @@ function DisplayQuestions() {
         } else {
           const { username } = params;
           const response = await axios.get(
-            `https://letscode-new-backend.onrender.com/${username}/display-contributed`,
+            `${link.url}/${username}/display-contributed`,
             {
               headers: { Authorization: `Bearer ${token}` },
             },

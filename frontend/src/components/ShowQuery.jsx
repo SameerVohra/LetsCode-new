@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import link from "../assets/link.json";
 
 function ShowQuery() {
   const [userData, setUserData] = useState({});
@@ -19,12 +20,9 @@ function ShowQuery() {
           return;
         }
         console.log(token);
-        const queryData = await axios.get(
-          `https://letscode-new-backend.onrender.com/${queryId}/show-query`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const queryData = await axios.get(`${link.url}/${queryId}/show-query`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         console.log(queryData.data);
         setUserData(queryData.data);
       } catch (error) {
@@ -38,9 +36,7 @@ function ShowQuery() {
   const handleResolve = async () => {
     try {
       const username = localStorage.getItem("username");
-      const data = await axios.put(
-        `https://letscode-new-backend.onrender.com/${queryId}/resolve`,
-      );
+      const data = await axios.put(`${link.url}/${queryId}/resolve`);
       setUserData(data);
       alert("Query Resolved");
       navigate(`/${username}/admin/displayQueries`);

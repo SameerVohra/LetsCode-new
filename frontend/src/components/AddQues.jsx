@@ -2,6 +2,7 @@ import axios from "axios";
 import Input from "./Input";
 import { useState } from "react";
 import { useParams } from "react-router";
+import link from "../assets/link.json";
 
 function AddQues() {
   const [quesName, setQuesName] = useState("");
@@ -41,7 +42,7 @@ function AddQues() {
     const token = localStorage.getItem("jwtToken");
     const username = params.username;
     await axios.post(
-      `https://letscode-new-backend.onrender.com/${username}/addQues`,
+      `${link.url}/${username}/addQues`,
       {
         quesName: quesName,
         difficulty: quesDiff,

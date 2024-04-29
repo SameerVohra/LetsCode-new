@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import LinkBtn from "./Header/LinkBtn";
+import link from "../assets/link.json";
 
 function DisplayQueries() {
   const params = useParams();
@@ -19,7 +20,7 @@ function DisplayQueries() {
           return;
         } else {
           const data = await axios.get(
-            `https://letscode-new-backend.onrender.com/${username}/display-queries`,
+            `${link.url}/${username}/display-queries`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

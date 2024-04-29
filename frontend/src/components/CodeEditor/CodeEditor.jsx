@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
 import { useParams } from "react-router";
+import link from "../../assets/link.json";
 
 function CodeEditor() {
   const [code, setCode] = useState("");
@@ -15,9 +16,7 @@ function CodeEditor() {
     const token = localStorage.getItem("jwtToken");
     try {
       if (!token) return setErr("Login to perform this action");
-      const data = await axios.put(
-        `https://letscode-new-backend.onrender.com/${qId}/${username}/solved`,
-      );
+      const data = await axios.put(`${link.url}/${qId}/${username}/solved`);
       console.log(data);
     } catch (error) {
       setErr(error.message);
@@ -28,9 +27,7 @@ function CodeEditor() {
     console.log(qId);
     const quesInfo = async () => {
       try {
-        const data = await axios.get(
-          `https://letscode-new-backend.onrender.com/${qId}/ques-details`,
-        );
+        const data = await axios.get(`${link.url}/${qId}/ques-details`);
         console.log(data);
         setQuesInfo(data.data);
       } catch (error) {
@@ -41,12 +38,9 @@ function CodeEditor() {
   }, [qId]);
   const handleCompile = async () => {
     try {
-      const response = await axios.post(
-        `https://letscode-new-backend.onrender.com/${qId}/compile-cpp`,
-        {
-          code: code,
-        },
-      );
+      const response = await axios.post(`${link.url}/${qId}/compile-cpp`, {
+        code: code,
+      });
       if (response.data.totalCount === response.data.passedCount)
         await solved();
       console.log(response);

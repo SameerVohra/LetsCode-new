@@ -3,6 +3,7 @@ import Button from "./Button";
 import Input from "./Input";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
+import link from "../assets/link.json";
 
 function AddQuery() {
   const [email, setEmail] = useState("");
@@ -26,7 +27,7 @@ function AddQuery() {
         }
         setErr("");
         const queries = await axios.post(
-          `https://letscode-new-backend.onrender.com/${params.username}/query`,
+          `${link.url}/${params.username}/query`,
           {
             email,
             query,

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import LinkBtn from "./Header/LinkBtn";
+import link from "../assets/link.json";
 
 function Admin() {
   const navigate = useNavigate();
@@ -10,12 +11,9 @@ function Admin() {
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     const userAdmin = async () => {
-      const response = await axios.get(
-        `https://letscode-new-backend.onrender.com/${username}/userInfo`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const response = await axios.get(`${link.url}/${username}/userInfo`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       console.log(response.data);
       setUserData(response.data);
     };

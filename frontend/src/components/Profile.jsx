@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import link from "../assets/link.json";
 
 function Profile() {
   const [data, setData] = useState({});
@@ -13,12 +14,9 @@ function Profile() {
     const fetchUserData = async () => {
       try {
         if (!token) return setErr("Login to see your data");
-        const response = await axios.get(
-          `https://letscode-new-backend.onrender.com/${username}/userInfo`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const response = await axios.get(`${link.url}/${username}/userInfo`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setData(response.data);
       } catch (error) {
         setErr(error.message);

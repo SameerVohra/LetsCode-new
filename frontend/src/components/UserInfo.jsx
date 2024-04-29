@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import link from "../assets/link.json";
 
 function UserInfo() {
   const [userData, setUserData] = useState([]);
@@ -12,12 +13,9 @@ function UserInfo() {
       const token = localStorage.getItem("jwtToken");
       try {
         if (!token) return setErr("Login to perform this action");
-        const user = await axios.get(
-          `https://letscode-new-backend.onrender.com/${username}/userInfo`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const user = await axios.get(`${link.url}/${username}/userInfo`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         console.log(user.data);
         setUserData(user.data);
       } catch (error) {
@@ -31,9 +29,7 @@ function UserInfo() {
   const handleMake = async () => {
     try {
       console.log(username);
-      await axios.put(
-        `https://letscode-new-backend.onrender.com/${username}/make-admin`,
-      );
+      await axios.put(`${link.url}/${username}/make-admin`);
       setUserData((prev) => ({ ...prev, isAdmin: true }));
     } catch (error) {
       setErr(error.message);
@@ -42,9 +38,7 @@ function UserInfo() {
 
   const handleRemove = async () => {
     try {
-      await axios.put(
-        `https://letscode-new-backend.onrender.com/${username}/remove-admin`,
-      );
+      await axios.put(`${link.url}/${username}/remove-admin`);
       setUserData((prev) => ({ ...prev, isAdmin: false }));
     } catch (error) {
       setErr(error.message);

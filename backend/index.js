@@ -8,6 +8,7 @@ const Ques = require("./models/questions");
 const userQuestion = require("./models/contributedQues");
 const Query = require("./models/query");
 const questions = require("./models/questions");
+const userMsg = require("./models/messages");
 const port = process.env.PORT || 3000;
 const app = express();
 require("dotenv").config();
@@ -18,9 +19,20 @@ const tmp = require("tmp-promise");
 const fs = require("fs");
 const { exec, spawn } = require("child_process");
 const cors = require("cors");
+const { Server } = require("socket.io");
+const { createServer } = require("http");
+const newMsg = require("./models/messages");
 app.use(cors());
 app.use(bodyParser.json());
 const email = process.env.EMAIL;
+const server = createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST", "DELETE", "PUT"],
+  },
+});
 
 mongoose
   .connect(db_URI)
@@ -76,12 +88,10 @@ app.post("/register", async (req, res) => {
     const existingUser = await User.findOne({ username });
     const existingEmail = await User.findOne({ email });
     if (existingUser || existingEmail) {
-      return res.status(403).send("Username/Email already exists");
+      return res.status(400).json({ message: "Username/Email already exists" });
     }
     if (password.length < 8) {
-      return res
-        .status(403)
-        .json({ message: "Password length should be atleast 8" });
+      return res.json({ message: "Password length should be atleast 8" });
     } else {
       const hashedPassword = bcrypt.hashSync(password, 8);
       const newUser = new User({
@@ -551,10 +561,39 @@ app.post("/forgot-pass", verifytoken, async (req, res) => {
   }
 });
 
+app.post("/:username/chat-room", async (req, res) => {
+  const { username } = req.params;
+  const { message } = req.body;
+  io.emit("welcome", `${username} joined the chat`);
+  const newMessage = new newMsg({
+    username: username,
+    message: message,
+  });
+
+  await newMessage.save();
+
+  res.send("POST request received");
+});
+io.on("connection", (socket) => {
+  console.log(`${socket.id} connected`);
+  socket.on("join", (username) => {
+    io.emit("join-greet", `${username}, Joined the chat!!`);
+  });
+  socket.on("send-msg", ({ username, message }) => {
+    console.log(`${username}: ${message}`);
+    io.emit("rec-msg", { username, message });
+  });
+});
+
+app.get("/display-messages", async (req, res) => {
+  const mess = await newMsg.find();
+  res.json({ mess });
+});
+
 app.all("/*", (req, res) => {
   res.status(404).send("Page Not Found");
 });
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Listening to port ${port}`);
 });

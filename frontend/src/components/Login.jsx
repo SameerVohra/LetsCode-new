@@ -9,6 +9,7 @@ import { login } from "../Store/authSlice";
 import vct from "../assets/vector.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import link from "../assets/link.json";
 
 function Login() {
   const navigate = useNavigate();
@@ -34,14 +35,11 @@ function Login() {
         return;
       } else {
         setErr("");
-        const response = await axios.post(
-          "https://letscode-new-backend.onrender.com/login",
-          {
-            username: name,
-            email: email,
-            password: pass,
-          },
-        );
+        const response = await axios.post(`${link.url}/login`, {
+          username: name,
+          email: email,
+          password: pass,
+        });
         if (response.status === 201) {
           success();
           localStorage.setItem("jwtToken", response.data.token);

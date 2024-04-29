@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import LinkBtn from "./Header/LinkBtn";
 import vct from "../assets/vector.png";
+import link from "../assets/link.json";
 
 function Register() {
   const navigate = useNavigate();
@@ -29,14 +30,11 @@ function Register() {
         return;
       } else {
         setErr("");
-        const response = await axios.post(
-          "https://letscode-new-backend.onrender.com/register",
-          {
-            username: name,
-            email: email,
-            password: pass,
-          },
-        );
+        const response = await axios.post(`${link.url}/register`, {
+          username: name,
+          email: email,
+          password: pass,
+        });
         console.log(response.status);
         if (response.status == 201) {
           navigate("/login");

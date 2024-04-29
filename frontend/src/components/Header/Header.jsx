@@ -29,7 +29,7 @@ function Header({ isAdmin }) {
     <>
       <div className="bg-blue-900 w-full h-auto text-lime-300 flex justify-between items-center px-4 py-5">
         <h1 className="text-5xl font-mono">LetsCode</h1>
-        <div className="hidden lg:flex flex-wrap justify-between items-center gap-16">
+        <div className="hidden md:flex flex-wrap justify-between items-center gap-16">
           {/* Navigation links */}
           <LinkBtn to="/" text="Home" className="hover:text-white" />
           <LinkBtn
@@ -65,7 +65,7 @@ function Header({ isAdmin }) {
               )}
               {isDropdownOpen && (
                 <div className="absolute top-full left-0 bg-blue-900 border border-gray-300 py-4 px-4 shadow-md rounded w-fit sm:w-auto">
-                  {isAdmin === true && (
+                  {isAdmin === "true" && (
                     <LinkBtn
                       text="Admin"
                       to={`${username}/admin`}
