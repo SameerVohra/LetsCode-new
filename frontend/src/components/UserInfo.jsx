@@ -16,10 +16,8 @@ function UserInfo() {
         const user = await axios.get(`${link.url}/${username}/userInfo`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log(user.data);
         setUserData(user.data);
       } catch (error) {
-        console.log(error);
         setErr(error.message);
       }
     };
@@ -28,7 +26,6 @@ function UserInfo() {
 
   const handleMake = async () => {
     try {
-      console.log(username);
       await axios.put(`${link.url}/${username}/make-admin`);
       setUserData((prev) => ({ ...prev, isAdmin: true }));
     } catch (error) {

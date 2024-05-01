@@ -27,10 +27,8 @@ function DisplayQueries() {
               },
             },
           );
-          console.log(data.data.queries);
           const queryArr = data.data.queries;
           queryArr.filter((q) => q.isResolved !== true);
-          console.log(queryArr);
           setQueries(queryArr);
         }
       } catch (error) {

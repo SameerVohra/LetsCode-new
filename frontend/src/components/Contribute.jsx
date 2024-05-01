@@ -18,7 +18,6 @@ function Contribute() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(params.username);
     try {
       const token = localStorage.getItem("jwtToken");
       if (!token) {
@@ -39,7 +38,6 @@ function Contribute() {
             headers: { Authorization: `Bearer ${token}` },
           },
         );
-        console.log(question);
         setQuesName("");
         setQuesDesc("");
         alert("Thank you for your contribution");

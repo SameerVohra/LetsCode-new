@@ -19,11 +19,9 @@ function ShowQuery() {
           setErr("Login to see the queries");
           return;
         }
-        console.log(token);
         const queryData = await axios.get(`${link.url}/${queryId}/show-query`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log(queryData.data);
         setUserData(queryData.data);
       } catch (error) {
         setErr(error);
@@ -41,7 +39,6 @@ function ShowQuery() {
       alert("Query Resolved");
       navigate(`/${username}/admin/displayQueries`);
     } catch (error) {
-      console.log(error);
       setErr(error);
     }
   };

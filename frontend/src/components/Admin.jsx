@@ -14,7 +14,6 @@ function Admin() {
       const response = await axios.get(`${link.url}/${username}/userInfo`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response.data);
       setUserData(response.data);
     };
     userAdmin();

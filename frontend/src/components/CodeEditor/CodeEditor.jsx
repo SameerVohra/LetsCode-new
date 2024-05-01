@@ -17,18 +17,16 @@ function CodeEditor() {
     try {
       if (!token) return setErr("Login to perform this action");
       const data = await axios.put(`${link.url}/${qId}/${username}/solved`);
-      console.log(data);
     } catch (error) {
       setErr(error.message);
     }
   };
 
   useEffect(() => {
-    console.log(qId);
     const quesInfo = async () => {
       try {
         const data = await axios.get(`${link.url}/${qId}/ques-details`);
-        console.log(data);
+
         setQuesInfo(data.data);
       } catch (error) {
         setErr(error.message);
@@ -43,11 +41,9 @@ function CodeEditor() {
       });
       if (response.data.totalCount === response.data.passedCount)
         await solved();
-      console.log(response);
       setCompileResult(response.data);
       setErr("");
     } catch (error) {
-      console.error("Error compiling code:", error);
       setErr("Error compiling code");
       setCompileResult(null);
     }

@@ -59,7 +59,6 @@ function Login() {
         }
       }
     } catch (error) {
-      console.log(error);
       if (error.response.status === 404) setErr("User not found");
       if (error.response.status === 401) return setErr("Invalid Credentials");
     }

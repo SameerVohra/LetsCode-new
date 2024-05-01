@@ -23,7 +23,6 @@ function DisplayQuestions() {
               headers: { Authorization: `Bearer ${token}` },
             },
           );
-          console.log(response.data);
           const pendingQues = response.data.filter(
             (q) => q.isApproved !== true,
           );

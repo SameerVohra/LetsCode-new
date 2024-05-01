@@ -28,7 +28,6 @@ function AcceptQuestion() {
           const data = await axios.get(`${link.url}/${qid}/approve-question`, {
             headers: { Authorization: `Bearer ${token}` },
           });
-          console.log(data.data.ques);
           setQuesData(data.data.ques);
           setQuesName(data.data.ques.quesName);
           setQuesDesc(data.data.ques.description);
@@ -53,7 +52,6 @@ function AcceptQuestion() {
   };
 
   const handleConstraints = (e) => {
-    console.log(con);
     setConstraints((prevConst) => [...prevConst, con]);
     setCon("");
   };
@@ -67,8 +65,6 @@ function AcceptQuestion() {
       ]);
       setTestOutput("");
       setTestInput("");
-      console.log(testcases);
-      console.log("Adding TestCase");
     }
   };
 
@@ -98,8 +94,6 @@ function AcceptQuestion() {
         const quesDel = await axios.put(`${link.url}/${qId}/added`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
-        console.log(approve);
         alert("Question Added successfully");
       }
     } catch (error) {
@@ -171,7 +165,6 @@ function AcceptQuestion() {
             value={testInput}
             onChange={(e) => {
               setTestInput(e.currentTarget.value);
-              console.log(testInput);
             }}
           />
           <Input

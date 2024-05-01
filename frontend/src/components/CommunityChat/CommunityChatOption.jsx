@@ -7,13 +7,15 @@ function CommunityChatOption() {
   const location = useLocation();
 
   const handleChat = () => {
-    console.log("Start chatting");
     navigate("/chat-room");
   };
 
   const isChatPage = location.pathname === "/chat-room";
-
+  const isLoginPage = location.pathname === "/login";
+  const isRegisterPage = location.pathname === "/register";
   if (isChatPage) return null;
+  if (isLoginPage) return null;
+  if (isRegisterPage) return null;
 
   return (
     <div className="chat-option fixed bottom-4 right-4 cursor-pointer">

@@ -26,7 +26,7 @@ function AddQuery() {
           return;
         }
         setErr("");
-        const queries = await axios.post(
+        await axios.post(
           `${link.url}/${params.username}/query`,
           {
             email,
@@ -36,7 +36,6 @@ function AddQuery() {
             headers: { Authorization: `Bearer ${token}` },
           },
         );
-        console.log(queries);
         alert("Query Recieved");
         setEmail("");
         setQuery("");

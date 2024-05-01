@@ -27,11 +27,9 @@ function Questions() {
         const userData = await axios.get(`${link.url}/${username}/userInfo`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log(userData.data);
         setUserSolved(userData.data.quesSolvedNum);
-        console.log(userSolved);
       } catch (error) {
-        console.log(error);
+        setErr(error);
       }
     };
     data();
@@ -48,7 +46,6 @@ function Questions() {
           const ques = await axios.get(`${link.url}/display-ques`, {
             headers: { Authorization: `Bearer ${token}` },
           });
-          console.log(ques.data.length);
           setQues(ques.data);
           let e = 0;
           let m = 0;

@@ -13,6 +13,8 @@ function Chat() {
   const [displayMsg, setDisplayMsg] = useState([]);
   const navigate = useNavigate();
   const socket = useMemo(() => io(`${link.url}`), []);
+  const token = localStorage.getItem("jwtToken");
+  const [err, setErr] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
@@ -47,41 +49,66 @@ function Chat() {
         socket.off("rec-msg", recMsg);
       };
     } catch (error) {
-      console.log(error);
+      setErr(error.message);
     }
   }, [navigate, username, socket]);
 
   const handleSend = async () => {
     try {
       if (message !== "") {
-        console.log(`${username}: ${message}`);
         socket.emit("send-msg", { username, message });
+
+        const check = async () => {
+          const isProfane = await axios.get(`http://localhost:3001/bad-word`, {
+            params: {
+              message,
+            },
+          });
+          if (isProfane.data === true) {
+            alert(
+              `Don't swear otherwise will be reported and your account will be suspended`,
+            );
+            axios.patch(`${link.url}/${username}/updateReportCount`);
+            const del = await axios.delete(
+              `${link.url}/${username}/deleteUser`,
+            );
+
+            if (del.status === 200) {
+              localStorage.removeItem("jwtToken");
+              localStorage.removeItem("username");
+              localStorage.removeItem("isAdmin");
+              navigate(`/login`);
+            }
+          }
+        };
+        check();
 
         await axios.post(`${link.url}/${username}/chat-room`, {
           message: message,
         });
-
         setMessage("");
       } else {
-        console.log("Enter some value");
+        setErr("Enter some value");
       }
     } catch (error) {
-      console.log("Error sending message:", error);
+      setErr(error.message);
     }
   };
 
   useEffect(() => {
     const mess = async () => {
-      const response = await axios.get(`${link.url}/display-messages`);
+      const response = await axios.get(`${link.url}/display-messages`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setDisplayMsg(response.data.mess);
     };
     mess();
-  }, [messages, displayMsg]);
-
+  }, [messages, displayMsg, token]);
   return (
     <div className="chat-container flex flex-col items-center h-screen">
       <h1 className="text-center font-bold text-2xl py-5">Chat</h1>
       {showWelcome && <h3>{welcome}</h3>}
+      {err && <h1 className="text-red-700 text-xl font-bold">{err}</h1>}
       <div className="max-h-[75vh] overflow-y-auto flex-grow bg-gray-300 w-full px-4 py-2 scroll-smooth">
         {displayMsg.map((msg, index) => (
           <div key={index} className="message bg-white p-2 rounded-lg mb-2">

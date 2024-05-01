@@ -33,8 +33,6 @@ function AddQues() {
         { input: testInput, output: testOutput },
         ...prev,
       ]);
-      console.log(testcases);
-      console.log("Adding TestCase");
     }
   };
 
@@ -115,7 +113,6 @@ function AddQues() {
             value={testInput}
             onChange={(e) => {
               setTestInput(e.currentTarget.value);
-              console.log(testInput);
             }}
             className="p-5 text-lg rounded-2xl w-full"
             placeholder="Input Value"

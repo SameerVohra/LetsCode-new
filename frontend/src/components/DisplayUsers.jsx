@@ -18,10 +18,8 @@ function DisplayUsers() {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        console.log(user.data);
         setUser(user.data);
       } catch (error) {
-        console.log(error);
         setErr(error.message);
       }
     };

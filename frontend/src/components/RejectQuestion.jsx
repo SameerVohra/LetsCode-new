@@ -26,10 +26,8 @@ function RejectQuestion() {
       if (reject.status === 201) {
         navigate(`/${username}/admin/displayQuestions`);
       }
-      console.log(qId);
-      console.log(reject);
     } catch (error) {
-      console.log(error);
+      setErr(error.message);
     }
   };
   return (
@@ -50,6 +48,7 @@ function RejectQuestion() {
         >
           Send
         </button>
+        {err && <h3 className="text-red-700 font-bold">{err}</h3>}
       </div>
     </>
   );

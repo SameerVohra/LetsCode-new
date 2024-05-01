@@ -35,7 +35,6 @@ function Register() {
           email: email,
           password: pass,
         });
-        console.log(response.status);
         if (response.status == 201) {
           navigate("/login");
         }
@@ -49,7 +48,6 @@ function Register() {
         }
       }
     } catch (error) {
-      console.log(`Error: ${error}`);
       setErr("An error occured while registering the user");
     }
   };
