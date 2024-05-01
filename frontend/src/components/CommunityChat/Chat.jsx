@@ -59,11 +59,14 @@ function Chat() {
         socket.emit("send-msg", { username, message });
 
         const check = async () => {
-          const isProfane = await axios.get(`http://localhost:3001/bad-word`, {
-            params: {
-              message,
+          const isProfane = await axios.get(
+            `https://profanity-filter.onrender.com/bad-word`,
+            {
+              params: {
+                message,
+              },
             },
-          });
+          );
           if (isProfane.data === true) {
             alert(
               `Don't swear otherwise will be reported and your account will be suspended`,
