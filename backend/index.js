@@ -8,7 +8,6 @@ const Ques = require("./models/questions");
 const userQuestion = require("./models/contributedQues");
 const Query = require("./models/query");
 const questions = require("./models/questions");
-const userMsg = require("./models/messages");
 const port = process.env.PORT || 3000;
 const app = express();
 require("dotenv").config();
@@ -22,6 +21,7 @@ const cors = require("cors");
 const { Server } = require("socket.io");
 const { createServer } = require("http");
 const newMsg = require("./models/messages");
+const { report } = require("process");
 app.use(cors());
 app.use(bodyParser.json());
 const email = process.env.EMAIL;
@@ -75,14 +75,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.post("/hello", (req, res) => {
-  res.send({
-    message: "hello",
-  });
+app.get("/hello", (req, res) => {
+  res.send("hello");
 });
 
 app.post("/register", async (req, res) => {
-  console.log("/register called");
   const { username, password, email, isAdmin } = req.body;
   try {
     const existingUser = await User.findOne({ username });
@@ -101,9 +98,9 @@ app.post("/register", async (req, res) => {
         isAdmin: isAdmin || false,
         quesSolved: [{}],
         quesSolvedNum: { easy: 0, medium: 0, hard: 0 },
+        reports: 0,
       });
       await newUser.save();
-      console.log(newUser);
       return res.status(201).json({ message: "User created successfully" });
     }
   } catch (error) {
@@ -118,7 +115,6 @@ app.post("/login", async (req, res) => {
     if (!findUser) {
       return res.status(404).json({ message: "User not found" });
     } else {
-      console.log(`/login \n ${findUser}`);
       if (
         !bcrypt.compareSync(password, findUser.password) ||
         findUser.username !== username ||
@@ -130,7 +126,6 @@ app.post("/login", async (req, res) => {
           username: findUser.username,
           isAdmin: findUser.isAdmin,
         };
-        console.log(tokenPayload);
         const token = jwt.sign(tokenPayload, "SECRET_KEY");
         res.status(201).json({ token, isAdmin: findUser.isAdmin });
       }
@@ -172,7 +167,6 @@ app.post("/:username/contribute", verifytoken, async (req, res) => {
   try {
     const user = await User.findOne({ username });
     const toEmail = user.email;
-    console.log(toEmail);
     const userQues = new userQuestion({
       contributedBy: username,
       quesName,
@@ -227,12 +221,9 @@ app.get("/:username/display-queries", verifytoken, async (req, res) => {
   const { username } = req.params;
   try {
     const user = await User.findOne({ username });
-    console.log(user.isAdmin);
     if (user.isAdmin) {
-      console.log("authourized");
       await Query.deleteMany({ isResolved: true });
       const queries = await Query.find();
-      console.log(queries);
       res.json({ queries });
     } else {
       res
@@ -257,7 +248,6 @@ app.get("/:queryId/show-query", verifytoken, async (req, res) => {
   const { qId } = req.params;
   try {
     const user = await Query.findOne(qId);
-    console.log(user);
     res.status(201).send(user);
   } catch (error) {
     res.status(501).send("Internal Server Error");
@@ -282,7 +272,6 @@ app.put("/:queryId/resolve", async (req, res) => {
         .status(400)
         .json({ message: "Email not provided in the query" });
     }
-    console.log(email);
     const mailOptions = {
       from: "sameervohra2004@gmail.com",
       to: email,
@@ -293,7 +282,6 @@ app.put("/:queryId/resolve", async (req, res) => {
     await transporter.sendMail(mailOptions);
 
     const query1 = await Query.findOneAndDelete({ isResolved: true });
-    console.log(query);
 
     res.status(201).json({ query1 });
   } catch (error) {
@@ -325,10 +313,8 @@ app.put("/:qId/added", async (req, res) => {
     await transporter.sendMail(mailOptions);
 
     const quesDel = await userQuestion.findOneAndDelete({ isApproved: true });
-    console.log(quesDel);
     return res.status(201).json({ quesDel });
   } catch (error) {
-    console.log(error);
     return res.status(500).send("Internal Server Error");
   }
 });
@@ -350,7 +336,6 @@ app.get("/:qid/approve-question", verifytoken, async (req, res) => {
     if (!ques) return res.status(404).send("Not found");
     res.status(200).json({ ques });
   } catch (error) {
-    console.log(error);
     res.status(500).send("Internal Server Error");
   }
 });
@@ -376,7 +361,6 @@ question base because ${msg}`,
     transporter.sendMail(mailOptions);
     res.status(201).json({ del });
   } catch (error) {
-    console.log(error);
     res.status(500).send("Internal Server Error");
   }
 });
@@ -386,7 +370,6 @@ app.get("/display-users", verifytoken, async (req, res) => {
     const user = await User.find();
     res.status(200).send(user);
   } catch (error) {
-    console.log(error);
     res.status(501).send("Internal Server Error");
   }
 });
@@ -411,7 +394,6 @@ app.put("/:username/make-admin", async (req, res) => {
     await user.save();
     res.status(201).send(user);
   } catch (error) {
-    console.log(error);
     res.status(501).send("Internal Server Error");
   }
 });
@@ -575,19 +557,45 @@ app.post("/:username/chat-room", async (req, res) => {
   res.send("POST request received");
 });
 io.on("connection", (socket) => {
-  console.log(`${socket.id} connected`);
   socket.on("join", (username) => {
     io.emit("join-greet", `${username}, Joined the chat!!`);
   });
   socket.on("send-msg", ({ username, message }) => {
-    console.log(`${username}: ${message}`);
     io.emit("rec-msg", { username, message });
   });
 });
 
-app.get("/display-messages", async (req, res) => {
+app.get("/display-messages", verifytoken, async (req, res) => {
   const mess = await newMsg.find();
   res.json({ mess });
+});
+
+app.patch("/:username/updateReportCount", async (req, res) => {
+  const { username } = req.params;
+  try {
+    const user = await User.findOneAndUpdate(
+      { username: username },
+      { $inc: { reports: 1 } },
+      { new: true },
+    );
+    res.status(200).json({ reports: user.reports });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+app.delete("/:username/deleteUser", async (req, res) => {
+  const { username } = req.params;
+  try {
+    const user = await User.findOne({ username });
+    if (user.reports >= 5) {
+      await User.findOneAndDelete({ username: username });
+      return res.status(200).send("User successfully deleted");
+    }
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 app.all("/*", (req, res) => {

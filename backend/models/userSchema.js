@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   quesSolved: [{ name: String }],
   isAdmin: Boolean,
   quesSolvedNum: { easy: Number, medium: Number, hard: Number },
+  reports: Number,
 });
 
 const User = mongoose.model("User", userSchema);
