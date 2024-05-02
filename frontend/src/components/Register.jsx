@@ -35,19 +35,21 @@ function Register() {
           email: email,
           password: pass,
         });
+        console.log(response.status);
         if (response.status == 201) {
           navigate("/login");
         }
-        if (response.status == 403) {
+        if (response.status == 203) {
           setErr("User Already Exists");
           return;
         }
-        if (response.status == 403) {
+        if (response.status == 204) {
           setErr("Password Length should be atleast 8");
           return;
         }
       }
     } catch (error) {
+      console.log(error);
       setErr("An error occured while registering the user");
     }
   };

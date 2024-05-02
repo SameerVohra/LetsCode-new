@@ -85,10 +85,12 @@ app.post("/register", async (req, res) => {
     const existingUser = await User.findOne({ username });
     const existingEmail = await User.findOne({ email });
     if (existingUser || existingEmail) {
-      return res.status(400).json({ message: "Username/Email already exists" });
+      return res.status(203).json({ message: "Username/Email already exists" });
     }
     if (password.length < 8) {
-      return res.json({ message: "Password length should be atleast 8" });
+      return res
+        .status(204)
+        .json({ message: "Password length should be atleast 8" });
     } else {
       const hashedPassword = bcrypt.hashSync(password, 8);
       const newUser = new User({
@@ -104,6 +106,7 @@ app.post("/register", async (req, res) => {
       return res.status(201).json({ message: "User created successfully" });
     }
   } catch (error) {
+    console.log(error);
     res.status(501).json({ message: "Internal Server Error" });
   }
 });
