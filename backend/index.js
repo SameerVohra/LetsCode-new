@@ -80,7 +80,7 @@ app.get("/hello", (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
-  const { username, password, email, isAdmin } = req.body;
+  const { username, password, email } = req.body;
   try {
     const existingUser = await User.findOne({ username });
     const existingEmail = await User.findOne({ email });
@@ -95,7 +95,7 @@ app.post("/register", async (req, res) => {
         username: username,
         password: hashedPassword,
         email: email,
-        isAdmin: isAdmin || false,
+        isAdmin: false,
         quesSolved: [{}],
         quesSolvedNum: { easy: 0, medium: 0, hard: 0 },
         reports: 0,
