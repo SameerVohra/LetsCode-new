@@ -592,7 +592,7 @@ app.delete("/:username/deleteUser", async (req, res) => {
     if (user.reports >= 5) {
       await User.findOneAndDelete({ username: username });
       return res.status(200).send("User successfully deleted");
-    }
+    } else res.status(201).send("Warning sent");
   } catch (error) {
     res.status(500).send("Internal Server Error");
   }

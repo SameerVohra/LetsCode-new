@@ -62,7 +62,7 @@ function Chat() {
           const isProfane = await axios.get(
             `https://profanity-filter.onrender.com/bad-word`,
             {
-              params: {
+              body: {
                 message,
               },
             },
