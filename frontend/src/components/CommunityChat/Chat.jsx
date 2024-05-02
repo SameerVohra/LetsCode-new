@@ -66,7 +66,7 @@ function Chat() {
             },
           );
           console.log(isProfane);
-          if (isProfane.status === 200) {
+          if (isProfane.data === true) {
             alert(
               `Don't swear otherwise will be reported and your account will be suspended`,
             );
