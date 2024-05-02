@@ -573,11 +573,12 @@ app.get("/display-messages", verifytoken, async (req, res) => {
 app.patch("/:username/updateReportCount", async (req, res) => {
   const { username } = req.params;
   try {
-    const user = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { username: username },
       { $inc: { reports: 1 } },
       { new: true },
     );
+    console.log("reported");
     res.status(200).send("User Reported");
   } catch (error) {
     console.error(error);

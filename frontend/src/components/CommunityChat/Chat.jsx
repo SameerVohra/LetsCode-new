@@ -59,19 +59,18 @@ function Chat() {
         socket.emit("send-msg", { username, message });
 
         const check = async () => {
-          const isProfane = await axios.get(
+          const isProfane = await axios.post(
             `https://profanity-filter-seven.vercel.app/bad-word`,
             {
-              params: {
-                message,
-              },
+              message: message,
             },
           );
-          if (isProfane.data === true) {
+          console.log(isProfane);
+          if (isProfane.status === 200) {
             alert(
               `Don't swear otherwise will be reported and your account will be suspended`,
             );
-            axios.patch(`${link.url}/${username}/updateReportCount`);
+            await axios.patch(`${link.url}/${username}/updateReportCount`);
             const del = await axios.delete(
               `${link.url}/${username}/deleteUser`,
             );
