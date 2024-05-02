@@ -578,7 +578,7 @@ app.patch("/:username/updateReportCount", async (req, res) => {
       { $inc: { reports: 1 } },
       { new: true },
     );
-    res.status(200).json({ reports: user.reports });
+    res.status(200).send("User Reported");
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });

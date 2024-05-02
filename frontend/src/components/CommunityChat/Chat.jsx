@@ -60,7 +60,7 @@ function Chat() {
 
         const check = async () => {
           const isProfane = await axios.get(
-            `https://profanity-filter-seven.vercel.app`,
+            `https://profanity-filter-seven.vercel.app/bad-word`,
             {
               params: {
                 message,
