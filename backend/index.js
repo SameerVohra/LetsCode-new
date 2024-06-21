@@ -22,6 +22,7 @@ const { Server } = require("socket.io");
 const { createServer } = require("http");
 const newMsg = require("./models/messages");
 const { report } = require("process");
+const keep_alive = require("./keep_alive.js");
 app.use(cors());
 app.use(bodyParser.json());
 const email = process.env.EMAIL;
@@ -600,6 +601,10 @@ app.delete("/:username/deleteUser", async (req, res) => {
   } catch (error) {
     res.status(500).send("Internal Server Error");
   }
+});
+
+app.post("/test", (req, res) => {
+  console.log("testing done");
 });
 
 app.all("/*", (req, res) => {
