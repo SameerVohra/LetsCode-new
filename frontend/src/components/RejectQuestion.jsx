@@ -4,53 +4,58 @@ import { useNavigate, useParams } from "react-router";
 import link from "../assets/link.json";
 
 function RejectQuestion() {
-  const params = useParams();
+  const { qId } = useParams();
   const [reason, setReason] = useState("");
   const [err, setErr] = useState("");
 
-  const qId = params.qId;
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("jwtToken");
     const username = localStorage.getItem("username");
-    try {
-      if (!token) return setErr("Login");
 
-      const reject = await axios.delete(`${link.url}/${qId}/reject`, {
+    if (!token) {
+      setErr("Login required.");
+      return;
+    }
+
+    try {
+      const response = await axios.delete(`${link.url}/${qId}/reject`, {
         data: { msg: reason },
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (reject.status === 201) {
+      if (response.status === 201) {
         navigate(`/${username}/admin/displayQuestions`);
+      } else {
+        setErr("Failed to reject the question.");
       }
     } catch (error) {
-      setErr(error.message);
+      setErr("An error occurred: " + error.message);
     }
   };
+
   return (
-    <>
-      <div className=" flex flex-wrap justify-center items-center flex-col gap-10 py-10">
-        <h1 className="text-2xl">Reason for Rejecting The Question</h1>
-        <textarea
-          rows={10}
-          cols={50}
-          value={reason}
-          onChange={(e) => setReason(e.currentTarget.value)}
-          className="rounded-2xl p-5 text-xl"
-          placeholder="Enter Reason here"
-        />
-        <button
-          onClick={handleSubmit}
-          className=" bg-blue-900 text-white hover:bg-cyan-600 hover:text-black px-10 py-3 transition-all rounded-3xl "
-        >
-          Send
-        </button>
-        {err && <h3 className="text-red-700 font-bold">{err}</h3>}
-      </div>
-    </>
+    <div className="flex flex-col items-center justify-center gap-6 p-6 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-semibold mb-4">Reason for Rejecting the Question</h1>
+      <textarea
+        rows={6}
+        cols={40}
+        value={reason}
+        onChange={(e) => setReason(e.currentTarget.value)}
+        className="rounded-lg border-gray-300 border p-4 text-lg w-full max-w-md"
+        placeholder="Enter reason here"
+      />
+      <button
+        type="button"
+        onClick={handleSubmit}
+        className="bg-blue-900 text-white hover:bg-cyan-600 hover:text-black px-6 py-2 transition-all rounded-lg"
+      >
+        Send
+      </button>
+      {err && <h3 className="text-red-700 font-semibold mt-4">{err}</h3>}
+    </div>
   );
 }
 

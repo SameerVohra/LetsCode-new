@@ -8,6 +8,7 @@ function Admin() {
   const navigate = useNavigate();
   const username = localStorage.getItem("username");
   const [userData, setUserData] = useState({});
+
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     const userAdmin = async () => {
@@ -18,41 +19,42 @@ function Admin() {
     };
     userAdmin();
   }, [username]);
+
   return (
     <>
-      <div className=" flex flex-wrap flex-col">
-        <div className="flex flex-wrap justify-center items-center flex-row gap-x-10 mt-5 mb-10 text-lime-300 ">
+      <div className="flex flex-col items-center min-h-screen p-4 bg-gray-100">
+        <div className="flex flex-wrap justify-center items-center gap-5 mt-5 mb-10 text-lime-300">
           <LinkBtn
             to={`displayQueries`}
             text="Display Query"
-            className="rounded-xl px-10 py-5 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black "
+            className="rounded-xl px-5 py-3 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black text-center w-full sm:w-auto"
           />
           <LinkBtn
             to={`displayQuestions`}
             text="Display Question"
-            className="rounded-xl px-10 py-5 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black "
+            className="rounded-xl px-5 py-3 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black text-center w-full sm:w-auto"
           />
           <LinkBtn
             to={`addQues`}
             text="Add Questions"
-            className="rounded-xl px-10 py-5 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black "
+            className="rounded-xl px-5 py-3 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black text-center w-full sm:w-auto"
           />
           <LinkBtn
             to={`displayUsers`}
             text="Display Users"
-            className="rounded-xl px-10 py-5 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black "
+            className="rounded-xl px-5 py-3 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black text-center w-full sm:w-auto"
           />
         </div>
-        <div className="flex flex-wrap justify-center items-center min-h-[50vh] mt-10">
-          <div className="h-3/5 px-20 py-16 flex flex-col justify-center items-center rounded-2xl bg-blue-400 gap-10 text-2xl">
-            <h1>
+        <div className="flex justify-center items-center w-full mt-10">
+          <div className="w-full max-w-xl p-8 flex flex-col justify-center items-center rounded-2xl bg-blue-400 gap-6 text-xl">
+            <h1 className="text-center">
               Username:{" "}
               <span className="text-sky-900">{userData.username}</span>
             </h1>
-            <h1>
+            <h1 className="text-center">
               Email: <span className="text-sky-900">{userData.email}</span>
             </h1>
-            <h1>
+            <h1 className="text-center">
               Total Questions Solved:{" "}
               <span className="text-sky-900">
                 {userData.quesSolved ? userData.quesSolved.length - 1 : 0}

@@ -15,13 +15,13 @@ function AddQues() {
   const [testOutput, setTestOutput] = useState("");
   const [err, setErr] = useState("");
   const params = useParams();
+
   const handleName = (e) => setQuesName(e.currentTarget.value);
   const handleDesc = (e) => setQuesDesc(e.currentTarget.value);
   const handleDiff = (e) => setQuesDiff(e.target.value);
 
   const handleAdd = () => {
     setConstraints((prev) => [...prev, con]);
-
     setCon("");
   };
 
@@ -33,6 +33,9 @@ function AddQues() {
         { input: testInput, output: testOutput },
         ...prev,
       ]);
+      setTestInput("");
+      setTestOutput("");
+      setErr("");
     }
   };
 
@@ -50,7 +53,7 @@ function AddQues() {
       },
       {
         headers: { Authorization: `Bearer ${token}` },
-      },
+      }
     );
     setQuesName("");
     setQuesDiff("");
@@ -62,86 +65,104 @@ function AddQues() {
 
   return (
     <>
-      <div className="flex flex-wrap justify-center items-center">
-        <div className="flex flex-wrap justify-center items-center flex-col w-3/6 gap-5 px-6 py-2">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <div className="flex flex-col items-center justify-center w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3 gap-5 p-6 bg-white shadow-lg rounded-xl">
           {err && <div className="text-red-500">{err}</div>}
+          
           <Input
             label="Ques Name"
             onChange={handleName}
-            className="w-10/12 p-5 text-xl rounded-xl"
+            className="w-full p-3 text-lg rounded-xl border border-gray-300"
             placeholder="Enter Question Name"
           />
-          <h1>Question Description</h1>
+          
+          <h1 className="self-start text-xl font-semibold">Question Description</h1>
           <textarea
             onChange={handleDesc}
-            rows={10}
-            cols={50}
-            className="p-5 text-xl rounded-xl"
+            rows={5}
+            className="w-full p-3 text-lg rounded-xl border border-gray-300 resize-none"
             placeholder="Enter Question Description"
           />
+          
           <select
             onChange={handleDiff}
-            className="px-6 py-2 bg-white text-black text-xl text-center rounded-2xl"
+            className="w-full p-3 bg-white text-lg border border-gray-300 rounded-xl"
           >
             <option value="">---DIFFICULTY---</option>
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
           </select>
+          
           <Input
             label="Constraints"
             value={con}
             placeholder="Enter Constraints"
-            className="p-5 rounded-xl"
+            className="w-full p-3 text-lg rounded-xl border border-gray-300"
             onChange={(e) => setCon(e.currentTarget.value)}
           />
+          
           <button
             onClick={handleAdd}
-            className="px-6 py-2 bg-blue-800 text-lime-300 rounded-xl hover:bg-cyan-700 hover:text-black hover:shadow-black hover:shadow-2xl transition-all"
+            className="w-full p-3 bg-blue-600 text-white rounded-xl hover:bg-blue-500 transition-all"
           >
             Add Constraint
           </button>
-          {constraints &&
-            constraints.map((c, ind) => (
-              <div key={ind} className="font-mono text-lg">
-                {c}
-              </div>
-            ))}
-          <h2 className="text-2xl">TestCases</h2>
+          
+          {constraints && constraints.length > 0 && (
+            <div className="w-full">
+              <h2 className="text-xl font-semibold">Constraints:</h2>
+              <ul className="list-disc list-inside">
+                {constraints.map((c, ind) => (
+                  <li key={ind} className="font-mono text-lg">
+                    {c}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          
+          <h2 className="self-start text-xl font-semibold">Test Cases</h2>
+          
           <Input
             label="Input"
             value={testInput}
-            onChange={(e) => {
-              setTestInput(e.currentTarget.value);
-            }}
-            className="p-5 text-lg rounded-2xl w-full"
+            onChange={(e) => setTestInput(e.currentTarget.value)}
+            className="w-full p-3 text-lg rounded-xl border border-gray-300"
             placeholder="Input Value"
           />
+          
           <Input
             label="Output"
             value={testOutput}
             onChange={(e) => setTestOutput(e.currentTarget.value)}
-            className="p-5 text-lg rounded-2xl w-full"
+            className="w-full p-3 text-lg rounded-xl border border-gray-300"
             placeholder="Output Value"
           />
+          
           <button
             onClick={handleAddTestCase}
-            className="px-6 py-2 bg-blue-800 text-lime-300 rounded-xl hover:bg-cyan-700 hover:text-black hover:shadow-black hover:shadow-2xl transition-all"
+            className="w-full p-3 bg-blue-600 text-white rounded-xl hover:bg-blue-500 transition-all"
           >
-            Add TestCase
+            Add Test Case
           </button>
-          {testcases && (
-            <ul>
-              {testcases.map((val, ind) => (
-                <li key={ind}>
-                  {val.input} -- {val.output}
-                </li>
-              ))}
-            </ul>
+          
+          {testcases && testcases.length > 0 && (
+            <div className="w-full">
+              <h2 className="text-xl font-semibold">Test Cases:</h2>
+              <ul className="list-disc list-inside">
+                {testcases.map((val, ind) => (
+                  <li key={ind} className="font-mono text-lg">
+                    Input: {val.input}, Output: {val.output}
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
+          
           <button
             onClick={handleSubmit}
-            className="px-6 py-2 bg-blue-800 text-lime-300 rounded-xl text-2xl hover:bg-cyan-700 hover:text-white hover:shadow-black hover:shadow-2xl transition-all"
+            className="w-full p-3 bg-green-600 text-white text-lg rounded-xl hover:bg-green-500 transition-all"
           >
             Add Question
           </button>

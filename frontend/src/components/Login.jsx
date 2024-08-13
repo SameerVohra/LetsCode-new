@@ -46,34 +46,32 @@ function Login() {
           localStorage.setItem("isAdmin", response.data.isAdmin);
           localStorage.setItem("username", name);
           dispatch(login());
-
           navigate("/");
-        }
-        if (response.status === 404) {
+        } else if (response.status === 404) {
           setErr("User not found");
-          return;
-        }
-        if (response.status === 401) {
+        } else if (response.status === 401) {
           setErr("Invalid credentials");
-          return;
         }
       }
     } catch (error) {
-      if (error.response.status === 404) setErr("User not found");
-      if (error.response.status === 401) return setErr("Invalid Credentials");
+      if (error.response) {
+        if (error.response.status === 404) setErr("User not found");
+        if (error.response.status === 401) setErr("Invalid credentials");
+      } else {
+        setErr("An unexpected error occurred");
+      }
     }
   };
+
   return (
     <>
-      <div className="bg-blue-500 grid grid-cols-2">
-        <div className="max-h-screen bg-blue-400 flex justify-center items-center text-7xl">
-          <img src={vct} />
+      <div className="bg-blue-500 grid grid-cols-1 md:grid-cols-2 min-h-screen">
+        <div className="bg-blue-400 flex justify-center items-center text-7xl p-5">
+          <img src={vct} alt="Vector illustration" className="w-full max-w-sm" />
         </div>
-        <div className="flex justify-center items-center h-screen text-xl">
-          <div className="bg-sky-500 text-black shadow-2xl shadow-black h-auto w-auto px-20 py-10 flex flex-col gap-3 rounded-2xl">
-            {err && (
-              <div className="text-red-900 text-center text-2xl">{err}</div>
-            )}
+        <div className="flex justify-center items-center p-5">
+          <div className="bg-sky-500 text-black shadow-2xl shadow-black p-10 flex flex-col gap-5 rounded-2xl max-w-md w-full">
+            {err && <div className="text-red-900 text-center text-lg">{err}</div>}
             <Input
               label="Username"
               placeholder="Username"
@@ -96,17 +94,16 @@ function Login() {
               onChange={(e) => setPass(e.currentTarget.value)}
               value={pass}
             />
-
             <Button
               children="Login"
               onClick={handleInput}
-              className=" px-4 py-2 w-full rounded-2xl bg-lime-300 hover:bg-cyan-300 transition-all"
+              className="px-4 py-2 w-full rounded-2xl bg-lime-300 hover:bg-cyan-300 transition-all"
             />
             <p className="text-sm text-center">
-              New User?{"  "}
+              New User?{" "}
               <LinkBtn
                 to="/register"
-                text=" Register"
+                text="Register"
                 className="underline text-lime-300"
               />
             </p>

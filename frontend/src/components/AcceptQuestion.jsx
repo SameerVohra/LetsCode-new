@@ -3,6 +3,7 @@ import Input from "./Input";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import link from "../assets/link.json";
+
 function AcceptQuestion() {
   const params = useParams();
 
@@ -16,6 +17,7 @@ function AcceptQuestion() {
   const [con, setCon] = useState("");
   const [constraints, setConstraints] = useState([]);
   const [quesData, setQuesData] = useState([]);
+
   useEffect(() => {
     const ques = async () => {
       const token = localStorage.getItem("jwtToken");
@@ -55,6 +57,7 @@ function AcceptQuestion() {
     setConstraints((prevConst) => [...prevConst, con]);
     setCon("");
   };
+
   const handleAddTestCase = () => {
     if (testInput === "" || testOutput === "") {
       setErr("All fields are required");
@@ -104,30 +107,30 @@ function AcceptQuestion() {
   return (
     <>
       <div className="flex flex-wrap flex-col justify-center items-center w-full">
-        <div className="flex flex-wrap justify-center items-center flex-col px-10 py-2 border-2 bg-blue-200 rounded-xl mt-4">
+        <div className="flex flex-wrap justify-center items-center flex-col px-4 py-2 border-2 bg-blue-200 rounded-xl mt-4 md:px-10 md:py-4">
           {err ? (
             err
           ) : (
-            <div className="px-10 py-5 w-fit gap-5 flex flex-wrap">
+            <div className="px-4 py-5 w-full gap-5 flex flex-wrap md:px-10">
               {quesData && (
-                <div className="flex flex-col justify-center items-center text-2xl">
+                <div className="flex flex-col justify-center items-center text-lg md:text-2xl w-full">
                   <Input
                     label="Question Name"
                     value={quesName}
                     onChange={handleNameChange}
-                    className="text-xl w-full rounded-2xl p-5"
+                    className="text-base md:text-xl w-full rounded-2xl p-3 md:p-5"
                   />
-                  <h1>Question Description</h1>
+                  <h1 className="mt-4">Question Description</h1>
                   <textarea
                     value={quesDesc}
-                    rows={10}
-                    cols={40}
+                    rows={8}
+                    cols={30}
                     onChange={handleDescChange}
-                    className="rounded-2xl p-5 text-xl"
+                    className="rounded-2xl p-3 md:p-5 text-base md:text-xl w-full"
                   />
                   <select
                     onChange={handleDiffChange}
-                    className="mt-4 rounded-xl px-10 py-2 text-xl text-center bg-sky-100 w-auto"
+                    className="mt-4 rounded-xl px-6 py-2 text-base md:text-xl text-center bg-sky-100 w-full md:w-auto"
                   >
                     <option className="text-center">Difficulty</option>
                     <option value="easy">Easy</option>
@@ -135,15 +138,15 @@ function AcceptQuestion() {
                     <option value="hard">Hard</option>
                   </select>
 
-                  <h1 className="text-xl">Constraints</h1>
+                  <h1 className="text-lg md:text-xl mt-4">Constraints</h1>
                   <Input
                     value={con}
                     onChange={(e) => setCon(e.currentTarget.value)}
-                    className="text-xl p-3 rounded-xl "
+                    className="text-base md:text-xl p-2 md:p-3 rounded-xl w-full"
                   />
                   <button
                     onClick={handleConstraints}
-                    className="px-6 py-2 bg-blue-800 text-white hover:bg-blue-500 hover:text-black hover:font-semibold transition-all rounded-xl hover:shadow-xl hover:shadow-black text-lg"
+                    className="px-6 py-2 bg-blue-800 text-white hover:bg-blue-500 hover:text-black hover:font-semibold transition-all rounded-xl hover:shadow-xl hover:shadow-black text-base md:text-lg mt-4"
                   >
                     Add
                   </button>
@@ -151,39 +154,39 @@ function AcceptQuestion() {
               )}
             </div>
           )}
-          <h3 className="text-xl">Added Constraint Values</h3>
+          <h3 className="text-lg md:text-xl mt-4">Added Constraint Values</h3>
           {constraints &&
             constraints.map((c, ind) => (
-              <div key={ind} className="font-mono text-lg">
+              <div key={ind} className="font-mono text-base md:text-lg">
                 {c}
               </div>
             ))}
-          <h2 className="text-2xl mt-8">TestCases</h2>
+          <h2 className="text-xl md:text-2xl mt-8">TestCases</h2>
           <Input
             label="Input"
-            className="rounded-xl w-full p-5 text-xl"
+            className="rounded-xl w-full p-3 md:p-5 text-base md:text-xl"
             value={testInput}
             onChange={(e) => {
               setTestInput(e.currentTarget.value);
             }}
           />
           <Input
-            className="rounded-xl w-full p-5 text-xl"
+            className="rounded-xl w-full p-3 md:p-5 text-base md:text-xl"
             label="Output"
             value={testOutput}
             onChange={(e) => setTestOutput(e.currentTarget.value)}
           />
           <button
             onClick={handleAddTestCase}
-            className="px-6 py-2 bg-blue-800 text-white hover:text-black hover:bg-blue-500 transition-all hover:shadow-black hover:shadow-lg rounded-xl text-lg"
+            className="px-6 py-2 bg-blue-800 text-white hover:text-black hover:bg-blue-500 transition-all hover:shadow-black hover:shadow-lg rounded-xl text-base md:text-lg mt-4"
           >
             Add TestCase
           </button>
-          <br />{" "}
+          <br />
           {testcases && (
             <ul>
               {testcases.map((val, ind) => (
-                <li key={ind}>
+                <li key={ind} className="text-base md:text-lg">
                   {val.input} -- {val.output}
                 </li>
               ))}
@@ -191,7 +194,7 @@ function AcceptQuestion() {
           )}
           <button
             onClick={handleApprove}
-            className="px-6 py-3 bg-blue-800 hover:bg-blue-500 hover:font-semibold rounded-sm text-xl mt-7"
+            className="px-6 py-3 bg-blue-800 hover:bg-blue-500 hover:font-semibold rounded-sm text-lg md:text-xl mt-7"
           >
             Approve
           </button>
