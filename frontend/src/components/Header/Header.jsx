@@ -28,7 +28,11 @@ function Header({ isAdmin }) {
   return (
     <>
       <div className="bg-blue-900 w-full h-auto text-lime-300 flex justify-between items-center px-4 py-5">
+<<<<<<< HEAD
         <h1 className="text-3xl md:text-5xl font-mono">LetsCode</h1>
+=======
+        <h1 className="text-5xl font-mono">LetsCode</h1>
+>>>>>>> 3124620358a78cb3ec72482b85d62042b0e166e3
         <div className="hidden md:flex flex-wrap justify-between items-center gap-16">
           {/* Navigation links */}
           <LinkBtn to="/" text="Home" className="hover:text-white" />
@@ -64,7 +68,11 @@ function Header({ isAdmin }) {
                 <span className="cursor-pointer">Welcome, {username}</span>
               )}
               {isDropdownOpen && (
+<<<<<<< HEAD
                 <div className="absolute top-full left-0 bg-blue-900 border border-gray-300 py-4 px-4 shadow-md rounded w-fit">
+=======
+                <div className="absolute top-full left-0 bg-blue-900 border border-gray-300 py-4 px-4 shadow-md rounded w-fit sm:w-auto">
+>>>>>>> 3124620358a78cb3ec72482b85d62042b0e166e3
                   {isAdmin === "true" && (
                     <LinkBtn
                       text="Admin"
@@ -89,11 +97,19 @@ function Header({ isAdmin }) {
           )}
         </div>
         {/* Hamburger menu button */}
+<<<<<<< HEAD
         <div className="md:hidden">
           <button onClick={toggleMenu}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 text-lime-300"
+=======
+        <div className="lg:hidden">
+          <button onClick={toggleMenu}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+>>>>>>> 3124620358a78cb3ec72482b85d62042b0e166e3
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

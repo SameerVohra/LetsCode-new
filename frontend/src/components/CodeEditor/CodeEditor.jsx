@@ -26,6 +26,10 @@ function CodeEditor() {
     const quesInfo = async () => {
       try {
         const data = await axios.get(`${link.url}/${qId}/ques-details`);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3124620358a78cb3ec72482b85d62042b0e166e3
         setQuesInfo(data.data);
       } catch (error) {
         setErr(error.message);
@@ -33,7 +37,10 @@ function CodeEditor() {
     };
     quesInfo();
   }, [qId]);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3124620358a78cb3ec72482b85d62042b0e166e3
   const handleCompile = async () => {
     try {
       const response = await axios.post(`${link.url}/${qId}/compile-cpp`, {
@@ -50,9 +57,18 @@ function CodeEditor() {
   };
 
   return (
+<<<<<<< HEAD
     <div className="p-5">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5">
         <div className="grid grid-rows-3 gap-4">
+=======
+    <div className="px-5 py-3">
+      <div className="grid grid-cols-2 mt-5 gap-4">
+        <div
+          className="grid grid-rows-3"
+          style={{ gridTemplateRows: "1.25fr 0.25fr 1.50fr" }}
+        >
+>>>>>>> 3124620358a78cb3ec72482b85d62042b0e166e3
           {quesInfo && (
             <div>
               <h1 className="font-bold">Question Name</h1>
@@ -73,6 +89,7 @@ function CodeEditor() {
 
           <button
             onClick={handleCompile}
+<<<<<<< HEAD
             className="border-black border-2 px-3 py-2 w-full lg:w-fit mb-2"
           >
             Compile
@@ -80,24 +97,56 @@ function CodeEditor() {
           <div className="bg-black flex flex-wrap items-start justify-start flex-col p-4">
             <h1 className="text-white font-bold text-2xl">Output:</h1>
             {err && <div className="text-red-500">{err}</div>}
+=======
+            className="border-black border-2 px-3 py-2 w-fit mb-2"
+          >
+            Compile
+          </button>
+          <div className="bg-black flex flex-wrap items-center justify-start flex-col">
+            <h1 className="text-white font-bold text-2xl">Output:</h1>
+            {err && <div className="text-red-500">{err}</div>}
+
+>>>>>>> 3124620358a78cb3ec72482b85d62042b0e166e3
             {compileResult && (
               <div
                 className={`text-xl mt-10 ${compileResult.passedCount === compileResult.totalCount ? "text-green-400" : "text-red-500"}`}
               >
                 <div>
                   <pre>
+<<<<<<< HEAD
                     <h3>Total testcases: {JSON.stringify(compileResult.totalCount, null, 2)}</h3>
                     <h3>Passed testcases: {JSON.stringify(compileResult.passedCount, null, 2)}</h3>
                     <h3>Passed Percentage: {JSON.stringify(compileResult.passedPercentage, null, 2)}</h3>
+=======
+                    <h3>
+                      Total testcases:{" "}
+                      {JSON.stringify(compileResult.totalCount, null, 2)}
+                    </h3>{" "}
+                    <h3>
+                      Passed testcases:{" "}
+                      {JSON.stringify(compileResult.passedCount, null, 2)}
+                    </h3>{" "}
+                    <h3>
+                      Passed Percentage:{" "}
+                      {JSON.stringify(compileResult.passedPercentage, null, 2)}
+                    </h3>
+>>>>>>> 3124620358a78cb3ec72482b85d62042b0e166e3
                   </pre>
                 </div>
               </div>
             )}
           </div>
         </div>
+<<<<<<< HEAD
         <div className="h-[50vh] lg:h-[80vh]">
           <Editor
             height="100%"
+=======
+        <div>
+          {" "}
+          <Editor
+            height="80vh"
+>>>>>>> 3124620358a78cb3ec72482b85d62042b0e166e3
             width="100%"
             theme="vs-dark"
             language="cpp"

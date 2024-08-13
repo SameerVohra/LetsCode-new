@@ -8,7 +8,10 @@ function Admin() {
   const navigate = useNavigate();
   const username = localStorage.getItem("username");
   const [userData, setUserData] = useState({});
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3124620358a78cb3ec72482b85d62042b0e166e3
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     const userAdmin = async () => {
@@ -19,6 +22,7 @@ function Admin() {
     };
     userAdmin();
   }, [username]);
+<<<<<<< HEAD
 
   return (
     <>
@@ -28,20 +32,39 @@ function Admin() {
             to={`displayQueries`}
             text="Display Query"
             className="rounded-xl px-5 py-3 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black text-center w-full sm:w-auto"
+=======
+  return (
+    <>
+      <div className=" flex flex-wrap flex-col">
+        <div className="flex flex-wrap justify-center items-center flex-row gap-x-10 mt-5 mb-10 text-lime-300 ">
+          <LinkBtn
+            to={`displayQueries`}
+            text="Display Query"
+            className="rounded-xl px-10 py-5 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black "
+>>>>>>> 3124620358a78cb3ec72482b85d62042b0e166e3
           />
           <LinkBtn
             to={`displayQuestions`}
             text="Display Question"
+<<<<<<< HEAD
             className="rounded-xl px-5 py-3 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black text-center w-full sm:w-auto"
+=======
+            className="rounded-xl px-10 py-5 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black "
+>>>>>>> 3124620358a78cb3ec72482b85d62042b0e166e3
           />
           <LinkBtn
             to={`addQues`}
             text="Add Questions"
+<<<<<<< HEAD
             className="rounded-xl px-5 py-3 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black text-center w-full sm:w-auto"
+=======
+            className="rounded-xl px-10 py-5 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black "
+>>>>>>> 3124620358a78cb3ec72482b85d62042b0e166e3
           />
           <LinkBtn
             to={`displayUsers`}
             text="Display Users"
+<<<<<<< HEAD
             className="rounded-xl px-5 py-3 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black text-center w-full sm:w-auto"
           />
         </div>
@@ -55,6 +78,21 @@ function Admin() {
               Email: <span className="text-sky-900">{userData.email}</span>
             </h1>
             <h1 className="text-center">
+=======
+            className="rounded-xl px-10 py-5 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black "
+          />
+        </div>
+        <div className="flex flex-wrap justify-center items-center min-h-[50vh] mt-10">
+          <div className="h-3/5 px-20 py-16 flex flex-col justify-center items-center rounded-2xl bg-blue-400 gap-10 text-2xl">
+            <h1>
+              Username:{" "}
+              <span className="text-sky-900">{userData.username}</span>
+            </h1>
+            <h1>
+              Email: <span className="text-sky-900">{userData.email}</span>
+            </h1>
+            <h1>
+>>>>>>> 3124620358a78cb3ec72482b85d62042b0e166e3
               Total Questions Solved:{" "}
               <span className="text-sky-900">
                 {userData.quesSolved ? userData.quesSolved.length - 1 : 0}
