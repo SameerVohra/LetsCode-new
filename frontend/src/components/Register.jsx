@@ -13,6 +13,7 @@ function Register() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passRegex =
@@ -20,15 +21,20 @@ function Register() {
 
   const handleInput = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when registration starts
+
     try {
       if (!email || !name || !pass) {
         setErr("Every field is required!!");
+        setLoading(false); // Set loading to false if there is an error
         return;
       } else if (!emailRegex.test(email)) {
         setErr("Invalid email format");
+        setLoading(false); // Set loading to false if there is an error
         return;
       } else if (!passRegex.test(pass)) {
         setErr("Password must be at least 8 characters long and include uppercase, lowercase, number, and special character");
+        setLoading(false); // Set loading to false if there is an error
         return;
       } else {
         setErr("");
@@ -49,11 +55,15 @@ function Register() {
     } catch (error) {
       console.error(error);
       setErr("An error occurred while registering the user");
+    } finally {
+      setLoading(false); // Set loading to false after the registration process is complete
     }
   };
 
   return (
     <div className="bg-blue-500 min-h-screen flex flex-col lg:flex-row">
+      <h1>PLEASE NOTE: The server is hosted on render, it takes around 90 sec to restart. Please be patient</h1>
+      <h3>If you have any solution to this feel free to mail me: sameervohra943@gmail.com</h3>
       <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-6 lg:p-12">
         <div className="bg-sky-500 text-black shadow-2xl shadow-black w-full max-w-sm p-6 rounded-2xl">
           {err && (
@@ -84,9 +94,12 @@ function Register() {
             value={pass}
           />
           <Button
-            children="Register"
+            children={loading ? "Loading..." : "Register"} // Change button text based on loading state
             onClick={handleInput}
-            className="w-full px-4 py-2 rounded-2xl bg-lime-300 hover:bg-cyan-300 transition-all"
+            className={`w-full px-4 py-2 rounded-2xl ${
+              loading ? "bg-gray-300" : "bg-lime-300 hover:bg-cyan-300"
+            }`} // Change button styling based on loading state
+            disabled={loading} // Disable button when loading
           />
           <p className="text-sm text-center mt-4">
             Existing User?{" "}

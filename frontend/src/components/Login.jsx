@@ -18,6 +18,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const success = () => {
     toast.success("Login Successful");
@@ -26,12 +27,16 @@ function Login() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const handleInput = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when login starts
+
     try {
       if (!email || !name || !pass) {
         setErr("Every field is required!!");
+        setLoading(false); // Set loading to false if there is an error
         return;
       } else if (!emailRegex.test(email)) {
         setErr("Invalid email format");
+        setLoading(false); // Set loading to false if there is an error
         return;
       } else {
         setErr("");
@@ -60,11 +65,15 @@ function Login() {
       } else {
         setErr("An unexpected error occurred");
       }
+    } finally {
+      setLoading(false); // Set loading to false after the login process is complete
     }
   };
 
   return (
     <>
+      <h1>PLEASE NOTE: The server is hosted on render it takes around 90 sec to restart. Please be patient</h1>
+      <h3>If you have any solution to this feel free to mail me: sameervohra943@gmail.com</h3>
       <div className="bg-blue-500 grid grid-cols-1 md:grid-cols-2 min-h-screen">
         <div className="bg-blue-400 flex justify-center items-center text-7xl p-5">
           <img src={vct} alt="Vector illustration" className="w-full max-w-xs md:max-w-sm" />
@@ -95,9 +104,12 @@ function Login() {
               value={pass}
             />
             <Button
-              children="Login"
+              children={loading ? "Loading..." : "Login"} // Change button text based on loading state
               onClick={handleInput}
-              className="px-4 py-2 w-full rounded-2xl bg-lime-300 hover:bg-cyan-300 transition-all"
+              className={`px-4 py-2 w-full rounded-2xl ${
+                loading ? "bg-gray-300" : "bg-lime-300 hover:bg-cyan-300"
+              }`} // Change button styling based on loading state
+              disabled={loading} // Disable button when loading
             />
             <p className="text-sm text-center">
               New User?{" "}
