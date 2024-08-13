@@ -3,9 +3,10 @@ import Input from "./Input";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import link from "../assets/link.json";
+
 function AcceptQuestion() {
   const params = useParams();
-
+  
   const [err, setErr] = useState("");
   const [quesName, setQuesName] = useState("");
   const [quesDesc, setQuesDesc] = useState("");
@@ -16,188 +17,181 @@ function AcceptQuestion() {
   const [con, setCon] = useState("");
   const [constraints, setConstraints] = useState([]);
   const [quesData, setQuesData] = useState([]);
+
   useEffect(() => {
-    const ques = async () => {
+    const fetchQuestion = async () => {
       const token = localStorage.getItem("jwtToken");
       try {
         if (!token) {
           setErr("Login to access this data");
           return;
-        } else {
-          const qid = params.qId;
-          const data = await axios.get(`${link.url}/${qid}/approve-question`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          setQuesData(data.data.ques);
-          setQuesName(data.data.ques.quesName);
-          setQuesDesc(data.data.ques.description);
         }
+        const qid = params.qId;
+        const { data } = await axios.get(`${link.url}/${qid}/approve-question`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setQuesData(data.ques);
+        setQuesName(data.ques.quesName);
+        setQuesDesc(data.ques.description);
       } catch (error) {
-        setErr(error);
+        setErr("Error fetching data");
       }
     };
-    ques();
+    fetchQuestion();
   }, [params.qId]);
 
-  const handleNameChange = (e) => {
-    setQuesName(e.currentTarget.value);
-  };
+  const handleNameChange = (e) => setQuesName(e.currentTarget.value);
+  const handleDescChange = (e) => setQuesDesc(e.currentTarget.value);
+  const handleDiffChange = (e) => setQuesDiff(e.target.value);
 
-  const handleDescChange = (e) => {
-    setQuesDesc(e.currentTarget.value);
-  };
-
-  const handleDiffChange = (e) => {
-    setQuesDiff(e.target.value);
-  };
-
-  const handleConstraints = (e) => {
-    setConstraints((prevConst) => [...prevConst, con]);
-    setCon("");
-  };
-  const handleAddTestCase = () => {
-    if (testInput === "" || testOutput === "") {
-      setErr("All fields are required");
-    } else {
-      setTestCases((prev) => [
-        { input: testInput, output: testOutput },
-        ...prev,
-      ]);
-      setTestOutput("");
-      setTestInput("");
+  const handleConstraints = () => {
+    if (con.trim() !== "") {
+      setConstraints((prev) => [...prev, con.trim()]);
+      setCon("");
     }
   };
 
-  const handleApprove = async (e) => {
+  const handleAddTestCase = () => {
+    if (testInput.trim() === "" || testOutput.trim() === "") {
+      setErr("All fields are required");
+    } else {
+      setTestCases((prev) => [
+        { input: testInput.trim(), output: testOutput.trim() },
+        ...prev,
+      ]);
+      setTestInput("");
+      setTestOutput("");
+    }
+  };
+
+  const handleApprove = async () => {
     const username = params.username;
     const qId = params.qId;
+    const token = localStorage.getItem("jwtToken");
+
     try {
-      const token = localStorage.getItem("jwtToken");
       if (!token) {
         setErr("Login to perform this action");
         return;
-      } else {
-        const approve = await axios.post(
-          `${link.url}/${username}/addQues`,
-          {
-            quesName: quesName,
-            difficulty: quesDiff,
-            description: quesDesc,
-            constraints: constraints,
-            testcases: testcases,
-          },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
-
-        const quesDel = await axios.put(`${link.url}/${qId}/added`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        alert("Question Added successfully");
       }
+      await axios.post(
+        `${link.url}/${username}/addQues`,
+        {
+          quesName,
+          difficulty: quesDiff,
+          description: quesDesc,
+          constraints,
+          testcases,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      await axios.put(`${link.url}/${qId}/added`, {}, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert("Question Added successfully");
     } catch (error) {
-      setErr(error.message);
+      setErr("Error approving question");
     }
   };
 
   return (
-    <>
-      <div className="flex flex-wrap flex-col justify-center items-center w-full">
-        <div className="flex flex-wrap justify-center items-center flex-col px-4 py-2 border-2 bg-blue-200 rounded-xl mt-4 md:px-10 md:py-4">
-          {err ? (
-            err
-          ) : (
-            <div className="px-4 py-5 w-full gap-5 flex flex-wrap md:px-10">
-              {quesData && (
-                <div className="flex flex-col justify-center items-center text-lg md:text-2xl w-full">
-                  <Input
-                    label="Question Name"
-                    value={quesName}
-                    onChange={handleNameChange}
-                    className="text-base md:text-xl w-full rounded-2xl p-3 md:p-5"
-                  />
-                  <h1 className="mt-4">Question Description</h1>
-                  <textarea
-                    value={quesDesc}
-                    rows={8}
-                    cols={30}
-                    onChange={handleDescChange}
-                    className="rounded-2xl p-3 md:p-5 text-base md:text-xl w-full"
-                  />
-                  <select
-                    onChange={handleDiffChange}
-                    className="mt-4 rounded-xl px-6 py-2 text-base md:text-xl text-center bg-sky-100 w-full md:w-auto"
-                  >
-                    <option className="text-center">Difficulty</option>
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                  </select>
+    <div className="flex flex-col items-center w-full px-4 py-2 md:px-10">
+      <div className="w-full max-w-4xl px-4 py-4 bg-blue-200 rounded-xl border-2 mt-4">
+        {err && <p className="text-red-500 text-center mb-4">{err}</p>}
+        {quesData && (
+          <div className="flex flex-col items-center w-full gap-4">
+            <Input
+              label="Question Name"
+              value={quesName}
+              onChange={handleNameChange}
+              className="w-full rounded-2xl p-3 md:p-5 text-base md:text-xl"
+            />
+            <h1 className="text-lg md:text-xl">Question Description</h1>
+            <textarea
+              value={quesDesc}
+              rows={8}
+              onChange={handleDescChange}
+              className="w-full rounded-2xl p-3 md:p-5 text-base md:text-xl"
+            />
+            <select
+              onChange={handleDiffChange}
+              className="w-full md:w-auto mt-4 rounded-xl px-6 py-2 text-base md:text-xl text-center bg-sky-100"
+            >
+              <option value="">Difficulty</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
 
-                  <h1 className="text-lg md:text-xl mt-4">Constraints</h1>
-                  <Input
-                    value={con}
-                    onChange={(e) => setCon(e.currentTarget.value)}
-                    className="text-base md:text-xl p-2 md:p-3 rounded-xl w-full"
-                  />
-                  <button
-                    onClick={handleConstraints}
-                    className="px-6 py-2 bg-blue-800 text-white hover:bg-blue-500 hover:text-black hover:font-semibold transition-all rounded-xl hover:shadow-xl hover:shadow-black text-base md:text-lg mt-4"
-                  >
-                    Add
-                  </button>
-                </div>
+            <h1 className="text-lg md:text-xl mt-4">Constraints</h1>
+            <Input
+              value={con}
+              onChange={(e) => setCon(e.currentTarget.value)}
+              className="w-full rounded-xl p-2 md:p-3 text-base md:text-xl"
+            />
+            <button
+              onClick={handleConstraints}
+              className="px-6 py-2 bg-blue-800 text-white hover:bg-blue-500 rounded-xl text-base md:text-lg mt-4 transition-all"
+            >
+              Add Constraint
+            </button>
+
+            <h3 className="text-lg md:text-xl mt-4">Added Constraints</h3>
+            {constraints.length > 0 ? (
+              <ul className="list-disc pl-5">
+                {constraints.map((c, ind) => (
+                  <li key={ind} className="text-base md:text-lg">{c}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-base md:text-lg">No constraints added</p>
+            )}
+
+            <h2 className="text-xl md:text-2xl mt-8">Test Cases</h2>
+            <Input
+              label="Input"
+              value={testInput}
+              onChange={(e) => setTestInput(e.currentTarget.value)}
+              className="w-full rounded-xl p-3 md:p-5 text-base md:text-xl"
+            />
+            <Input
+              label="Output"
+              value={testOutput}
+              onChange={(e) => setTestOutput(e.currentTarget.value)}
+              className="w-full rounded-xl p-3 md:p-5 text-base md:text-xl"
+            />
+            <button
+              onClick={handleAddTestCase}
+              className="px-6 py-2 bg-blue-800 text-white hover:bg-blue-500 rounded-xl text-base md:text-lg mt-4 transition-all"
+            >
+              Add Test Case
+            </button>
+
+            <div className="mt-4">
+              {testcases.length > 0 ? (
+                <ul className="list-disc pl-5">
+                  {testcases.map((val, ind) => (
+                    <li key={ind} className="text-base md:text-lg">
+                      Input: {val.input} -- Output: {val.output}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-base md:text-lg">No test cases added</p>
               )}
             </div>
-          )}
-          <h3 className="text-lg md:text-xl mt-4">Added Constraint Values</h3>
-          {constraints &&
-            constraints.map((c, ind) => (
-              <div key={ind} className="font-mono text-base md:text-lg">
-                {c}
-              </div>
-            ))}
-          <h2 className="text-xl md:text-2xl mt-8">TestCases</h2>
-          <Input
-            label="Input"
-            className="rounded-xl w-full p-3 md:p-5 text-base md:text-xl"
-            value={testInput}
-            onChange={(e) => {
-              setTestInput(e.currentTarget.value);
-            }}
-          />
-          <Input
-            className="rounded-xl w-full p-3 md:p-5 text-base md:text-xl"
-            label="Output"
-            value={testOutput}
-            onChange={(e) => setTestOutput(e.currentTarget.value)}
-          />
-          <button
-            onClick={handleAddTestCase}
-            className="px-6 py-2 bg-blue-800 text-white hover:text-black hover:bg-blue-500 transition-all hover:shadow-black hover:shadow-lg rounded-xl text-base md:text-lg mt-4"
-          >
-            Add TestCase
-          </button>
-          <br />
-          {testcases && (
-            <ul>
-              {testcases.map((val, ind) => (
-                <li key={ind} className="text-base md:text-lg">
-                  {val.input} -- {val.output}
-                </li>
-              ))}
-            </ul>
-          )}
-          <button
-            onClick={handleApprove}
-            className="px-6 py-3 bg-blue-800 hover:bg-blue-500 hover:font-semibold rounded-sm text-lg md:text-xl mt-7"
-          >
-            Approve
-          </button>
-        </div>
+
+            <button
+              onClick={handleApprove}
+              className="px-6 py-3 bg-blue-800 text-white hover:bg-blue-500 rounded-xl text-lg md:text-xl mt-7 transition-all"
+            >
+              Approve
+            </button>
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }
 

@@ -7,8 +7,7 @@ function UserInfo() {
   const [userData, setUserData] = useState(null);
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(true);
-  const params = useParams();
-  const username = params.username;
+  const { username } = useParams();
 
   useEffect(() => {
     const findUser = async () => {

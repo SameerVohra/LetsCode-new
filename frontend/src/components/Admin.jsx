@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import LinkBtn from "./Header/LinkBtn";
 import link from "../assets/link.json";
 
@@ -8,67 +8,69 @@ function Admin() {
   const navigate = useNavigate();
   const username = localStorage.getItem("username");
   const [userData, setUserData] = useState({});
+  const [error, setError] = useState("");
+
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
-    const userAdmin = async () => {
-      const response = await axios.get(`${link.url}/${username}/userInfo`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setUserData(response.data);
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`${link.url}/${username}/userInfo`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUserData(response.data);
+      } catch (error) {
+        setError("Failed to fetch user data");
+        console.error(error);
+      }
     };
-    userAdmin();
+    fetchUserData();
   }, [username]);
 
   return (
-    <>
-      <div className="flex flex-col items-center min-h-screen p-4 bg-gray-100">
-        <div className="flex flex-wrap justify-center items-center gap-5 mt-5 mb-10 text-lime-300">
-          <LinkBtn
-            to={`displayQueries`}
-            text="Display Query"
-            className="rounded-xl px-5 py-3 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black text-center w-full sm:w-auto"
-          />
-          <LinkBtn
-            to={`displayQuestions`}
-            text="Display Question"
-            className="rounded-xl px-10 py-5 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black "
-          />
-          <LinkBtn
-            to={`addQues`}
-            text="Add Questions"
-            className="rounded-xl px-10 py-5 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black "
-          />
-          <LinkBtn
-            to={`displayUsers`}
-            text="Display Users"
-            className="rounded-xl px-10 py-5 bg-cyan-600 hover:bg-sky-900 hover:text-cyan-500 transition-all hover:shadow-2xl hover:shadow-black "
-          />
-        </div>
-        <div className="flex flex-wrap justify-center items-center min-h-[50vh] mt-10">
-          <div className="h-3/5 px-20 py-16 flex flex-col justify-center items-center rounded-2xl bg-blue-400 gap-10 text-2xl">
-            <h1>
-              Username:{" "}
-              <span className="text-sky-900">{userData.username}</span>
-            </h1>
-            <h1>
-              Email: <span className="text-sky-900">{userData.email}</span>
-            </h1>
-            <h1>
-              Total Questions Solved:{" "}
-              <span className="text-sky-900">
-                {userData.quesSolved ? userData.quesSolved.length - 1 : 0}
-              </span>
-            </h1>
-            <button
-              className="transition-all px-6 py-3 rounded-2xl bg-blue-900 text-lime-300 hover:text-cyan-500 hover:bg-sky-900 hover:shadow-black hover:shadow-2xl"
-              onClick={() => navigate(`/profile/${username}`)}
-            >
-              Continue to Profile
-            </button>
-          </div>
+    <div className="flex flex-col items-center min-h-screen p-6 bg-gray-100">
+      <div className="flex flex-wrap justify-center gap-6 mt-6 mb-12">
+        <LinkBtn
+          to="displayQueries"
+          text="Display Query"
+          className="rounded-xl px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white transition-all shadow-md hover:shadow-lg"
+        />
+        <LinkBtn
+          to="displayQuestions"
+          text="Display Question"
+          className="rounded-xl px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white transition-all shadow-md hover:shadow-lg"
+        />
+        <LinkBtn
+          to="addQues"
+          text="Add Questions"
+          className="rounded-xl px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white transition-all shadow-md hover:shadow-lg"
+        />
+        <LinkBtn
+          to="displayUsers"
+          text="Display Users"
+          className="rounded-xl px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white transition-all shadow-md hover:shadow-lg"
+        />
+      </div>
+      <div className="flex flex-col items-center justify-center min-h-[50vh] mt-8">
+        <div className="w-full max-w-md p-6 bg-blue-500 text-white rounded-lg shadow-lg flex flex-col gap-6">
+          {error && <div className="text-red-300 text-center">{error}</div>}
+          <h1 className="text-xl font-semibold text-center">
+            Username: <span className="text-sky-200">{userData.username || "Loading..."}</span>
+          </h1>
+          <h1 className="text-xl font-semibold text-center">
+            Email: <span className="text-sky-200">{userData.email || "Loading..."}</span>
+          </h1>
+          <h1 className="text-xl font-semibold text-center">
+            Total Questions Solved: <span className="text-sky-200">{userData.quesSolved ? userData.quesSolved.length - 1 : "Loading..."}</span>
+          </h1>
+          <button
+            className="transition-all px-6 py-3 rounded-lg bg-blue-700 text-lime-300 hover:text-cyan-400 hover:bg-blue-600 shadow-md hover:shadow-lg"
+            onClick={() => navigate(`/profile/${username}`)}
+          >
+            Continue to Profile
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

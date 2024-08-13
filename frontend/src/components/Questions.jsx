@@ -84,60 +84,59 @@ function Questions() {
   const getDifficultyColor = (difficulty) => {
     switch (difficulty) {
       case "easy":
-        return "bg-green-500";
+        return "bg-green-200";
       case "medium":
-        return "bg-yellow-500";
+        return "bg-yellow-200";
       case "hard":
-        return "bg-red-500";
+        return "bg-red-200";
       default:
         return "";
     }
   };
+
   return (
-    <div>
-      <div
-        className="grid grid-cols-2 items-start px-2 py-3"
-        style={{ gridTemplateColumns: "1fr 0.3fr" }}
-      >
-        <div className="flex flex-wrap flex-col gap-2 mr-2">
-          {ques.map((ques, index) => (
+    <div className="p-6 md:p-8">
+      {err && <div className="text-red-600 text-xl text-center mb-6">{err}</div>}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex flex-col gap-6">
+          {ques.map((q, index) => (
             <div
               key={index}
-              className={`grid grid-cols-3 gap-4 text-black ${getDifficultyColor(ques.difficulty)} px-6 py-3 text-xl items-center justify-center rounded-2xl`}
-              style={{ gridTemplateColumns: "1fr 1fr 0.25fr" }}
+              className={`grid grid-cols-3 gap-4 p-5 text-gray-800 ${getDifficultyColor(q.difficulty)} rounded-lg shadow-lg transition-transform transform hover:scale-105`}
+              style={{ gridTemplateColumns: "2fr 1fr 0.5fr" }}
             >
-              <p>{ques.quesName}</p>
-              <p>{ques.difficulty}</p>
+              <p className="truncate text-lg font-medium">{q.quesName}</p>
+              <p className={`font-semibold ${getDifficultyColor(q.difficulty)}`}>{q.difficulty}</p>
               <Button
                 children="Solve"
-                onClick={() => handleClick(ques._id)}
-                className=" rounded-2xl w-fit px-5 py-3 bg-cyan-400 hover:bg-cyan-300 hover:shadow-black hover:shadow-2xl"
+                onClick={() => handleClick(q._id)}
+                className="w-fit px-6 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-white"
               />
             </div>
           ))}
-          {err && <div className="text-red-500">{err}</div>}
         </div>
-        <div>
+        <div className="flex flex-col gap-6">
           <Calendar
             onChange={onChange}
             value={date}
             navigationType="none"
             tileClassName={tileClassName}
+            className="shadow-lg rounded-lg border border-gray-300"
           />
-          <div className="bg-cyan-600 text-2xl flex flex-wrap justify-center items-center flex-col w-full mt-4 py-8 px-3 rounded-2xl">
-            <h1 className="text-xl text-center">Username: {username}</h1>
-            <div className="flex flex-wrap flex-col justify-center items-start">
-              <h1 className="text-green-300">
+          <div className="bg-cyan-700 text-white text-xl p-6 rounded-lg shadow-lg">
+            <h1 className="text-3xl text-center mb-4 font-semibold">Username: {username}</h1>
+            <div className="flex flex-col gap-3">
+              <h1 className="text-green-400">
                 Easy: {userSolved.easy}
-                <span className="text-gray-700 text-lg">/{easy}</span>
+                <span className="text-gray-200 text-lg">/{easy}</span>
               </h1>
-              <h1 className="text-yellow-500">
+              <h1 className="text-yellow-400">
                 Medium: {userSolved.medium}
-                <span className="text-gray-700 text-lg">/{medium}</span>
+                <span className="text-gray-200 text-lg">/{medium}</span>
               </h1>
-              <h1 className="text-red-800">
+              <h1 className="text-red-600">
                 Hard: {userSolved.hard}
-                <span className="text-gray-700 text-lg">/{hard}</span>
+                <span className="text-gray-200 text-lg">/{hard}</span>
               </h1>
             </div>
           </div>

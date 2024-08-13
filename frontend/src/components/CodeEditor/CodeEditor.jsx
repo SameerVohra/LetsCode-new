@@ -8,113 +8,124 @@ function CodeEditor() {
   const [code, setCode] = useState("");
   const [compileResult, setCompileResult] = useState(null);
   const [err, setErr] = useState("");
-  const [quesInfo, setQuesInfo] = useState([]);
+  const [quesInfo, setQuesInfo] = useState({});
+  const [loading, setLoading] = useState(false); // Add loading state
   const params = useParams();
-  const qId = params.qId;
-  const username = params.username;
+  const { qId, username } = params;
+
   const solved = async () => {
     const token = localStorage.getItem("jwtToken");
+    if (!token) {
+      setErr("Login to perform this action");
+      return;
+    }
+
     try {
-      if (!token) return setErr("Login to perform this action");
-      const data = await axios.put(`${link.url}/${qId}/${username}/solved`);
+      await axios.put(`${link.url}/${qId}/${username}/solved`);
     } catch (error) {
       setErr(error.message);
     }
   };
 
   useEffect(() => {
-    const quesInfo = async () => {
+    const fetchQuesInfo = async () => {
       try {
-        const data = await axios.get(`${link.url}/${qId}/ques-details`);
-        setQuesInfo(data.data);
+        const { data } = await axios.get(`${link.url}/${qId}/ques-details`);
+        setQuesInfo(data);
       } catch (error) {
         setErr(error.message);
       }
     };
-    quesInfo();
+
+    fetchQuesInfo();
   }, [qId]);
+
   const handleCompile = async () => {
+    setLoading(true); // Set loading to true when the compilation starts
     try {
       const response = await axios.post(`${link.url}/${qId}/compile-cpp`, {
-        code: code,
+        code,
       });
-      if (response.data.totalCount === response.data.passedCount)
+      if (response.data.totalCount === response.data.passedCount) {
         await solved();
+      }
       setCompileResult(response.data);
       setErr("");
     } catch (error) {
       setErr("Error compiling code");
       setCompileResult(null);
+    } finally {
+      setLoading(false); // Set loading to false once the compilation is complete
     }
   };
 
   return (
     <div className="px-5 py-3">
-      <div className="grid grid-cols-2 mt-5 gap-4">
-        <div
-          className="grid grid-rows-3"
-          style={{ gridTemplateRows: "1.25fr 0.25fr 1.50fr" }}
-        >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex flex-col space-y-4">
           {quesInfo && (
             <div>
-              <h1 className="font-bold">Question Name</h1>
+              <h1 className="font-bold text-lg">Question Name</h1>
               <p>{quesInfo.quesName}</p>
-              <h2 className="font-bold">Description</h2>
+              <h2 className="font-bold text-md">Description</h2>
               <p>{quesInfo.description}</p>
-              <h3 className="font-bold">Difficulty</h3>
+              <h3 className="font-bold text-md">Difficulty</h3>
               <p>{quesInfo.difficulty}</p>
-              <h4 className="font-bold">Constraints</h4>
-              {quesInfo.constraints &&
-                quesInfo.constraints.map((constraint, index) => (
-                  <ul key={index} className="text-gray-500">
-                    <li>{constraint}</li>
-                  </ul>
-                ))}
+              <h4 className="font-bold text-md">Constraints</h4>
+              {quesInfo.constraints && (
+                <ul className="list-disc list-inside pl-5 text-gray-500">
+                  {quesInfo.constraints.map((constraint, index) => (
+                    <li key={index}>{constraint}</li>
+                  ))}
+                </ul>
+              )}
             </div>
           )}
 
           <button
             onClick={handleCompile}
-            className="border-black border-2 px-3 py-2 w-fit mb-2"
+            disabled={loading} // Disable button when loading
+            className={`border-black border-2 px-3 py-2 w-fit mb-2 ${
+              loading ? "bg-gray-300" : "bg-white hover:bg-gray-100"
+            }`}
           >
-            Compile
+            {loading ? "Compiling..." : "Compile"} {/* Change button text based on loading state */}
           </button>
-          <div className="bg-black flex flex-wrap items-center justify-start flex-col">
-            <h1 className="text-white font-bold text-2xl">Output:</h1>
-            {err && <div className="text-red-500">{err}</div>}
 
+          <div className="bg-black p-4 text-white rounded-lg">
+            <h1 className="text-2xl font-bold">Output:</h1>
+            {err && <div className="text-red-500">{err}</div>}
             {compileResult && (
               <div
-                className={`text-xl mt-10 ${compileResult.passedCount === compileResult.totalCount ? "text-green-400" : "text-red-500"}`}
+                className={`text-xl mt-4 ${
+                  compileResult.passedCount === compileResult.totalCount
+                    ? "text-green-400"
+                    : "text-red-500"
+                }`}
               >
-                <div>
-                  <pre>
-                    <h3>
-                      Total testcases:{" "}
-                      {JSON.stringify(compileResult.totalCount, null, 2)}
-                    </h3>{" "}
-                    <h3>
-                      Passed testcases:{" "}
-                      {JSON.stringify(compileResult.passedCount, null, 2)}
-                    </h3>{" "}
-                    <h3>
-                      Passed Percentage:{" "}
-                      {JSON.stringify(compileResult.passedPercentage, null, 2)}
-                    </h3>
-                  </pre>
-                </div>
+                <pre>
+                  <h3>
+                    Total testcases: {compileResult.totalCount}
+                  </h3>
+                  <h3>
+                    Passed testcases: {compileResult.passedCount}
+                  </h3>
+                  <h3>
+                    Passed Percentage: {compileResult.passedPercentage}%
+                  </h3>
+                </pre>
               </div>
             )}
           </div>
         </div>
-        <div>
-          {" "}
+
+        <div className="w-full h-[80vh]">
           <Editor
-            height="80vh"
+            height="100%"
             width="100%"
             theme="vs-dark"
             language="cpp"
-            onChange={setCode}
+            onChange={(value) => setCode(value || "")}
             value={code}
             defaultValue={`#include<iostream>\nusing namespace std;\n\nint main(){\n\t\n\treturn 0;\n}`}
           />

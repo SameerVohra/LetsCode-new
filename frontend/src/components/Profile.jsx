@@ -26,35 +26,31 @@ function Profile() {
   }, [username]);
 
   return (
-    <>
-      {err && <div className="text-red-500 text-2xl">{err}</div>}
-      <div
-        className="grid grid-cols-2 gap-5 px-5 py-5"
-        style={{ gridTemplateColumns: "0.5fr 1.5fr" }}
-      >
+    <div className="p-5">
+      {err && <div className="text-red-500 text-xl text-center mb-5">{err}</div>}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {data && (
-          <div className="flex flex-wrap justify-center items-center flex-col bg-sky-400 rounded-xl">
-            <div className="flex flex-col">
-              <h1>Username: {data.username}</h1>
-              <h1>Email: {data.email}</h1>
+          <div className="flex flex-col bg-sky-400 p-5 rounded-xl shadow-lg">
+            <div className="flex flex-col mb-5">
+              <h1 className="text-2xl font-semibold">Username: {data.username}</h1>
+              <h1 className="text-xl">Email: {data.email}</h1>
             </div>
-            <div className="flex flex-wrap justify-center items-center flex-col">
-              <h1>
-                Total Questions Solved:{" "}
-                {data.quesSolved ? data.quesSolved.length - 1 : 0}
+            <div className="flex flex-col">
+              <h1 className="text-xl font-semibold">
+                Total Questions Solved: {data.quesSolved ? data.quesSolved.length - 1 : 0}
               </h1>
-              <h2>Easy: {data.quesSolvedNum?.easy || 0}</h2>
-              <h2>Medium: {data.quesSolvedNum?.medium || 0}</h2>
-              <h3>Hard: {data.quesSolvedNum?.hard || 0}</h3>
+              <h2 className="text-lg">Easy: {data.quesSolvedNum?.easy || 0}</h2>
+              <h2 className="text-lg">Medium: {data.quesSolvedNum?.medium || 0}</h2>
+              <h3 className="text-lg">Hard: {data.quesSolvedNum?.hard || 0}</h3>
             </div>
           </div>
         )}
-        <div className="bg-blue-600 rounded-xl">
-          <h2 className="text-center">Questions Solved</h2>
+        <div className="bg-blue-600 p-5 rounded-xl shadow-lg">
+          <h2 className="text-center text-2xl font-semibold text-white mb-4">Questions Solved</h2>
           {data.quesSolved &&
             data.quesSolved.map((ques, ind) => (
               <div
-                className="px-4 py-3 w-full h-auto text-center text-3xl"
+                className="px-4 py-3 text-center text-lg text-white border-b border-blue-500"
                 key={ind}
               >
                 {ques.name}
@@ -62,7 +58,7 @@ function Profile() {
             ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

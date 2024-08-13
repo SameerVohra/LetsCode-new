@@ -25,11 +25,15 @@ function Header({ isAdmin }) {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleMenuLinkClick = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <>
-      <div className="bg-blue-900 w-full h-auto text-lime-300 flex justify-between items-center px-4 py-5">
+      <header className="bg-blue-900 text-lime-300 flex justify-between items-center px-4 py-5 w-full">
         <h1 className="text-3xl md:text-5xl font-mono">LetsCode</h1>
-        <div className="hidden md:flex flex-wrap justify-between items-center gap-16">
+        <div className="hidden md:flex flex-wrap justify-between items-center gap-8">
           {/* Navigation links */}
           <LinkBtn to="/" text="Home" className="hover:text-white" />
           <LinkBtn
@@ -60,27 +64,33 @@ function Header({ isAdmin }) {
               onMouseEnter={() => setIsDropdownOpen(true)}
               onMouseLeave={() => setIsDropdownOpen(false)}
             >
-              {authStatus.auth && (
-                <span className="cursor-pointer">Welcome, {username}</span>
-              )}
+              <span className="cursor-pointer">Welcome, {username}</span>
               {isDropdownOpen && (
-                <div className="absolute top-full left-0 bg-blue-900 border border-gray-300 py-4 px-4 shadow-md rounded w-fit">
+                <div
+                  className="absolute top-full left-0 bg-blue-900 border border-gray-300 py-4 px-4 shadow-md rounded w-48"
+                  role="menu"
+                >
                   {isAdmin === "true" && (
                     <LinkBtn
                       text="Admin"
                       to={`${username}/admin`}
                       className="block hover:text-white"
+                      onClick={handleMenuLinkClick}
                     />
                   )}
                   <LinkBtn
                     text="Profile"
                     to={`/profile/${username}`}
                     className="block hover:text-white"
+                    onClick={handleMenuLinkClick}
                   />
                   <LinkBtn
                     text="Logout"
                     to="/login"
-                    onClick={handleLogout}
+                    onClick={(e) => {
+                      handleLogout(e);
+                      handleMenuLinkClick();
+                    }}
                     className="block hover:text-white"
                   />
                 </div>
@@ -89,44 +99,54 @@ function Header({ isAdmin }) {
           )}
         </div>
         {/* Hamburger menu button */}
-        <div className="lg:hidden">
-          <button onClick={toggleMenu}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
+        <button
+          className="lg:hidden flex items-center"
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 text-lime-300"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16m-7 6h7"
+            />
+          </svg>
+        </button>
+      </header>
       {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-blue-900 py-2 px-4">
           {/* Navigation links */}
-          <LinkBtn to="/" text="Home" className="block text-white my-2" />
+          <LinkBtn
+            to="/"
+            text="Home"
+            className="block text-white my-2"
+            onClick={handleMenuLinkClick}
+          />
           <LinkBtn
             to={`/${username}/contribute`}
             text="Contribute A Question"
             className="block text-white my-2"
+            onClick={handleMenuLinkClick}
           />
           <LinkBtn
             to={`/${username}/query`}
             text="Query"
             className="block text-white my-2"
+            onClick={handleMenuLinkClick}
           />
           <LinkBtn
             to="/Questions"
             text="Questions"
             className="block text-white my-2"
+            onClick={handleMenuLinkClick}
           />
           {/* Conditional rendering based on auth status */}
           {!authStatus.auth ? (
@@ -134,6 +154,7 @@ function Header({ isAdmin }) {
               text="Login"
               to="/login"
               className="block text-white my-2"
+              onClick={handleMenuLinkClick}
             />
           ) : (
             <div>
@@ -143,17 +164,22 @@ function Header({ isAdmin }) {
                   text="Admin"
                   to={`${username}/admin`}
                   className="block text-white my-2"
+                  onClick={handleMenuLinkClick}
                 />
               )}
               <LinkBtn
                 text="Profile"
                 to={`/profile/${username}`}
                 className="block text-white my-2"
+                onClick={handleMenuLinkClick}
               />
               <LinkBtn
                 text="Logout"
                 to="/login"
-                onClick={handleLogout}
+                onClick={(e) => {
+                  handleLogout(e);
+                  handleMenuLinkClick();
+                }}
                 className="block text-white my-2"
               />
             </div>
