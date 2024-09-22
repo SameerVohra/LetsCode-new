@@ -42,7 +42,7 @@ mongoose
 
 setInterval(() => {
   console.log("Server is running");
-}, 20000);
+}, 10000);
 
 function verifytoken(req, res, next) {
   const token = req.headers["authorization"];
