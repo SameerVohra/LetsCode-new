@@ -40,6 +40,10 @@ mongoose
   .then(() => console.log("Connection successful"))
   .catch((error) => console.log(`Error Connecting to Database ${error}`));
 
+setInterval(() => {
+  console.log("Server is running");
+}, 20000);
+
 function verifytoken(req, res, next) {
   const token = req.headers["authorization"];
   if (!token) {
