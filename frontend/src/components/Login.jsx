@@ -72,8 +72,6 @@ function Login() {
 
   return (
     <>
-      <h1>PLEASE NOTE: The server is hosted on render it takes around 90 sec to restart. Please be patient</h1>
-      <h3>If you have any solution to this feel free to mail me: sameervohra943@gmail.com</h3>
       <div className="bg-blue-500 grid grid-cols-1 md:grid-cols-2 min-h-screen">
         <div className="bg-blue-400 flex justify-center items-center text-7xl p-5">
           <img src={vct} alt="Vector illustration" className="w-full max-w-xs md:max-w-sm" />

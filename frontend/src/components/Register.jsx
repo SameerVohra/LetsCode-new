@@ -13,7 +13,7 @@ function Register() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [err, setErr] = useState("");
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passRegex =
@@ -21,20 +21,17 @@ function Register() {
 
   const handleInput = async (e) => {
     e.preventDefault();
-    setLoading(true); // Set loading to true when registration starts
+    setLoading(true);
 
     try {
       if (!email || !name || !pass) {
         setErr("Every field is required!!");
-        setLoading(false); // Set loading to false if there is an error
         return;
       } else if (!emailRegex.test(email)) {
         setErr("Invalid email format");
-        setLoading(false); // Set loading to false if there is an error
         return;
       } else if (!passRegex.test(pass)) {
         setErr("Password must be at least 8 characters long and include uppercase, lowercase, number, and special character");
-        setLoading(false); // Set loading to false if there is an error
         return;
       } else {
         setErr("");
@@ -56,16 +53,14 @@ function Register() {
       console.error(error);
       setErr("An error occurred while registering the user");
     } finally {
-      setLoading(false); // Set loading to false after the registration process is complete
+      setLoading(false);
     }
   };
 
   return (
     <div className="bg-blue-500 min-h-screen flex flex-col lg:flex-row">
-      <h1>PLEASE NOTE: The server is hosted on render, it takes around 90 sec to restart. Please be patient</h1>
-      <h3>If you have any solution to this feel free to mail me: sameervohra943@gmail.com</h3>
       <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-6 lg:p-12">
-        <div className="bg-sky-500 text-black shadow-2xl shadow-black w-full max-w-sm p-6 rounded-2xl">
+        <div className="bg-sky-500 text-black shadow-2xl w-full max-w-sm p-8 rounded-2xl">
           {err && (
             <div className="text-red-900 text-center text-sm mb-4">
               {err}
@@ -74,14 +69,14 @@ function Register() {
           <Input
             label="Username"
             placeholder="Username"
-            className="bg-white rounded-2xl mb-4"
+            className="bg-white rounded-2xl mb-4 p-2"
             onChange={(e) => setName(e.currentTarget.value)}
             value={name}
           />
           <Input
             label="Email"
             placeholder="Email"
-            className="bg-white rounded-2xl mb-4"
+            className="bg-white rounded-2xl mb-4 p-2"
             onChange={(e) => setEmail(e.currentTarget.value)}
             value={email}
           />
@@ -89,17 +84,17 @@ function Register() {
             label="Password"
             type="password"
             placeholder="Password"
-            className="bg-white rounded-2xl mb-4"
+            className="bg-white rounded-2xl mb-4 p-2"
             onChange={(e) => setPass(e.currentTarget.value)}
             value={pass}
           />
           <Button
-            children={loading ? "Loading..." : "Register"} // Change button text based on loading state
+            children={loading ? "Loading..." : "Register"}
             onClick={handleInput}
             className={`w-full px-4 py-2 rounded-2xl ${
               loading ? "bg-gray-300" : "bg-lime-300 hover:bg-cyan-300"
-            }`} // Change button styling based on loading state
-            disabled={loading} // Disable button when loading
+            }`}
+            disabled={loading}
           />
           <p className="text-sm text-center mt-4">
             Existing User?{" "}
