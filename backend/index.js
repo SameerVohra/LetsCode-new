@@ -607,11 +607,11 @@ app.delete("/:username/deleteUser", async (req, res) => {
   }
 });
 
-app.post("/test", (req, res) => {
+app.post("/test", (_, res) => {
   console.log("testing done");
 });
 
-app.all("/*", (req, res) => {
+app.all("/*", (_, res) => {
   res.status(404).send("Page Not Found");
 });
 
