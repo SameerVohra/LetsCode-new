@@ -10,6 +10,7 @@ import vct from "../assets/vector.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import link from "../assets/link.json";
+import Popup from "./Popup";
 
 function Login() {
   const navigate = useNavigate();
@@ -18,7 +19,8 @@ function Login() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [err, setErr] = useState("");
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
+  const [showPopup, setShowPopup] = useState(true);
 
   const success = () => {
     toast.success("Login Successful");
@@ -70,8 +72,15 @@ function Login() {
     }
   };
 
+  setTimeout(() => {
+    setShowPopup(false);
+  }, 30000)
+
   return (
     <>
+      {showPopup &&
+        <Popup content="This might take 50-60 sec to start as we are using a free hosting service! Thankyou for your patience" />
+      }
       <div className="bg-blue-500 grid grid-cols-1 md:grid-cols-2 min-h-screen">
         <div className="bg-blue-400 flex justify-center items-center text-7xl p-5">
           <img src={vct} alt="Vector illustration" className="w-full max-w-xs md:max-w-sm" />
@@ -104,9 +113,8 @@ function Login() {
             <Button
               children={loading ? "Loading..." : "Login"} // Change button text based on loading state
               onClick={handleInput}
-              className={`px-4 py-2 w-full rounded-2xl ${
-                loading ? "bg-gray-300" : "bg-lime-300 hover:bg-cyan-300"
-              }`} // Change button styling based on loading state
+              className={`px-4 py-2 w-full rounded-2xl ${loading ? "bg-gray-300" : "bg-lime-300 hover:bg-cyan-300"
+                }`} // Change button styling based on loading state
               disabled={loading} // Disable button when loading
             />
             <p className="text-sm text-center">
